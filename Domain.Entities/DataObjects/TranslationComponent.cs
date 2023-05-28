@@ -16,6 +16,7 @@ namespace Domain.Entities.DataObjects
         }
         public abstract void Add(TranslationComponent component);
         public abstract void Remove(TranslationComponent component);
+        public abstract void AddTranslations(List<string> translations);
         public abstract string getText();
 
     }
