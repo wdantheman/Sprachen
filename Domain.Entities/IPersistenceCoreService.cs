@@ -1,4 +1,4 @@
-﻿using Domain.Entities.DataObjects;
+﻿using Domain.Entities.DataObjects.EntryComposite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal interface IPersistenceCore
+    internal interface IPersistenceCoreService
     {
         public void SaveEntry(TranslationComponent component);
     }

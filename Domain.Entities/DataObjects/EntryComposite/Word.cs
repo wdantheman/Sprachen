@@ -1,5 +1,4 @@
-﻿
-namespace Domain.Entities.DataObjects
+﻿namespace Domain.Entities.DataObjects.EntryComposite
 {
     internal class Word : TranslationComponent
     {
@@ -12,11 +11,11 @@ namespace Domain.Entities.DataObjects
             sourceDefinitions = new List<string>();
             targetExamples = new List<string>();
         }
-        public override void Add(TranslationComponent component)
+        public override void AddComponent(TranslationComponent component)
         {
             Console.WriteLine("Cannot add TranslationComponent to a Word.");
         }
-        public override void Remove(TranslationComponent component)
+        public override void RemoveComponent(TranslationComponent component)
         {
             Console.WriteLine("Cannot remove TranslationComponent from a Word.");
         }
@@ -31,7 +30,7 @@ namespace Domain.Entities.DataObjects
             translations = ExternalTranslations;
         }
 
-        public void AddSourceDefinitions(List<string> definitions) 
+        public void AddSourceDefinitions(List<string> definitions)
         {
             sourceDefinitions = definitions;
         }

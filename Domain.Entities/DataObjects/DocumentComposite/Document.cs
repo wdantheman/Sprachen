@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.DataObjects
+namespace Domain.Entities.DataObjects.DocumentComposite
 {
     internal class Document
     {
         public Document()
         {
-            
-                
+
+
         }
     }
 }

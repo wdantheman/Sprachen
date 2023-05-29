@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.DataObjects
+namespace Domain.Entities.DataObjects.EntryComposite
 {
     internal class Sentence : TranslationComponent
     {
@@ -14,13 +14,13 @@ namespace Domain.Entities.DataObjects
         public Sentence(string text) : base(text)
         {
             components = new List<TranslationComponent>();
-            translation= new string("");
+            translation = new string("");
         }
-        public override void Add(TranslationComponent component)
+        public override void AddComponent(TranslationComponent component)
         {
             components.Add(component);
         }
-        public override void Remove(TranslationComponent component)
+        public override void RemoveComponent(TranslationComponent component)
         {
             components.Remove(component);
         }
