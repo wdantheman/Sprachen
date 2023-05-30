@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.DataObjects.EntryComposite
 {
-    internal class Word : TranslationComponent
+    public class Word : TranslationComponent
     {
         internal List<string> translations;
         internal List<string> sourceDefinitions;
@@ -38,6 +38,20 @@
         public override string getText()
         {
             return text;
+        }
+
+        public List<string> getExamples() 
+        {
+            return targetExamples;
+        }
+
+        public List<string> getDefinitions()
+        {
+            return sourceDefinitions;
+        }
+        public List<string> getTranslations()
+        {
+            return translations;
         }
 
     }

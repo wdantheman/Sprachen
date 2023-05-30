@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.DataObjects.EntryComposite
 {
-    internal class Sentence : TranslationComponent
+    public class Sentence : TranslationComponent
     {
         private List<TranslationComponent> components;
         internal string translation;

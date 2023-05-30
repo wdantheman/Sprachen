@@ -10,11 +10,15 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     internal abstract class SectionComponent
     {
         internal string title;
-        internal int id;
+        internal int docId;
+        internal List<Language> targetLanguages;
+        internal Language sourceLanguage;
+
         public SectionComponent(string title, int id)
         {
             this.title = title;
-            this.id = id;
+            this.docId = id;
+            targetLanguages = new List<Language>();
         }
         public abstract void AddSubsectionComponent(SectionComponent component);
         public abstract void RemoveSubsectionComponent(int id);

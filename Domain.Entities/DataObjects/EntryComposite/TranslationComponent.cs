@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.DataObjects.EntryComposite
 {
-    internal abstract class TranslationComponent
+    public abstract class TranslationComponent
     {
         internal string text;
         public TranslationComponent(string txt)
