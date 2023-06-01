@@ -10,9 +10,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     internal class Subsection : SectionComponent
     {
         internal List<TranslationComponent> entries;
-        public Subsection(string title, int id): base(title, id)
+        internal List<Language> languages;
+        public Subsection(string title, int id, List<Language> lengauges): base(title, id)
         {
             entries = new List<TranslationComponent>();
+            languages = lengauges;
         }
         public override void AddSubsectionComponent(SectionComponent component)
         {
