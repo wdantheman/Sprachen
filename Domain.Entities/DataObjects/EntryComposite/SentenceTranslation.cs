@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.DataObjects.EntryComposite
 {
-    public class Sentence : TranslationComponent
+    public class SentenceTranslation : TranslationComponent
     {
+        internal string text { get; set; }
         private List<TranslationComponent> components;
         internal string translation;
-        public Sentence(string text) : base(text)
+        public SentenceTranslation(int id, string entryText) : base(id)
         {
             components = new List<TranslationComponent>();
             translation = new string("");
+            text = entryText;
         }
         public override void AddComponent(TranslationComponent component)
         {
@@ -25,15 +27,14 @@ namespace Domain.Entities.DataObjects.EntryComposite
             components.Remove(component);
         }
 
-        public override void AddTranslations(List<string> translations)
+        public override void Translate(ITranslationService translationService)
         {
-            translation = translations.First();
+            translationService.GetTranslations(text)[0] += translation;
+            foreach (TranslationComponent component in components) 
+            {
+                component.Translate(translationService);
+            }
+         
         }
-
-        public override string getText()
-        {
-            return text;
-        }
-
     }
 }

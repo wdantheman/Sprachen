@@ -1,15 +1,17 @@
 ﻿namespace Domain.Entities.DataObjects.EntryComposite
 {
-    public class Word : TranslationComponent
+    public class WordTranslation : TranslationComponent
     {
         internal List<string> translations;
-        internal List<string> sourceDefinitions;
+        internal List<string> targetDefinitions;
         internal List<string> targetExamples;
-        public Word(string text) : base(text)
+        internal string text;
+        public WordTranslation(int id, string entryText) : base(id)
         {
             translations = new List<string>();
-            sourceDefinitions = new List<string>();
+            targetDefinitions = new List<string>();
             targetExamples = new List<string>();
+            text = entryText;
         }
         public override void AddComponent(TranslationComponent component)
         {
@@ -25,17 +27,12 @@
             targetExamples = examples;
         }
 
-        public override void AddTranslations(List<string> ExternalTranslations)
+        public void AddtargetDefinitions(ITranslationService translationService)
         {
-            translations = ExternalTranslations;
+            targetDefinitions = translationService.GetMeaningsInSourceLanguage(text);
         }
 
-        public void AddSourceDefinitions(List<string> definitions)
-        {
-            sourceDefinitions = definitions;
-        }
-
-        public override string getText()
+        public string getText()
         {
             return text;
         }
@@ -47,12 +44,16 @@
 
         public List<string> getDefinitions()
         {
-            return sourceDefinitions;
+            return targetDefinitions;
         }
         public List<string> getTranslations()
         {
             return translations;
         }
 
+        public override void Translate(ITranslationService translationService)
+        {
+            translations= translationService.GetTranslations(text);
+        }
     }
 }

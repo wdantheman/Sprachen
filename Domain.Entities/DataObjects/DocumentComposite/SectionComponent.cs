@@ -14,14 +14,17 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         internal List<Language> targetLanguages;
         internal Language sourceLanguage;
 
-        public SectionComponent(string title, int id)
+        public SectionComponent(string title, int id, List<Language> languages)
         {
             this.title = title;
-            this.docId = id;
-            targetLanguages = new List<Language>();
+            docId = id;
+            targetLanguages = languages;
         }
         public abstract void AddSubsectionComponent(SectionComponent component);
         public abstract void RemoveSubsectionComponent(int id);
+        public abstract void AddSourceLanguage(Language language);
+
+
 
     }
 }

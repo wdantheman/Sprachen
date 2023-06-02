@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal interface ITranslationService
+    public interface ITranslationService
     {
         public List<string> GetTranslations(string text);
         public List<string> GetMeaningsInSourceLanguage(string word);
