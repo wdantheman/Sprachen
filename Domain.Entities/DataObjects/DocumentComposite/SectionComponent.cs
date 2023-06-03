@@ -23,6 +23,8 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public abstract void AddSubsectionComponent(SectionComponent component);
         public abstract void RemoveSubsectionComponent(int id);
         public abstract void AddSourceLanguage(Language language);
+        public abstract void AddTargetLanguage(Language language);
+        public abstract void RemoveTargetLanguage(Language language);
 
 
 

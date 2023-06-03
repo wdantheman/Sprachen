@@ -9,6 +9,6 @@ namespace Domain.Entities
     public interface ITranslationService
     {
         public List<string> GetTranslations(string text);
-        public List<string> GetMeaningsInSourceLanguage(string word);
+        public List<string> GetMeaningsInTargetLanguage(string word);
     }
 }

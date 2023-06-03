@@ -9,11 +9,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 {
     internal class Subsection : SectionComponent
     {
-        internal List<TranslationComponent> entries;
+        internal Dictionary<string, List<TranslationComponent>> translationComponents;
 
         public Subsection(string title, int id, List<Language> lengauges): base(title, id, lengauges)
         {
-            entries = new List<TranslationComponent>();
+            translationComponents = new Dictionary<string, List<TranslationComponent>>();
             targetLanguages = lengauges;
         }
 
@@ -27,9 +27,19 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             Console.WriteLine("Cannot add SectionComponent to a Subsection.");
         }
 
+        public override void AddTargetLanguage(Language language)
+        {
+            targetLanguages.Add(language);
+        }
+
         public override void RemoveSubsectionComponent(int id)
         {
             Console.WriteLine("Cannot remove SectionComponent to a Subsection.");
+        }
+
+        public override void RemoveTargetLanguage(Language language)
+        {
+            targetLanguages.Remove(language);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class SentenceTranslation : TranslationComponent
     {
-        internal string text { get; set; }
         private List<TranslationComponent> components;
+        internal string text { get; set; }
         internal string translation;
         public SentenceTranslation(int id, string entryText) : base(id)
         {
@@ -29,7 +29,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
 
         public override void Translate(ITranslationService translationService)
         {
-            translationService.GetTranslations(text)[0] += translation;
+            translationService.GetTranslations(text)[0] = translation;
             foreach (TranslationComponent component in components) 
             {
                 component.Translate(translationService);

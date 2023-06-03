@@ -29,7 +29,7 @@
 
         public void AddtargetDefinitions(ITranslationService translationService)
         {
-            targetDefinitions = translationService.GetMeaningsInSourceLanguage(text);
+            targetDefinitions = translationService.GetMeaningsInTargetLanguage(text);
         }
 
         public string getText()
@@ -53,7 +53,7 @@
 
         public override void Translate(ITranslationService translationService)
         {
-            translations= translationService.GetTranslations(text);
+            translations = translationService.GetTranslations(text);
         }
     }
 }
