@@ -1,17 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
-    internal class Document
+    public class Document
     {
-        public Document()
+        public int Id { get; internal set; }
+        public string Name { get; internal set; }
+        public string Description { get; internal set; }
+        internal List<SectionComponent> Sections;
+
+        public Document(int id, string name, List<SectionComponent> sections)
         {
+            Name= name;
+            Id= id;
+            Description = string.Empty;
+            Sections = sections;
+        }
+        public void addDescription(string description) 
+        {
+            Description= description;
+        }
 
-
+        public void addSection(SectionComponent section) 
+        {
+            Sections.Add(section);
+        }
+        public void removeSection(int sectionId) 
+        {
+            SectionComponent itemToRemove = Sections.FirstOrDefault(item => item.docId == sectionId);
+            if (itemToRemove != null)
+            {
+                Sections.Remove(itemToRemove);
+            }
         }
     }
 }

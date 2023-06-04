@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
-    internal abstract class SectionComponent
+    public abstract class SectionComponent
     {
         internal string title;
         internal int docId;
@@ -22,11 +22,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         }
         public abstract void AddSubsectionComponent(SectionComponent component);
         public abstract void RemoveSubsectionComponent(int id);
-        public abstract void AddSourceLanguage(Language language);
+        public abstract void SetSourceLanguage(Language language);
         public abstract void AddTargetLanguage(Language language);
         public abstract void RemoveTargetLanguage(Language language);
-
-
+        public abstract Dictionary<string, EntryTranslationBlock> getEntries();
+        public abstract void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries);
 
     }
 }

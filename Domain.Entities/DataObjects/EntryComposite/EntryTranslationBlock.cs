@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.DataObjects.EntryComposite
 {
-    internal class EntryTranslationBlock
+    public class EntryTranslationBlock
     {
         internal List<Language> targetLanguages;
         internal Dictionary<Language, TranslationComponent> targetTranslations;
@@ -25,6 +25,15 @@ namespace Domain.Entities.DataObjects.EntryComposite
         public void RemovetargetLanguage(Language sprachen) 
         {
             targetLanguages.Remove(sprachen);
+        }
+
+        public void AddTranslationComponentToLenguage(TranslationComponent translation, Language language) 
+        {
+            targetTranslations.Add(language, translation);
+        }
+        public void RemoveTranslationComponentFromLenguage(Language language) 
+        {
+            targetTranslations.Remove(language);
         }
 
     }

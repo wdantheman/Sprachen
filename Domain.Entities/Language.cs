@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal enum Language
+    public enum Language
     {
         English,
         Spanish,
