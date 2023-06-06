@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.DataObjects.EntryComposite
+﻿using Domain.Entities.Exceptions;
+
+namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class WordTranslation : TranslationComponent
     {
@@ -15,11 +17,11 @@
         }
         public override void AddComponent(TranslationComponent component)
         {
-            Console.WriteLine("Cannot add TranslationComponent to a Word.");
+            throw new WordTranslationException("Cannot add TranslationComponent from a Word.");
         }
         public override void RemoveComponent(TranslationComponent component)
         {
-            Console.WriteLine("Cannot remove TranslationComponent from a Word.");
+            throw new WordTranslationException("Cannot remove TranslationComponent from a Word.");
         }
 
         public void AddExamples(List<string> examples)

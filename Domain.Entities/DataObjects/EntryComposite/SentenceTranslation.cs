@@ -32,5 +32,9 @@ namespace Domain.Entities.DataObjects.EntryComposite
             }
          
         }
+        public List<TranslationComponent> GetTranslationComponents() 
+        {
+            return components;
+        }
     }
 }
