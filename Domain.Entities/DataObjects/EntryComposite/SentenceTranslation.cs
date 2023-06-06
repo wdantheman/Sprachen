@@ -25,7 +25,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
 
         public override void Translate(ITranslationService translationService)
         {
-            translationService.GetTranslations(text)[0] = translation;
+            translation = translationService.GetTranslations(text).First();
             foreach (TranslationComponent component in components) 
             {
                 component.Translate(translationService);
@@ -35,6 +35,10 @@ namespace Domain.Entities.DataObjects.EntryComposite
         public List<TranslationComponent> GetTranslationComponents() 
         {
             return components;
+        }
+        public string GetTranslationText() 
+        {
+            return translation;
         }
     }
 }

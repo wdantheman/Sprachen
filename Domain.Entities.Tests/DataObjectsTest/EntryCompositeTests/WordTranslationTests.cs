@@ -52,7 +52,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
             wordTranslation.AddtargetDefinitions(translationService);
 
             // Assert
-            Assert.Equal(translationService.Meanings, wordTranslation.getDefinitions());
+            Assert.Equal(translationService.Definitions, wordTranslation.getDefinitions());
         }
 
         [Fact]

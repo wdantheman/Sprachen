@@ -35,6 +35,13 @@ namespace Domain.Entities.DataObjects.EntryComposite
         {
             targetTranslations.Remove(language);
         }
-
+        public List<Language> GetBlockLanguages() 
+        {
+            return targetLanguages;
+        }
+        public Dictionary<Language, TranslationComponent> GetTranslationComponents() 
+        {
+            return targetTranslations;
+        }
     }
 }

@@ -8,21 +8,24 @@ namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
 {
     public class MockTranslationService : ITranslationService
     {
-        public List<string> Meanings { get; private set; }
+        public List<string> Definitions { get; private set; }
+        public List<string> Translations { get; private set; }
+
 
         public MockTranslationService()
         {
-            Meanings = new List<string> { "Definition 1", "Definition 2" };
+            Definitions = new List<string> { "Definition 1 in target language", "Definition 2 in target language" };
+            Translations = new List<string> { "translation 1", "translation 2", "translation 3" };
         }
 
         public List<string> GetMeaningsInTargetLanguage(string text)
         {
-            return Meanings;
+            return Definitions;
         }
 
         public List<string> GetTranslations(string text)
         {
-            throw new NotImplementedException();
+            return Translations;
         }
     }
 }

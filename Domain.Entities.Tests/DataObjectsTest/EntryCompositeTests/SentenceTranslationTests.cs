@@ -37,21 +37,20 @@ namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
             [Fact]
             public void Translate_CallsTranslateMethodOnComponents()
             {
-                //// Arrange
-                //var sentenceTranslation = new SentenceTranslation(1, "EntryText");
-                //var translationServiceMock = new Mock<ITranslationService>();
-                //var component1Mock = new Mock<TranslationComponent>();
-                //var component2Mock = new Mock<TranslationComponent>();
-                //sentenceTranslation.AddComponent(component1Mock.Object);
-                //sentenceTranslation.AddComponent(component2Mock.Object);
+            //// Arrange
+            var sentenceTranslation = new SentenceTranslation(1, "EntryText");
+            var translationServiceMock = new MockTranslationService();
+            var component1Mock = new WordTranslation(3, "some");
+            var component2Mock = new WordTranslation(4, "words");
+            sentenceTranslation.AddComponent(component1Mock);
+            sentenceTranslation.AddComponent(component2Mock);
 
-                //// Act
-                //sentenceTranslation.Translate(translationServiceMock.Object);
+            // Act
+            sentenceTranslation.Translate(translationServiceMock);
 
-                //// Assert
-                //component1Mock.Verify(c => c.Translate(translationServiceMock.Object), Times.Once);
-                //component2Mock.Verify(c => c.Translate(translationServiceMock.Object), Times.Once);
-            }
+            // Assert
+            Assert.Equal(translationServiceMock.GetTranslations("whatever")[0], sentenceTranslation.GetTranslationText());
+        }
     }
 
 }
