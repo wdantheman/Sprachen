@@ -23,7 +23,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             targetLanguages.Add(language);
         }
 
-        public override Dictionary<string, EntryTranslationBlock> getEntries()
+        public override Dictionary<string, EntryTranslationBlock> GetEntries()
         {
             return translationComponents;
         }
@@ -51,6 +51,20 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public override void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries)
         {
             translationComponents = entries;
+        }
+        public List<SectionComponent> GetSubsections() 
+        {
+            return Subsections;
+        }
+
+        public override Language GetSourceLanguage()
+        {
+            return sourceLanguage;
+        }
+
+        public override List<Language> GetTargetLanguages()
+        {
+            return targetLanguages;
         }
     }
 }

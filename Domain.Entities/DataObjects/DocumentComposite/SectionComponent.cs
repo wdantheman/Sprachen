@@ -25,7 +25,9 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public abstract void SetSourceLanguage(Language language);
         public abstract void AddTargetLanguage(Language language);
         public abstract void RemoveTargetLanguage(Language language);
-        public abstract Dictionary<string, EntryTranslationBlock> getEntries();
+        public abstract Language GetSourceLanguage();
+        public abstract List<Language> GetTargetLanguages();
+        public abstract Dictionary<string, EntryTranslationBlock> GetEntries();
         public abstract void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries);
 
     }

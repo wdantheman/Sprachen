@@ -33,5 +33,10 @@ namespace Domain.Entities.DataObjects.DocumentComposite
                 Sections.Remove(itemToRemove);
             }
         }
+        public List<SectionComponent> GetSections() 
+        {
+            return Sections;
+        }
+
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Domain.Entities.DataObjects.EntryComposite;
+using Domain.Entities.Exceptions;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
-    internal class Subsection : SectionComponent
+    public class Subsection : SectionComponent
     {
         internal Dictionary<string, EntryTranslationBlock> translationComponents;
 
@@ -19,11 +20,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override void AddSubsectionComponent(SectionComponent component)
         {
-            Console.WriteLine("Cannot add SectionComponent to a Subsection.");
+            throw new SubsectionException("Cannot Add SectionComponent to a Subsection.");
         }
         public override void RemoveSubsectionComponent(int id)
         {
-            Console.WriteLine("Cannot remove SectionComponent to a Subsection.");
+            throw new SubsectionException("Cannot Remove SectionComponent to a Subsection.");
         }
 
         public override void AddTargetLanguage(Language language)
@@ -36,7 +37,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             targetLanguages.Remove(language);
         }
 
-        public override Dictionary<string, EntryTranslationBlock> getEntries()
+        public override Dictionary<string, EntryTranslationBlock> GetEntries()
         {
             return translationComponents;
         }
@@ -44,6 +45,14 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public override void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries)
         {
             translationComponents= entries;
+        }
+        public override Language GetSourceLanguage() 
+        {
+            return sourceLanguage;
+        }
+        public override List<Language> GetTargetLanguages() 
+        {
+            return targetLanguages;
         }
     }
 }
