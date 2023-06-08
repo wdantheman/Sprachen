@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.UseCases
+namespace Domain.Entities
 {
-    public class DocumentCRUD
+    public interface IObjectIdentifierService
     {
-
+        public int CreateId();
     }
 }
