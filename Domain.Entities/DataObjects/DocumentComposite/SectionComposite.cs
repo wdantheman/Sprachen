@@ -30,7 +30,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override void RemoveSubsectionComponent(int id)
         {
-            SectionComponent itemToRemove = Subsections.FirstOrDefault(item => item.docId == id);
+            SectionComponent itemToRemove = Subsections.FirstOrDefault(item => item.DocSectionId == id);
             if (itemToRemove != null)
             {
                 Subsections.Remove(itemToRemove);
@@ -65,6 +65,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public override List<Language> GetTargetLanguages()
         {
             return targetLanguages;
+        }
+
+        public override int GetComponetId()
+        {
+            return DocSectionId;
         }
     }
 }

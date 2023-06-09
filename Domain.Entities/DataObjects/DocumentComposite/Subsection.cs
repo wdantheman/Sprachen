@@ -54,5 +54,10 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             return targetLanguages;
         }
+
+        public override int GetComponetId()
+        {
+            return DocSectionId;
+        }
     }
 }

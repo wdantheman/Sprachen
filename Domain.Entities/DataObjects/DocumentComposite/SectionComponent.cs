@@ -10,14 +10,14 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     public abstract class SectionComponent
     {
         internal string title;
-        internal int docId;
+        internal int DocSectionId;
         internal List<Language> targetLanguages;
         internal Language sourceLanguage;
 
         public SectionComponent(string title, int id, List<Language> languages)
         {
             this.title = title;
-            docId = id;
+            DocSectionId = id;
             targetLanguages = languages;
         }
         public abstract void AddSubsectionComponent(SectionComponent component);
@@ -29,6 +29,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public abstract List<Language> GetTargetLanguages();
         public abstract Dictionary<string, EntryTranslationBlock> GetEntries();
         public abstract void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries);
+        public abstract int GetComponetId();
 
     }
 }

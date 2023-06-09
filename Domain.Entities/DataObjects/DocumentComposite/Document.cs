@@ -8,6 +8,8 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public string Name { get; internal set; }
         public string Description { get; internal set; }
         internal List<SectionComponent> Sections;
+        internal List<Language> GeneralLanguages;
+        internal Language DefaultLanguage;
 
         public Document(int id, string name, List<SectionComponent> sections)
         {
@@ -15,6 +17,8 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             Id= id;
             Description = string.Empty;
             Sections = sections;
+            GeneralLanguages = new List<Language>() { Language.English };
+            DefaultLanguage = GeneralLanguages.FirstOrDefault();
         }
         public void addDescription(string description) 
         {
@@ -27,7 +31,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         }
         public void removeSection(int sectionId) 
         {
-            SectionComponent itemToRemove = Sections.FirstOrDefault(item => item.docId == sectionId);
+            SectionComponent itemToRemove = Sections.FirstOrDefault(item => item.DocSectionId == sectionId);
             if (itemToRemove != null)
             {
                 Sections.Remove(itemToRemove);
@@ -36,6 +40,23 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public List<SectionComponent> GetSections() 
         {
             return Sections;
+        }
+        public List<Language> GetGeneralLanguages() 
+        {
+            return GeneralLanguages;
+        }
+
+        public void SetGeneralLanguages(List<Language> languages) 
+        {
+            GeneralLanguages = languages;
+        }
+        public void SetMainLanguage(Language language) 
+        {
+            DefaultLanguage = language;
+        }
+        public Language GetDefaultLanguage() 
+        {
+            return DefaultLanguage;
         }
 
     }

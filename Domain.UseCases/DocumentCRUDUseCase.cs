@@ -15,7 +15,6 @@ namespace Domain.UseCases
             PersistenceService = persistenceService;
             IdentifierService = identifierService;
             DocumentFinderService = documentFinder;
-
         }
         public Document CreateEmptyDocument()
         {
@@ -36,19 +35,17 @@ namespace Domain.UseCases
         }
         public Document ReadDocumentByName(string name) 
         {
-            return documentFinder.GetDocumentByName(name);
+            return DocumentFinderService.GetDocumentByName(name);
         }
 
         public void DeleteDocument(int id)
         {
-            persistenceService.DeleteDocument(id);
+            PersistenceService.DeleteDocument(id);
         }
 
-        public void UpdateDocument()
+        public void UpdateDocument(int id, Document documentUpdate)
         {
-            
+            PersistenceService.UpdateDocument(id, documentUpdate);
         }
-
-
     }
 }

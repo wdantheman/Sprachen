@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Entities", "Domain.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Entities.Tests", "Domain.Entities.Tests\Domain.Entities.Tests.csproj", "{0B89F9E9-4570-4E7B-8FBB-F02B060D3141}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UseCases", "Domain.UseCases\Domain.UseCases.csproj", "{D0B5A04D-D8E0-4EA5-B9B6-A59E520B7C57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UseCases", "Domain.UseCases\Domain.UseCases.csproj", "{D0B5A04D-D8E0-4EA5-B9B6-A59E520B7C57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UseCases.Tests", "Domain.UseCases.Tests\Domain.UseCases.Tests.csproj", "{ED004ECC-CA8F-4CEA-AB5F-BCCF113D17F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D0B5A04D-D8E0-4EA5-B9B6-A59E520B7C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0B5A04D-D8E0-4EA5-B9B6-A59E520B7C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0B5A04D-D8E0-4EA5-B9B6-A59E520B7C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED004ECC-CA8F-4CEA-AB5F-BCCF113D17F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED004ECC-CA8F-4CEA-AB5F-BCCF113D17F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED004ECC-CA8F-4CEA-AB5F-BCCF113D17F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED004ECC-CA8F-4CEA-AB5F-BCCF113D17F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
