@@ -8,10 +8,14 @@ namespace Domain.UseCases
     {
         internal IDocumentPersistenceService PersistenceService;
         internal IObjectIdentifierService IdentifierService;
-        public DocumentCRUDUseCase(IDocumentPersistenceService persistenceService, IObjectIdentifierService identifierService)
+        internal IDocumentFinderService DocumentFinderService;
+        public DocumentCRUDUseCase(IDocumentPersistenceService persistenceService, IObjectIdentifierService identifierService, 
+        IDocumentFinderService documentFinder)
         {
             PersistenceService = persistenceService;
             IdentifierService = identifierService;
+            DocumentFinderService = documentFinder;
+
         }
         public Document CreateEmptyDocument()
         {
@@ -32,7 +36,17 @@ namespace Domain.UseCases
         }
         public Document ReadDocumentByName(string name) 
         {
-            throw new NotImplementedException();
+            return documentFinder.GetDocumentByName(name);
+        }
+
+        public void DeleteDocument(int id)
+        {
+            persistenceService.DeleteDocument(id);
+        }
+
+        public void UpdateDocument()
+        {
+            
         }
 
 
