@@ -9,7 +9,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 {
     public abstract class SectionComponent
     {
-        internal string title;
+        public string title { get; set; }
         internal int DocSectionId;
         internal List<Language> targetLanguages;
         internal Language sourceLanguage;
