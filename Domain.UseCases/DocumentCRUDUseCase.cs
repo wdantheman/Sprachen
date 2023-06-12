@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
+using Domain.Entities.PersistenceServices;
 using System.Threading.Tasks;
 
 namespace Domain.UseCases

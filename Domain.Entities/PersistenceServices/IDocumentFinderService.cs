@@ -1,6 +1,6 @@
 using Domain.Entities.DataObjects.DocumentComposite;
 
-namespace Domain.Entities
+namespace Domain.Entities.PersistenceServices
 {
     public interface IDocumentFinderService
     {

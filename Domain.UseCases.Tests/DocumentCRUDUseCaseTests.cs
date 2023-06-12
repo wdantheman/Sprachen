@@ -1,6 +1,7 @@
 using Moq;
 using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
+using Domain.Entities.PersistenceServices;
 
 namespace Domain.UseCases.Tests
 {

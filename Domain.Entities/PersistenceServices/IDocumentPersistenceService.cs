@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.DataObjects.DocumentComposite;
 
-namespace Domain.Entities
+namespace Domain.Entities.PersistenceServices
 {
     public interface IDocumentPersistenceService
     {
@@ -8,5 +8,7 @@ namespace Domain.Entities
         public Document ReadDocument(int id);
         public void UpdateDocument(int id, Document updatedDoc);
         public void DeleteDocument(int id);
+        public Language GetDocumentSourceLanguage(int id);
+        public List<Language> GetDocumentTargetLanguage(int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
+using Domain.Entities.PersistenceServices;
 using Domain.UseCases.Exceptions;
 using Document = Domain.Entities.DataObjects.DocumentComposite.Document;
 

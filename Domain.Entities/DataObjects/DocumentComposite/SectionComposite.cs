@@ -12,7 +12,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             Subsections= new List<SectionComponent>();
             translationComponents = new Dictionary<string, EntryTranslationBlock>();
         }
-
+                    
         public override void AddSubsectionComponent(SectionComponent component)
         {
             Subsections.Add(component);
@@ -30,7 +30,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override void RemoveSubsectionComponent(int id)
         {
-            SectionComponent itemToRemove = Subsections.FirstOrDefault(item => item.DocSectionId == id);
+            SectionComponent? itemToRemove = Subsections.FirstOrDefault(item => item.DocSectionId == id);
             if (itemToRemove != null)
             {
                 Subsections.Remove(itemToRemove);
