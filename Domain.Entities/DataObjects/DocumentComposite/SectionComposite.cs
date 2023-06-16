@@ -20,7 +20,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override void AddTargetLanguage(Language language)
         {
-            targetLanguages.Add(language);
+            TargetLanguages.Add(language);
         }
 
         public override Dictionary<string, EntryTranslationBlock> GetEntries()
@@ -40,7 +40,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override void RemoveTargetLanguage(Language language)
         {
-            targetLanguages.Remove(language);
+            TargetLanguages.Remove(language);
         }
 
         public override void SetSourceLanguage(Language language)
@@ -64,7 +64,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 
         public override List<Language> GetTargetLanguages()
         {
-            return targetLanguages;
+            return TargetLanguages;
         }
 
         public override int GetComponetId()
