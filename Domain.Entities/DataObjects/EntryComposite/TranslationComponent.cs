@@ -11,7 +11,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
         }
         public abstract void AddComponent(TranslationComponent component);
         public abstract void RemoveComponent(TranslationComponent component);
-        public abstract void Translate(ITranslationService translationService);
+        public abstract void AddTranslations(List<string> translations);
 
     }
 }

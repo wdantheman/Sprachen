@@ -6,13 +6,11 @@ namespace Domain.Entities.DataObjects.EntryComposite
     public class SentenceTranslation : TranslationComponent
     {
         private List<TranslationComponent> components;
-        internal string text { get; set; }
-        internal string translation;
-        public SentenceTranslation(int id, string entryText) : base(id)
+        internal List<string> Translations;
+        public SentenceTranslation(int id) : base(id)
         {
             components = new List<TranslationComponent>();
-            translation = new string("");
-            text = entryText;
+            Translations = new List<string>();
         }
         public override void AddComponent(TranslationComponent component)
         {
@@ -22,23 +20,18 @@ namespace Domain.Entities.DataObjects.EntryComposite
         {
             components.Remove(component);
         }
-
-        public override void Translate(ITranslationService translationService)
+        public override void AddTranslations(List<string> translations)
         {
-            translation = translationService.GetTranslations(text).First();
-            foreach (TranslationComponent component in components) 
-            {
-                component.Translate(translationService);
-            }
-         
+            throw new NotImplementedException();
         }
         public List<TranslationComponent> GetTranslationComponents() 
         {
             return components;
         }
-        public string GetTranslationText() 
+        public List<string> GetTranslationText() 
         {
-            return translation;
+            return Translations;
         }
+
     }
 }

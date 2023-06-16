@@ -4,16 +4,14 @@ namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class WordTranslation : TranslationComponent
     {
-        internal List<string> translations;
-        internal List<string> targetDefinitions;
-        internal List<string> targetExamples;
-        internal string text;
-        public WordTranslation(int id, string entryText) : base(id)
+        internal List<string> Translations;
+        internal List<string> TargetDefinitions;
+        internal List<string> TargetExamples;
+        public WordTranslation(int id) : base(id)
         {
-            translations = new List<string>();
-            targetDefinitions = new List<string>();
-            targetExamples = new List<string>();
-            text = entryText;
+            Translations = new List<string>();
+            TargetDefinitions = new List<string>();
+            TargetExamples = new List<string>();
         }
         public override void AddComponent(TranslationComponent component)
         {
@@ -23,39 +21,31 @@ namespace Domain.Entities.DataObjects.EntryComposite
         {
             throw new WordTranslationException("Cannot remove TranslationComponent from a Word.");
         }
-
         public void AddExamples(List<string> examples)
         {
-            targetExamples = examples;
+            TargetExamples = examples;
         }
-
-        public void AddtargetDefinitions(ITranslationService translationService)
-        {
-            targetDefinitions = translationService.GetMeaningsInTargetLanguage(text);
-        }
-
-        public string getText()
-        {
-            return text;
-        }
-
         public List<string> getExamples() 
         {
-            return targetExamples;
+            return TargetExamples;
+        }
+
+        public void AddtargetDefinitions(List<string> targetDefinitions)
+        {
+            TargetDefinitions = targetDefinitions;
         }
 
         public List<string> getDefinitions()
         {
-            return targetDefinitions;
+            return TargetDefinitions;
         }
         public List<string> getTranslations()
         {
-            return translations;
+            return Translations;
         }
-
-        public override void Translate(ITranslationService translationService)
+        public override void AddTranslations(List<string> translations) 
         {
-            translations = translationService.GetTranslations(text);
+            Translations = translations;
         }
     }
 }
