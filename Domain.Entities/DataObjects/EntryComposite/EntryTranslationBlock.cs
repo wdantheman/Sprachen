@@ -4,9 +4,9 @@ namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class EntryTranslationBlock
     {
-        internal LanguagesComponent TargetLanguages;
+        internal ILanguagesComponent TargetLanguages;
         internal Dictionary<Language, TranslationComponent> TargetTranslations;
-        public EntryTranslationBlock(LanguagesComponent targetLanguages)
+        public EntryTranslationBlock(ILanguagesComponent targetLanguages)
         {
             TargetLanguages = targetLanguages;
             TargetTranslations = new Dictionary<Language, TranslationComponent>();
@@ -21,7 +21,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
         }
         public List<Language> GetBlockLanguages() 
         {
-            return TargetLanguages;
+            return TargetLanguages.GetTargetLanguages();
         }
         public Dictionary<Language, TranslationComponent> GetTranslationComponents() 
         {

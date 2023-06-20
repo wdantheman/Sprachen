@@ -19,14 +19,14 @@ namespace Domain.UseCases
         }
         public Document CreateEmptyDocument()
         {
-            int id = IdentifierService.CreateId();
-            string defaultName = " Empty Document";
+            int id = IdentifierService.CreateObjectId();
+            string defaultName = "Empty Document";
             Document newDoc = new(id, defaultName, new List<SectionComponent>());
             return newDoc;
         }
         public Document CreateDocumentWithName(string name)
         {
-            int id = IdentifierService.CreateId();
+            int id = IdentifierService.CreateObjectId();
             return new Document(id, name, new List<SectionComponent>());
         }
 

@@ -30,7 +30,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             string description = "Document description";
 
             // Act
-            document.addDescription(description);
+            document.AddDescription(description);
 
             // Assert
             Assert.Equal(description, document.Description);
@@ -44,7 +44,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             var section = new Subsection("SectionName", 1, new List<Language>());
 
             // Act
-            document.addSection(section);
+            document.AddSection(section);
 
             // Assert
             Assert.Contains(section, document.GetSections());
@@ -60,7 +60,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             var document = new Document(1, "DocumentName", sections);
 
             // Act
-            document.removeSection(2);
+            document.RemoveSection(2);
 
             // Assert
             Assert.DoesNotContain(section2, document.GetSections());

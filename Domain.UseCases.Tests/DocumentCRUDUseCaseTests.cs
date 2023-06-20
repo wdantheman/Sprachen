@@ -33,7 +33,7 @@ namespace Domain.UseCases.Tests
             string expectedName = " Empty Document";
             List<SectionComponent> expectedComponents = new List<SectionComponent>();
 
-            _mockIdentifierService.Setup(service => service.CreateId()).Returns(expectedId);
+            _mockIdentifierService.Setup(service => service.CreateObjectId()).Returns(expectedId);
 
             // Act
             Document result = _documentCRUD.CreateEmptyDocument();
@@ -52,7 +52,7 @@ namespace Domain.UseCases.Tests
             string expectedName = "Test Document";
             List<SectionComponent> expectedComponents = new List<SectionComponent>();
 
-            _mockIdentifierService.Setup(service => service.CreateId()).Returns(expectedId);
+            _mockIdentifierService.Setup(service => service.CreateObjectId()).Returns(expectedId);
 
             // Act
             Document result = _documentCRUD.CreateDocumentWithName(expectedName);

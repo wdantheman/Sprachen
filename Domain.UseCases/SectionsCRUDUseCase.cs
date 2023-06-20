@@ -19,16 +19,16 @@ namespace Domain.UseCases
         {
             Document document = DocumentPersistenceService.ReadDocument(DocId);
             string sectionTitle = "Empty Subsection";
-            Subsection newEmptySubscetion = new Subsection(sectionTitle, IdentityCreator.CreateId(), document.GetGeneralLanguages());
+            Subsection newEmptySubscetion = new Subsection(sectionTitle, IdentityCreator.CreateObjectId(), document.GetGeneralLanguages());
             newEmptySubscetion.SetSourceLanguage(document.GetDefaultLanguage());
-            document.addSection(newEmptySubscetion);
+            document.AddSection(newEmptySubscetion);
         }
         public void CreateSectionInDocument (int DocId, string title, List<Language> targetLanguages)
         {
             Document document = DocumentPersistenceService.ReadDocument(DocId);
-            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateId(), targetLanguages);
+            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateObjectId(), targetLanguages);
             newSubscetion.SetSourceLanguage(document.GetDefaultLanguage());
-            document.addSection(newSubscetion);
+            document.AddSection(newSubscetion);
         }
         public SectionComponent ReadSectionFromDocumentById(int documentId, int SectionId) 
         {

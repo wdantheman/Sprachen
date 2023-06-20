@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public interface IObjectIdentifierService
     {
-        public int CreateId();
+        public int CreateObjectId();
         public int CreateSubObjectId(int objectId);
     }
 }

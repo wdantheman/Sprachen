@@ -1,10 +1,9 @@
 ﻿
-
 using Domain.Entities.Exceptions;
 
 namespace Domain.Entities.DataObjects
 {
-    public class LanguagesComponent
+    public class LanguagesComponent : ILanguagesComponent
     {
         private List<Language> TargetLanguages;
         private Language SourceLanguage;
@@ -27,9 +26,9 @@ namespace Domain.Entities.DataObjects
             }
             else TargetLanguages.Add(language);
         }
-        public bool RemoveTargetLanguage(Language language)
+        public void RemoveTargetLanguage(Language language)
         {
-            return TargetLanguages.Remove(language);
+            TargetLanguages.Remove(language);
         }
 
         public List<Language> GetTargetLanguages()

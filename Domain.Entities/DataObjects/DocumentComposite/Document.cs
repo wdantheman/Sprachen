@@ -1,5 +1,7 @@
 ﻿
 
+using Domain.Entities.Exceptions;
+
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
     public class Document
@@ -8,8 +10,8 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public string Name { get; internal set; }
         public string Description { get; internal set; }
         internal List<SectionComponent> Sections;
-        internal List<Language> GeneralLanguages;
-        internal Language DefaultLanguage;
+        internal LanguagesComponent LanguagesComponent;
+        
 
         public Document(int id, string name, List<SectionComponent> sections)
         {
@@ -17,19 +19,18 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             Id= id;
             Description = string.Empty;
             Sections = sections;
-            GeneralLanguages = new List<Language>() { Language.English };
-            DefaultLanguage = GeneralLanguages.FirstOrDefault();
+            LanguagesComponent = new LanguagesComponent();
         }
-        public void addDescription(string description) 
+        public void AddDescription(string description) 
         {
             Description= description;
         }
 
-        public void addSection(SectionComponent section) 
+        public void AddSection(SectionComponent section) 
         {
             Sections.Add(section);
         }
-        public void removeSection(int sectionId) 
+        public void RemoveSection(int sectionId) 
         {
             SectionComponent itemToRemove = Sections.FirstOrDefault(item => item.DocSectionId == sectionId);
             if (itemToRemove != null)
@@ -43,20 +44,23 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         }
         public List<Language> GetGeneralLanguages() 
         {
-            return GeneralLanguages;
+            return LanguagesComponent.GetTargetLanguages();
         }
 
         public void SetGeneralLanguages(List<Language> languages) 
         {
-            GeneralLanguages = languages;
+            foreach (var language in languages)
+            {
+                LanguagesComponent.AddTargetLanguage(language);
+            }
         }
         public void SetMainLanguage(Language language) 
         {
-            DefaultLanguage = language;
+            LanguagesComponent.SetSourceLanguage(language);
         }
         public Language GetDefaultLanguage() 
         {
-            return DefaultLanguage;
+            return LanguagesComponent.GetSourceLanguage();
         }
 
     }
