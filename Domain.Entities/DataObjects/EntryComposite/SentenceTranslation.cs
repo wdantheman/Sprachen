@@ -22,7 +22,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
         }
         public override void AddTranslations(List<string> translations)
         {
-            throw new NotImplementedException();
+            Translations = translations;
         }
         public List<TranslationComponent> GetTranslationComponents() 
         {
