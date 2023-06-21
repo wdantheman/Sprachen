@@ -1,16 +1,15 @@
 ﻿using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices;
-using System.Threading.Tasks;
 
 namespace Domain.UseCases
 {
     public class DocumentCRUDUseCase
     {
-        internal IDocumentPersistenceService PersistenceService;
+        internal IDocumentCRUDPersistenceService PersistenceService;
         internal IObjectIdentifierService IdentifierService;
         internal IDocumentFinderService DocumentFinderService;
-        public DocumentCRUDUseCase(IDocumentPersistenceService persistenceService, IObjectIdentifierService identifierService, 
+        public DocumentCRUDUseCase(IDocumentCRUDPersistenceService persistenceService, IObjectIdentifierService identifierService, 
         IDocumentFinderService documentFinder)
         {
             PersistenceService = persistenceService;
@@ -29,7 +28,10 @@ namespace Domain.UseCases
             int id = IdentifierService.CreateObjectId();
             return new Document(id, name, new List<SectionComponent>());
         }
-
+        public void CreateDocumentInDB(Document doc) 
+        {
+            PersistenceService.CreateDocument(doc);
+        }
         public Document ReadDocumentById(int id) 
         {
             return PersistenceService.ReadDocument(id);

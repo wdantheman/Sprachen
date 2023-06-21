@@ -1,37 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Domain.Entities.DataObjects.EntryComposite;
-using ApprovalUtilities.SimpleLogger.Writers;
+﻿using Domain.Entities.DataObjects.EntryComposite;
 using Domain.Entities.Exceptions;
 
 namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
 {
-
     public class WordTranslationTests
     {
         [Fact]
-        public void WordTranslation_ConstructedWithIdAndText_ReturnsCorrectText()
+        public void AddExamples_ShouldSetTargetExamples()
         {
             // Arrange
-            int id = 1;
-            string expectedText = "Test";
-
-            // Act
-            var wordTranslation = new WordTranslation(id, expectedText);
-
-            // Assert
-            Assert.Equal(expectedText, wordTranslation.getText());
-        }
-
-        [Fact]
-        public void WordTranslation_AddExamples_ExamplesAreAdded()
-        {
-            // Arrange
-            var wordTranslation = new WordTranslation(1, "Test");
+            var wordTranslation = new WordTranslation(1);
             var examples = new List<string> { "Example 1", "Example 2" };
 
             // Act
@@ -42,38 +20,52 @@ namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
         }
 
         [Fact]
-        public void WordTranslation_AddTargetDefinitions_DefinitionsAreAdded()
+        public void AddtargetDefinitions_ShouldSetTargetDefinitions()
         {
             // Arrange
-            var wordTranslation = new WordTranslation(1, "Test");
-            var translationService = new MockTranslationService();
+            var wordTranslation = new WordTranslation(1);
+            var definitions = new List<string> { "Definition 1", "Definition 2" };
 
             // Act
-            wordTranslation.AddtargetDefinitions(translationService);
+            wordTranslation.AddtargetDefinitions(definitions);
 
             // Assert
-            Assert.Equal(translationService.Definitions, wordTranslation.getDefinitions());
+            Assert.Equal(definitions, wordTranslation.getDefinitions());
         }
 
         [Fact]
-        public void WordTranslation_AddComponent_CannotAddTranslationComponent()
+        public void AddTranslations_ShouldSetTranslations()
         {
             // Arrange
-            var wordTranslation = new WordTranslation(1, "Test");
-            var translationComponent = new SentenceTranslation(2, "Test text");
+            var wordTranslation = new WordTranslation(1);
+            var translations = new List<string> { "Translation 1", "Translation 2" };
 
-            // Act // Assert
+            // Act
+            wordTranslation.AddTranslations(translations);
+
+            // Assert
+            Assert.Equal(translations, wordTranslation.getTranslations());
+        }
+
+        [Fact]
+        public void AddComponent_ShouldThrowWordTranslationException()
+        {
+            // Arrange
+            var wordTranslation = new WordTranslation(1);
+            var translationComponent = new SentenceTranslation(2);
+
+            // Act & Assert
             Assert.Throws<WordTranslationException>(() => wordTranslation.AddComponent(translationComponent));
         }
 
         [Fact]
-        public void WordTranslation_RemoveComponent_CannotRemoveTranslationComponent()
+        public void RemoveComponent_ShouldThrowWordTranslationException()
         {
             // Arrange
-            var wordTranslation = new WordTranslation(1, "Test");
-            var translationComponent = new SentenceTranslation(2, "Test text");
+            var wordTranslation = new WordTranslation(1);
+            var translationComponent = new SentenceTranslation(2);
 
-            // Act // Assert
+            // Act & Assert
             Assert.Throws<WordTranslationException>(() => wordTranslation.RemoveComponent(translationComponent));
         }
     }

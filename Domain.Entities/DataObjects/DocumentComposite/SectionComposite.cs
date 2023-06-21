@@ -7,27 +7,15 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     {
         internal List<SectionComponent> Subsections;
         internal Dictionary<string, EntryTranslationBlock> translationComponents;
-        public SectionComposite(string title, int id, List<Language> lenguages) : base(title, id, lenguages)
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent) : base(title, id, lenguagesComponent)
         {
-            Subsections= new List<SectionComponent>();
+            Subsections = new List<SectionComponent>();
             translationComponents = new Dictionary<string, EntryTranslationBlock>();
-        }
-                    
+        }                    
         public override void AddSubsectionComponent(SectionComponent component)
         {
             Subsections.Add(component);
         }
-
-        public override void AddTargetLanguage(Language language)
-        {
-            TargetLanguages.Add(language);
-        }
-
-        public override Dictionary<string, EntryTranslationBlock> GetEntries()
-        {
-            return translationComponents;
-        }
-
         public override void RemoveSubsectionComponent(int id)
         {
             SectionComponent? itemToRemove = Subsections.FirstOrDefault(item => item.DocSectionId == id);
@@ -35,19 +23,23 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             {
                 Subsections.Remove(itemToRemove);
             }
-
         }
-
-        public override void RemoveTargetLanguage(Language language)
+        public override Dictionary<string, EntryTranslationBlock> GetEntries()
         {
-            TargetLanguages.Remove(language);
+            return translationComponents;
         }
-
         public override void SetSourceLanguage(Language language)
         {
-            sourceLanguage= language;
+            LanguagesComponent.SetSourceLanguage(language);
         }
-
+        public void AddTargetLanguage(Language language)
+        {
+            LanguagesComponent.AddTargetLanguage(language);
+        }
+        public void RemoveTargetLanguage(Language language)
+        {
+            LanguagesComponent.AddTargetLanguage(language);
+        }
         public override void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries)
         {
             translationComponents = entries;
@@ -56,17 +48,18 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             return Subsections;
         }
-
-        public override Language GetSourceLanguage()
+        public override void SetTargetLanguages(List<Language> languages)
         {
-            return sourceLanguage;
+            LanguagesComponent.SetTargetLanguages(languages);
         }
-
-        public override List<Language> GetTargetLanguages()
+        public Language GetSourceLanguage()
         {
-            return TargetLanguages;
+            return LanguagesComponent.GetSourceLanguage();
         }
-
+        public List<Language> GetTargetLanguages()
+        {
+            return LanguagesComponent.GetTargetLanguages();
+        }
         public override int GetComponetId()
         {
             return DocSectionId;

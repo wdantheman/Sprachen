@@ -8,13 +8,13 @@ namespace Domain.UseCases.Tests
     public class DocumentCRUDUseCaseTests
     {
         private readonly DocumentCRUDUseCase _documentCRUD;
-        private readonly Mock<IDocumentPersistenceService> _mockPersistenceService;
+        private readonly Mock<IDocumentCRUDPersistenceService> _mockPersistenceService;
         private readonly Mock<IObjectIdentifierService> _mockIdentifierService;
         private readonly Mock<IDocumentFinderService> _mockDocumentFinderService;
 
         public DocumentCRUDUseCaseTests()
         {
-            _mockPersistenceService = new Mock<IDocumentPersistenceService>();
+            _mockPersistenceService = new Mock<IDocumentCRUDPersistenceService>();
             _mockIdentifierService = new Mock<IObjectIdentifierService>();
             _mockDocumentFinderService = new Mock<IDocumentFinderService>();
 

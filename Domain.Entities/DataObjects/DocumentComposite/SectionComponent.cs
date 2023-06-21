@@ -6,16 +6,15 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     {
         public string title { get; set; }
         internal int DocSectionId { get; private set; }
-        internal List<Language> TargetLanguages { get; private set; }
-        internal Language sourceLanguage { get; private set; }
-        internal Dictionary<string, EntryTranslationBlock> entries { get; private set; }
+        internal ILanguagesComponent LanguagesComponent { get; private set; }
+        internal Dictionary<string, EntryTranslationBlock>? entries { get; private set; }
 
 
-        public SectionComponent(string title, int id, List<Language> languages)
+        public SectionComponent(string title, int id, ILanguagesComponent languagesComponent)
         {
             this.title = title;
             DocSectionId = id;
-            TargetLanguages = languages;
+            LanguagesComponent = languagesComponent;
         }
         public abstract void AddSubsectionComponent(SectionComponent component);
         public abstract void RemoveSubsectionComponent(int id);

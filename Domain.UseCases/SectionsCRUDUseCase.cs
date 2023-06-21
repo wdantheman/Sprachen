@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices;
 using Domain.UseCases.Exceptions;
@@ -8,9 +9,9 @@ namespace Domain.UseCases
 {
     public class SectionsCRUDUseCase
     {
-        internal IDocumentPersistenceService DocumentPersistenceService;
+        internal IDocumentCRUDPersistenceService DocumentPersistenceService;
         internal IObjectIdentifierService IdentityCreator;
-        public SectionsCRUDUseCase(IDocumentPersistenceService documentPersistenceService, IObjectIdentifierService identityCreator)
+        public SectionsCRUDUseCase(IDocumentCRUDPersistenceService documentPersistenceService, IObjectIdentifierService identityCreator)
         {
             DocumentPersistenceService = documentPersistenceService;
             IdentityCreator = identityCreator;
@@ -19,14 +20,14 @@ namespace Domain.UseCases
         {
             Document document = DocumentPersistenceService.ReadDocument(DocId);
             string sectionTitle = "Empty Subsection";
-            Subsection newEmptySubscetion = new Subsection(sectionTitle, IdentityCreator.CreateObjectId(), document.GetGeneralLanguages());
+            Subsection newEmptySubscetion = new Subsection(sectionTitle, IdentityCreator.CreateObjectId(), document.GetLanguagesComponent());
             newEmptySubscetion.SetSourceLanguage(document.GetDefaultLanguage());
             document.AddSection(newEmptySubscetion);
         }
-        public void CreateSectionInDocument (int DocId, string title, List<Language> targetLanguages)
+        public void CreateSectionInDocument (int DocId, string title, LanguagesComponent languagesComponent)
         {
             Document document = DocumentPersistenceService.ReadDocument(DocId);
-            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateObjectId(), targetLanguages);
+            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateObjectId(), languagesComponent);
             newSubscetion.SetSourceLanguage(document.GetDefaultLanguage());
             document.AddSection(newSubscetion);
         }

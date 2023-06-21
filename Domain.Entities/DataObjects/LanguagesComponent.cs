@@ -30,7 +30,6 @@ namespace Domain.Entities.DataObjects
         {
             TargetLanguages.Remove(language);
         }
-
         public List<Language> GetTargetLanguages()
         {
             return TargetLanguages;
@@ -43,6 +42,9 @@ namespace Domain.Entities.DataObjects
         {
             SourceLanguage = language;
         }
-
+        public void SetTargetLanguages(List<Language> targetLanguages) 
+        {
+            TargetLanguages = targetLanguages;
+        }
     }
 }

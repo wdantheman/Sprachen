@@ -1,56 +1,52 @@
 ﻿using Domain.Entities.DataObjects.EntryComposite;
 
-
 namespace Domain.Entities.Tests.DataObjectsTest.EntryCompositeTests
 {
     public class SentenceTranslationTests
+    {
+        [Fact]
+        public void AddComponent_ShouldAddTranslationComponent()
         {
-            [Fact]
-            public void AddComponent_AddsComponentToList()
-            {
-                // Arrange
-                var sentenceTranslation = new SentenceTranslation(1, "EntryText");
-                var component = new WordTranslation(12, "test word");
-
-                // Act
-                sentenceTranslation.AddComponent(component);
-
-                // Assert
-                Assert.Contains(component, sentenceTranslation.GetTranslationComponents());
-            }
-
-            [Fact]
-            public void RemoveComponent_RemovesComponentFromList()
-            {
-                // Arrange
-                var sentenceTranslation = new SentenceTranslation(1, "EntryText");
-                var component = new WordTranslation(11, "some");
-                sentenceTranslation.AddComponent(component);
-
-                // Act
-                sentenceTranslation.RemoveComponent(component);
-
-                // Assert
-                Assert.DoesNotContain(component, sentenceTranslation.GetTranslationComponents());
-            }
-
-            [Fact]
-            public void Translate_CallsTranslateMethodOnComponents()
-            {
-            //// Arrange
-            var sentenceTranslation = new SentenceTranslation(1, "EntryText");
-            var translationServiceMock = new MockTranslationService();
-            var component1Mock = new WordTranslation(3, "some");
-            var component2Mock = new WordTranslation(4, "words");
-            sentenceTranslation.AddComponent(component1Mock);
-            sentenceTranslation.AddComponent(component2Mock);
+            // Arrange
+            var sentenceTranslation = new SentenceTranslation(1);
+            var translationComponent = new WordTranslation(2);
 
             // Act
-            sentenceTranslation.Translate(translationServiceMock);
+            sentenceTranslation.AddComponent(translationComponent);
 
             // Assert
-            Assert.Equal(translationServiceMock.GetTranslations("whatever")[0], sentenceTranslation.GetTranslationText());
+            Assert.Contains(translationComponent, sentenceTranslation.GetTranslationComponents());
         }
-    }
 
+        [Fact]
+        public void RemoveComponent_ShouldRemoveTranslationComponent()
+        {
+            // Arrange
+            var sentenceTranslation = new SentenceTranslation(1);
+            var translationComponent = new WordTranslation(2);
+            sentenceTranslation.AddComponent(translationComponent);
+
+            // Act
+            sentenceTranslation.RemoveComponent(translationComponent);
+
+            // Assert
+            Assert.DoesNotContain(translationComponent, sentenceTranslation.GetTranslationComponents());
+        }
+
+        [Fact]
+        public void AddTranslations_ShouldSetTranslationText()
+        {
+            // Arrange
+            var sentenceTranslation = new SentenceTranslation(1);
+            var translations = new List<string> { "Translation 1", "Translation 2" };
+
+            // Act
+            sentenceTranslation.AddTranslations(translations);
+
+            // Assert
+            Assert.Equal(translations, sentenceTranslation.GetTranslationText());
+        }
+
+        // Additional tests can be written to cover other methods and scenarios as needed
+    }
 }

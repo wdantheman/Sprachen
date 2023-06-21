@@ -62,6 +62,10 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             return LanguagesComponent.GetSourceLanguage();
         }
+        public LanguagesComponent GetLanguagesComponent() 
+        {
+            return LanguagesComponent;
+        }
 
     }
 }

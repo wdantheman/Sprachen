@@ -4,106 +4,175 @@ using Domain.Entities.DataObjects.EntryComposite;
 
 namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
 {
+    using Xunit;
+    using Moq;
+
     public class SectionCompositeTests
     {
         [Fact]
         public void AddSubsectionComponent_AddsComponentToList()
         {
             // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
+            var component = new Mock<SectionComponent>().Object;
+            var sectionComposite = new SectionComposite("Title", 1, new Mock<ILanguagesComponent>().Object);
 
             // Act
-            var component = new Subsection("Subsection", 2, new List<Language>());
-            composite.AddSubsectionComponent(component);
+            sectionComposite.AddSubsectionComponent(component);
 
             // Assert
-            Assert.Contains(component, composite.GetSubsections());
-        }
-
-        [Fact]
-        public void AddTargetLanguage_AddsLanguageToList()
-        {
-            // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var language = Language.English;
-
-            // Act
-            composite.AddTargetLanguage(language);
-
-            // Assert
-            Assert.Contains(language, composite.GetTargetLanguages());
-        }
-
-        [Fact]
-        public void GetEntries_ReturnsTranslationComponents()
-        {
-            // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var entries = new Dictionary<string, EntryTranslationBlock>();
-
-            // Act
-            var result = composite.GetEntries();
-
-            // Assert
-            Assert.Equal(entries, result);
+            Assert.Contains(component, sectionComposite.GetSubsections());
         }
 
         [Fact]
         public void RemoveSubsectionComponent_RemovesComponentFromList()
         {
             // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var component = new Subsection("Subsection", 2, new List<Language>());
-            composite.AddSubsectionComponent(component);
+            var component1 = new Subsection("Component1", 1, new Mock<ILanguagesComponent>().Object);
+            var component2 = new Subsection("Component2", 2, new Mock<ILanguagesComponent>().Object);
+            var sectionComposite = new SectionComposite("Title", 1, new Mock<ILanguagesComponent>().Object);
+            sectionComposite.AddSubsectionComponent(component1);
+            sectionComposite.AddSubsectionComponent(component2);
 
             // Act
-            composite.RemoveSubsectionComponent(2);
+            sectionComposite.RemoveSubsectionComponent(1);
 
             // Assert
-            Assert.DoesNotContain(component, composite.GetSubsections());
+            Assert.DoesNotContain(component1, sectionComposite.GetSubsections());
+            Assert.Contains(component2, sectionComposite.GetSubsections());
         }
 
         [Fact]
-        public void RemoveTargetLanguage_RemovesLanguageFromList()
+        public void GetEntries_ReturnsTranslationComponents()
         {
             // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var language = Language.English;
-            composite.AddTargetLanguage(language);
+            var translationComponents = new Dictionary<string, EntryTranslationBlock>();
+            var sectionComposite = new SectionComposite("Title", 1, new Mock<ILanguagesComponent>().Object);
+            sectionComposite.UpdateEntries(translationComponents);
 
             // Act
-            composite.RemoveTargetLanguage(language);
+            var result = sectionComposite.GetEntries();
 
             // Assert
-            Assert.DoesNotContain(language, composite.GetTargetLanguages());
+            Assert.Equal(translationComponents, result);
         }
-
         [Fact]
         public void SetSourceLanguage_SetsSourceLanguage()
         {
             // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var language = Language.English;
+            var sourceLanguage = Language.English;
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
 
             // Act
-            composite.SetSourceLanguage(language);
+            sectionComposite.SetSourceLanguage(sourceLanguage);
 
             // Assert
-            Assert.Equal(language, composite.GetSourceLanguage());
+            languagesComponentMock.Verify(lc => lc.SetSourceLanguage(sourceLanguage), Times.Once);
+        }
+
+        [Fact]
+        public void AddTargetLanguage_AddsTargetLanguage()
+        {
+            // Arrange
+            var targetLanguage = Language.French;
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
+
+            // Act
+            sectionComposite.AddTargetLanguage(targetLanguage);
+
+            // Assert
+            languagesComponentMock.Verify(lc => lc.AddTargetLanguage(targetLanguage), Times.Once);
+        }
+
+        [Fact]
+        public void RemoveTargetLanguage_RemovesTargetLanguage()
+        {
+            // Arrange
+            var targetLanguage = Language.Spanish;
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
+
+            // Act
+            sectionComposite.RemoveTargetLanguage(targetLanguage);
+
+            // Assert
+            languagesComponentMock.Verify(lc => lc.RemoveTargetLanguage(targetLanguage), Times.Once);
         }
 
         [Fact]
         public void UpdateEntries_UpdatesTranslationComponents()
         {
             // Arrange
-            var composite = new SectionComposite("Title", 1, new List<Language>());
-            var entries = new Dictionary<string, EntryTranslationBlock>();
+            var translationComponents = new Dictionary<string, EntryTranslationBlock>();
+            var sectionComposite = new SectionComposite("Title", 1, new Mock<ILanguagesComponent>().Object);
 
             // Act
-            composite.UpdateEntries(entries);
+            sectionComposite.UpdateEntries(translationComponents);
 
             // Assert
-            Assert.Same(entries, composite.GetEntries());
+            Assert.Equal(translationComponents, sectionComposite.GetEntries());
+        }
+
+        [Fact]
+        public void SetTargetLanguages_SetsTargetLanguages()
+        {
+            // Arrange
+            var targetLanguages = new List<Language> { Language.German, Language.Italian };
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
+
+            // Act
+            sectionComposite.SetTargetLanguages(targetLanguages);
+
+            // Assert
+            languagesComponentMock.Verify(lc => lc.SetTargetLanguages(targetLanguages), Times.Once);
+        }
+
+        [Fact]
+        public void GetSourceLanguage_ReturnsSourceLanguage()
+        {
+            // Arrange
+            var sourceLanguage = Language.English;
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            languagesComponentMock.Setup(lc => lc.GetSourceLanguage()).Returns(sourceLanguage);
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
+
+            // Act
+            var result = sectionComposite.GetSourceLanguage();
+
+            // Assert
+            Assert.Equal(sourceLanguage, result);
+        }
+
+        [Fact]
+        public void GetTargetLanguages_ReturnsTargetLanguages()
+        {
+            // Arrange
+            var targetLanguages = new List<Language> { Language.French, Language.Spanish };
+            var languagesComponentMock = new Mock<ILanguagesComponent>();
+            languagesComponentMock.Setup(lc => lc.GetTargetLanguages()).Returns(targetLanguages);
+            var sectionComposite = new SectionComposite("Title", 1, languagesComponentMock.Object);
+
+            // Act
+            var result = sectionComposite.GetTargetLanguages();
+
+            // Assert
+            Assert.Equal(targetLanguages, result);
+        }
+
+        [Fact]
+        public void GetComponetId_ReturnsComponentId()
+        {
+            // Arrange
+            var sectionComposite = new SectionComposite("Title", 1, new Mock<ILanguagesComponent>().Object);
+
+            // Act
+            var result = sectionComposite.GetComponetId();
+
+            // Assert
+            Assert.Equal(1, result);
         }
     }
+
 }

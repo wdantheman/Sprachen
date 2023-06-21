@@ -13,5 +13,6 @@ namespace Domain.Entities
         public List<Language> GetTargetLanguages();
         public Language GetSourceLanguage();
         public void SetSourceLanguage(Language language);
+        public void SetTargetLanguages(List<Language> targetLanguages);
     }
 }
