@@ -1,6 +1,4 @@
-﻿
-
-using Domain.Entities.Exceptions;
+﻿using Domain.Entities.Exceptions;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {

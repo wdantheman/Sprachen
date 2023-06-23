@@ -1,3 +1,4 @@
+using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
 
 namespace Domain.Entities.PersistenceServices
@@ -6,5 +7,7 @@ namespace Domain.Entities.PersistenceServices
     {
         public Document GetDocumentByName(string name);
         public Document GetDocumentById(int id);
+        public LanguagesComponent GetDefaultLanguageComponentForDocument(int id);
+
     }
 }

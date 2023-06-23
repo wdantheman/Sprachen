@@ -9,31 +9,32 @@ namespace Domain.UseCases
 {
     public class SectionsCRUDUseCase
     {
-        internal IDocumentCRUDPersistenceService DocumentPersistenceService;
+        internal IDocumentFinderService DocumentFinderService;
         internal IObjectIdentifierService IdentityCreator;
-        public SectionsCRUDUseCase(IDocumentCRUDPersistenceService documentPersistenceService, IObjectIdentifierService identityCreator)
+        internal ISectionCRUDPersistenceService SectionPersistenceService;
+        public SectionsCRUDUseCase(IDocumentFinderService documentFinderService, IObjectIdentifierService identityCreator, ISectionCRUDPersistenceService sectionPersistenceService)
         {
-            DocumentPersistenceService = documentPersistenceService;
+            DocumentFinderService = documentFinderService;
             IdentityCreator = identityCreator;
+            SectionPersistenceService = sectionPersistenceService;
         }
         public void CreateEmptySectionInDocument(int DocId)
         {
-            Document document = DocumentPersistenceService.ReadDocument(DocId);
             string sectionTitle = "Empty Subsection";
-            Subsection newEmptySubscetion = new Subsection(sectionTitle, IdentityCreator.CreateObjectId(), document.GetLanguagesComponent());
-            newEmptySubscetion.SetSourceLanguage(document.GetDefaultLanguage());
-            document.AddSection(newEmptySubscetion);
+            LanguagesComponent defaultLanguagesCompenet = DocumentFinderService.GetDefaultLanguageComponentForDocument(DocId);
+            SectionComposite newEmptySubscetion = new SectionComposite(sectionTitle, IdentityCreator.CreateObjectId(), defaultLanguagesCompenet);
+            newEmptySubscetion.SetSourceLanguage(defaultLanguagesCompenet.GetSourceLanguage());
+            SectionPersistenceService.CreateSectionInDocument(DocId, newEmptySubscetion);
         }
-        public void CreateSectionInDocument (int DocId, string title, LanguagesComponent languagesComponent)
+        public void CreateEmptySectionInDocumentWithLanguagesComponent(int DocId, string title, LanguagesComponent languagesComponent)
         {
-            Document document = DocumentPersistenceService.ReadDocument(DocId);
-            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateObjectId(), languagesComponent);
-            newSubscetion.SetSourceLanguage(document.GetDefaultLanguage());
-            document.AddSection(newSubscetion);
+            Subsection newSubscetion = new Subsection(title, IdentityCreator.CreateSubObjectId(DocId), languagesComponent);
+            newSubscetion.SetSourceLanguage(languagesComponent.GetSourceLanguage());
+            SectionPersistenceService.CreateSectionInDocument(DocId, newSubscetion);
         }
         public SectionComponent ReadSectionFromDocumentById(int documentId, int SectionId) 
         {
-            Document document = DocumentPersistenceService.ReadDocument(documentId);
+            Document document = DocumentFinderService.GetDocumentById(documentId);
             SectionComponent sectionComponent = document.GetSections().Find(item => item.GetComponetId() == SectionId);
             if (sectionComponent == null) 
             {
@@ -43,7 +44,7 @@ namespace Domain.UseCases
         }
         public List<SectionComponent> ReadSectionsFromDocumentByTitle(int documentId, string sectionName) 
         {
-            Document document = DocumentPersistenceService.ReadDocument(documentId);
+            Document document = DocumentFinderService.GetDocumentById(documentId);
             List<SectionComponent> sectionComponents = document.GetSections().FindAll(item => item.title == sectionName);
             if (sectionComponents == null)
             {
@@ -53,7 +54,7 @@ namespace Domain.UseCases
         }
         public void UpdateSectioninDocument(int documentId, int sectionId, SectionComponent newSection)
         {
-            Document document = DocumentPersistenceService.ReadDocument(documentId);
+            Document document = DocumentFinderService.GetDocumentById(documentId);
             
         }
 
