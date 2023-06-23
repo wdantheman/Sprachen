@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.DataObjects.EntryComposite;
-
+using Domain.Entities.Exceptions;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
@@ -7,62 +7,24 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     {
         internal List<SectionComponent> Subsections;
         internal Dictionary<string, EntryTranslationBlock> translationComponents;
-        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent) : base(title, id, lenguagesComponent)
+        internal ISectionComponentCRUDCriteria SectionComponentCRUDCriteria;
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, ISectionComponentCRUDCriteria crudCriteria) : base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
             translationComponents = new Dictionary<string, EntryTranslationBlock>();
-        }                    
-        public override void AddSubsectionComponent(SectionComponent component)
-        {
-            Subsections.Add(component);
+            SectionComponentCRUDCriteria = crudCriteria;
+
         }
-        public override void RemoveSubsectionComponent(int id)
+        public override void AddSectionComponent(SectionComponent sectionComponent)
         {
-            SectionComponent? itemToRemove = Subsections.FirstOrDefault(item => item.DocSectionId == id);
-            if (itemToRemove != null)
-            {
-                Subsections.Remove(itemToRemove);
-            }
+            if (SectionComponentCRUDCriteria.SubComponentCanBeAdded(sectionComponent))
+                Subsections.Add(sectionComponent);
+            else throw new SectionCompositeException("SectionComponent can't be added to SectionComposite");
         }
-        public override Dictionary<string, EntryTranslationBlock> GetEntries()
+        public override void RemoveSectionComponent(int sectionComponentId)
         {
-            return translationComponents;
-        }
-        public override void SetSourceLanguage(Language language)
-        {
-            LanguagesComponent.SetSourceLanguage(language);
-        }
-        public void AddTargetLanguage(Language language)
-        {
-            LanguagesComponent.AddTargetLanguage(language);
-        }
-        public void RemoveTargetLanguage(Language language)
-        {
-            LanguagesComponent.AddTargetLanguage(language);
-        }
-        public override void UpdateEntries(Dictionary<string, EntryTranslationBlock> entries)
-        {
-            translationComponents = entries;
-        }
-        public List<SectionComponent> GetSubsections() 
-        {
-            return Subsections;
-        }
-        public override void SetTargetLanguages(List<Language> languages)
-        {
-            LanguagesComponent.SetTargetLanguages(languages);
-        }
-        public Language GetSourceLanguage()
-        {
-            return LanguagesComponent.GetSourceLanguage();
-        }
-        public List<Language> GetTargetLanguages()
-        {
-            return LanguagesComponent.GetTargetLanguages();
-        }
-        public override int GetComponetId()
-        {
-            return DocSectionId;
+            throw new NotImplementedException();
+
         }
     }
 }

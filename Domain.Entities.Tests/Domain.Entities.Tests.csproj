@@ -27,4 +27,9 @@
     <ProjectReference Include="..\Domain.Entities\Domain.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataObjectsTest\DocumentCompositeTests\" />
+    <Folder Include="DataObjectsTest\EntryCompositeTests\" />
+  </ItemGroup>
+
 </Project>
