@@ -5,10 +5,9 @@
         public int SystemId { get; internal set; }
         public string Name { get; internal set; }
         public string Description { get; internal set; }
-        internal List<SectionComponent> Sections;
+        internal List<SectionComponent> Sections { get; private set; }
         internal LanguagesComponent LanguagesComponent;
         
-
         public Document(int id, string name, List<SectionComponent> sections)
         {
             Name= name;
@@ -17,11 +16,11 @@
             Sections = sections;
             LanguagesComponent = new LanguagesComponent();
         }
-        public void UpdateDescription(string newDescription) 
+        public void UpdateDescription(string newDescription)
         {
             Description = newDescription;
         }
-        public void SetSections(List<SectionComponent> sections) 
+        public void SetSections(List<SectionComponent> sections)
         {
             Sections = sections;
         }

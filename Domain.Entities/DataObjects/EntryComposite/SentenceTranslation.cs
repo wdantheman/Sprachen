@@ -12,11 +12,11 @@ namespace Domain.Entities.DataObjects.EntryComposite
             components = new List<TranslationComponent>();
             Translations = new List<string>();
         }
-        public override void AddComponent(TranslationComponent component)
+        public override void AddTranslationComponent(TranslationComponent component)
         {
             components.Add(component);
         }
-        public override void RemoveComponent(TranslationComponent component)
+        public override void RemoveTranslationComponent(TranslationComponent component)
         {
             components.Remove(component);
         }
@@ -28,7 +28,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
         {
             return components;
         }
-        public List<string> GetTranslationText() 
+        public List<string> GetTranslationText()
         {
             return Translations;
         }

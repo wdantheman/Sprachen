@@ -4,13 +4,13 @@ namespace Domain.Entities.DataObjects.EntryComposite
 {
     public abstract class TranslationComponent
     {
-        internal int id;
-        public TranslationComponent(int ID) 
+        internal int Id;
+        public TranslationComponent(int id) 
         {
-            id = ID;
+            Id = id;
         }
-        public abstract void AddComponent(TranslationComponent component);
-        public abstract void RemoveComponent(TranslationComponent component);
+        public abstract void AddTranslationComponent(TranslationComponent component);
+        public abstract void RemoveTranslationComponent(TranslationComponent component);
         public abstract void AddTranslations(List<string> translations);
 
     }

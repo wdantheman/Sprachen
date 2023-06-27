@@ -12,7 +12,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             DocSectionId = id;
             LanguagesComponent = languagesComponent;
         }
+        public void SetLanguageComponent(ILanguagesComponent languagesComponent) 
+        {
+            LanguagesComponent = languagesComponent;
+        }
         public abstract void AddSectionComponent(SectionComponent sectionComponent);
-        public abstract void RemoveSectionComponent(int sectionComponentId);
+        public abstract void RemoveSectionComponent(SectionComponent sectionComponent);
     }
 }

@@ -4,20 +4,18 @@ namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class WordTranslation : TranslationComponent
     {
-        internal List<string> Translations;
-        internal List<string> TargetDefinitions;
-        internal List<string> TargetExamples;
+        internal List<string>? Translations;
+        internal List<string>? TargetDefinitions;
+        internal List<string>? TargetExamples;
         public WordTranslation(int id) : base(id)
         {
-            Translations = new List<string>();
-            TargetDefinitions = new List<string>();
-            TargetExamples = new List<string>();
+            
         }
-        public override void AddComponent(TranslationComponent component)
+        public override void AddTranslationComponent(TranslationComponent component)
         {
             throw new WordTranslationException("Cannot add TranslationComponent from a Word.");
         }
-        public override void RemoveComponent(TranslationComponent component)
+        public override void RemoveTranslationComponent(TranslationComponent component)
         {
             throw new WordTranslationException("Cannot remove TranslationComponent from a Word.");
         }

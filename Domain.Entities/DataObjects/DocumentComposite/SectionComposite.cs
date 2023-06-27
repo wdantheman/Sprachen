@@ -6,14 +6,14 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     public class SectionComposite : SectionComponent
     {
         internal List<SectionComponent> Subsections;
-        internal Dictionary<string, EntryTranslationBlock> translationComponents;
+        internal Dictionary<string, EntryTranslationBlock> TranslationComponents { get; set; }
         internal ISectionComponentCRUDCriteria SectionComponentCRUDCriteria;
-        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, ISectionComponentCRUDCriteria crudCriteria) : base(title, id, lenguagesComponent)
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, ISectionComponentCRUDCriteria crudCriteria) : 
+            base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
-            translationComponents = new Dictionary<string, EntryTranslationBlock>();
+            TranslationComponents = new Dictionary<string, EntryTranslationBlock>();
             SectionComponentCRUDCriteria = crudCriteria;
-
         }
         public override void AddSectionComponent(SectionComponent sectionComponent)
         {
@@ -21,10 +21,16 @@ namespace Domain.Entities.DataObjects.DocumentComposite
                 Subsections.Add(sectionComponent);
             else throw new SectionCompositeException("SectionComponent can't be added to SectionComposite");
         }
-        public override void RemoveSectionComponent(int sectionComponentId)
+        public override void RemoveSectionComponent(SectionComponent sectionComponent)
         {
-            throw new NotImplementedException();
-
+            if (SectionComponentCRUDCriteria.SubComponentCanBeAdded(sectionComponent))
+                Subsections.Add(sectionComponent);
+            else throw new SectionCompositeException("SectionComponent can't be Removed from SectionComposite");
         }
+        public void SettranslationComponents(Dictionary<string, EntryTranslationBlock> translationComponents) 
+        {
+            translationComponents.Clear();
+            TranslationComponents = translationComponents;
+        }        
     }
 }
