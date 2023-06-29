@@ -1,5 +1,6 @@
 ﻿
 using Domain.Entities.Exceptions;
+using System.Security.Cryptography;
 
 namespace Domain.Entities.DataObjects
 {
@@ -15,10 +16,11 @@ namespace Domain.Entities.DataObjects
             SourceLanguage = Language.English;
             _id = id;
         }
-        public LanguagesComponent(Language source, List<Language> targetLanguages)
+        public LanguagesComponent(Language source, List<Language> targetLanguages, int id)
         {
             TargetLanguages = targetLanguages;
             SourceLanguage = source;
+            _id= id;
         }
         public void AddTargetLanguage(Language language)
         {
