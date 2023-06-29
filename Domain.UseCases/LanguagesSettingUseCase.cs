@@ -4,10 +4,10 @@ using System;
 
 namespace Domain.UseCases
 {
-    public class DocumentLanguagesSettingUseCase
+    public class LanguagesSettingUseCase
     {
         internal IDocumentLanguagesPersistenceService DocumentLanguagesService;
-        public DocumentLanguagesSettingUseCase(IDocumentLanguagesPersistenceService documentLanguagesService)
+        public LanguagesSettingUseCase(IDocumentLanguagesPersistenceService documentLanguagesService)
         {
             DocumentLanguagesService = documentLanguagesService;
         }

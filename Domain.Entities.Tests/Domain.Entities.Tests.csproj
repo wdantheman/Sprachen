@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataObjectsTest\DocumentCompositeTests\" />
     <Folder Include="DataObjectsTest\EntryCompositeTests\" />
   </ItemGroup>
 

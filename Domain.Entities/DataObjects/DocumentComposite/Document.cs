@@ -1,4 +1,7 @@
-﻿namespace Domain.Entities.DataObjects.DocumentComposite
+﻿using Domain.Entities.Exceptions;
+using System.Reflection.Metadata;
+
+namespace Domain.Entities.DataObjects.DocumentComposite
 {
     public class Document
     {
@@ -10,7 +13,11 @@
         
         public Document(int id, string name, List<SectionComponent> sections)
         {
-            Name= name;
+            if (sections == null)
+            {
+                throw new DocumentException("Sections cannot be null");
+            }
+            Name = name;
             SystemId= id;
             Description = string.Empty;
             Sections = sections;

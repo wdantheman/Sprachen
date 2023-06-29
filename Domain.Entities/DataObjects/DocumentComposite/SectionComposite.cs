@@ -5,29 +5,24 @@ namespace Domain.Entities.DataObjects.DocumentComposite
 {
     public class SectionComposite : SectionComponent
     {
-        internal List<SectionComponent> Subsections;
-        internal Dictionary<string, EntryTranslationBlock> TranslationComponents { get; set; }
-        internal ISectionComponentCRUDCriteria SectionComponentCRUDCriteria;
-        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, ISectionComponentCRUDCriteria crudCriteria) : 
+        public List<SectionComponent> Subsections { get; private set; }
+        public Dictionary<string, EntryTranslationBlock> TranslationComponents { get; private set; }
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent) : 
             base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
             TranslationComponents = new Dictionary<string, EntryTranslationBlock>();
-            SectionComponentCRUDCriteria = crudCriteria;
         }
-        public override void AddSectionComponent(SectionComponent sectionComponent)
+        public void SetSubsections(List<SectionComponent> subsections) 
         {
-            if (SectionComponentCRUDCriteria.SubComponentCanBeAdded(sectionComponent))
-                Subsections.Add(sectionComponent);
-            else throw new SectionCompositeException("SectionComponent can't be added to SectionComposite");
+            if (subsections == null) 
+            {
+                throw new SectionCompositeException("Subsections can't be null ");
+            }
+            Subsections.Clear();
+            Subsections = subsections;
         }
-        public override void RemoveSectionComponent(SectionComponent sectionComponent)
-        {
-            if (SectionComponentCRUDCriteria.SubComponentCanBeAdded(sectionComponent))
-                Subsections.Add(sectionComponent);
-            else throw new SectionCompositeException("SectionComponent can't be Removed from SectionComposite");
-        }
-        public void SettranslationComponents(Dictionary<string, EntryTranslationBlock> translationComponents) 
+        public void SetTranslationComponents(Dictionary<string, EntryTranslationBlock> translationComponents) 
         {
             translationComponents.Clear();
             TranslationComponents = translationComponents;

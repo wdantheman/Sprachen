@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices;
 
@@ -8,13 +9,10 @@ namespace Domain.UseCases
     {
         internal IDocumentCRUDPersistenceService PersistenceService;
         internal IObjectIdentifierService IdentifierService;
-        internal IDocumentFinderService DocumentFinderService;
-        public DocumentCRUDUseCase(IDocumentCRUDPersistenceService persistenceService, IObjectIdentifierService identifierService, 
-        IDocumentFinderService documentFinder)
+        public DocumentCRUDUseCase(IDocumentCRUDPersistenceService persistenceService, IObjectIdentifierService identifierService)
         {
             PersistenceService = persistenceService;
             IdentifierService = identifierService;
-            DocumentFinderService = documentFinder;
         }
         public Document CreateEmptyDocument()
         {
@@ -28,6 +26,11 @@ namespace Domain.UseCases
             int id = IdentifierService.CreateObjectId();
             return new Document(id, name, new List<SectionComponent>());
         }
+        public Document CreateDocumentWithSectionsAndName(string name, List<SectionComponent> sections) 
+        {
+            int id = IdentifierService.CreateObjectId();
+            return new Document(id, name, sections);
+        }
         public void CreateDocumentInDB(Document doc) 
         {
             PersistenceService.CreateDocument(doc);
@@ -36,19 +39,25 @@ namespace Domain.UseCases
         {
             return PersistenceService.ReadDocument(id);
         }
-        public Document ReadDocumentByName(string name) 
+        public Document ReadDocumentByName(IDocumentFinderService DocumentFinderService, string name)
         {
             return DocumentFinderService.GetDocumentByName(name);
         }
-
         public void DeleteDocument(int id)
         {
             PersistenceService.DeleteDocument(id);
         }
-
         public void UpdateDocument(int id, Document documentUpdate)
         {
             PersistenceService.UpdateDocument(id, documentUpdate);
+        }
+        public void UpdateDescription(int docId, string newDescription) 
+        {
+            PersistenceService.UpdateDocumentDescrition(docId, newDescription);
+        }
+        public void UpdateDocumentLanguagesComponent(LanguagesComponent languagesComponent) 
+        {
+            PersistenceService.UpdateDocumentLanguagesComponent(languagesComponent);
         }
     }
 }
