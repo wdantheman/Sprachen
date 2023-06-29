@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Exceptions;
-using System.Reflection.Metadata;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
@@ -9,7 +8,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public string Name { get; internal set; }
         public string Description { get; internal set; }
         internal List<SectionComponent> Sections { get; private set; }
-        internal LanguagesComponent LanguagesComponent;
+        internal LanguagesComponent? LanguagesComponent;
         
         public Document(int id, string name, List<SectionComponent> sections)
         {
@@ -21,7 +20,6 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             SystemId= id;
             Description = string.Empty;
             Sections = sections;
-            LanguagesComponent = new LanguagesComponent();
         }
         public void UpdateDescription(string newDescription)
         {
@@ -35,14 +33,14 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             return Sections;
         }
-        public LanguagesComponent GetLanguageComponent() 
+        public LanguagesComponent? GetLanguageComponent() 
         {
             return LanguagesComponent;
         }
 
         public void SetLanguageComponent(LanguagesComponent languages) 
         {
-            LanguagesComponent= languages;
+            LanguagesComponent = languages;
         }
     }
 }

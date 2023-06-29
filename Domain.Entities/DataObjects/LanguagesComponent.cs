@@ -5,13 +5,15 @@ namespace Domain.Entities.DataObjects
 {
     public class LanguagesComponent : ILanguagesComponent
     {
+        private int _id { get; set; }
         private List<Language> TargetLanguages;
         private Language SourceLanguage;
 
-        public LanguagesComponent()
+        public LanguagesComponent(int id)
         {
             TargetLanguages = new List<Language>();
             SourceLanguage = Language.English;
+            _id = id;
         }
         public LanguagesComponent(Language source, List<Language> targetLanguages)
         {
@@ -45,6 +47,10 @@ namespace Domain.Entities.DataObjects
         public void SetTargetLanguages(List<Language> targetLanguages) 
         {
             TargetLanguages = targetLanguages;
+        }
+        public int GetId() 
+        {
+            return _id;
         }
     }
 }

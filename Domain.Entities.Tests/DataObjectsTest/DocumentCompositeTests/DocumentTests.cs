@@ -39,7 +39,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         {
             // Arrange
             var document = new Document(1, "Document 1", new List<SectionComponent>());
-            var languagesComponent = new LanguagesComponent();
+            var languagesComponent = new LanguagesComponent(2);
             document.SetLanguageComponent(languagesComponent);
 
             // Act
@@ -54,7 +54,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         {
             // Arrange
             var document = new Document(1, "Document 1", new List<SectionComponent>());
-            var languagesComponent = new LanguagesComponent();
+            var languagesComponent = new LanguagesComponent(2);
 
             // Act
             document.SetLanguageComponent(languagesComponent);
@@ -74,7 +74,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void GetSections_Should_Return_Same_Sections_List_Instance()
         {
             // Arrange
-            LanguagesComponent languagesComponent = new LanguagesComponent();
+            LanguagesComponent languagesComponent = new LanguagesComponent(2);
             var sections = new List<SectionComponent> { new SectionComposite("title1", 1, languagesComponent), new SectionComposite("title2", 2, languagesComponent) };
             var document = new Document(1, "Document 1", sections);
 

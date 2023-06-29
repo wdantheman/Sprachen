@@ -47,7 +47,7 @@ namespace Domain.UseCases.Tests
             var identifierService = new MockObjectIdentifierService();
             var useCase = new DocumentCRUDUseCase(persistenceService, identifierService);
             var name = "My Document";
-            var sections = new List<SectionComponent> { new SectionComposite("Section 1", 1, new LanguagesComponent()) };
+            var sections = new List<SectionComponent> { new SectionComposite("Section 1", 1, new LanguagesComponent(3)) };
 
             // Act
             var document = useCase.CreateDocumentWithSectionsAndName(name, sections);
@@ -174,7 +174,7 @@ namespace Domain.UseCases.Tests
             var persistenceService = new MockDocumentCRUDPersistenceService();
             var identifierService = new MockObjectIdentifierService();
             var useCase = new DocumentCRUDUseCase(persistenceService, identifierService);
-            var languagesComponent = new LanguagesComponent();
+            var languagesComponent = new LanguagesComponent(3);
 
             // Act
             useCase.UpdateDocumentLanguagesComponent(languagesComponent);
