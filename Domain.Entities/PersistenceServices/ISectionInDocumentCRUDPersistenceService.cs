@@ -3,7 +3,7 @@
 
 namespace Domain.Entities.PersistenceServices
 {
-    public interface ISectionCRUDPersistenceService
+    public interface ISectionInDocumentCRUDPersistenceService
     {
         public void CreateSectionInDocument(int documentId, SectionComponent section);
         public void DeleteSectionInDocument(int documentId, int sectionId);
