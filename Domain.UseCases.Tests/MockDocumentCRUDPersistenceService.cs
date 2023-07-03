@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.DataObjects;
-using Domain.Entities.PersistenceServices;
 using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
+using Domain.Entities.PersistenceServices.DocumentPersistence;
 
 namespace Domain.UseCases.Tests
 {

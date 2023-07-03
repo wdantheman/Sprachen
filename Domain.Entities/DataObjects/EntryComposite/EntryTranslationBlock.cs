@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.Entities.DataObjects.EntryComposite
+﻿namespace Domain.Entities.DataObjects.EntryComposite
 {
     public class EntryTranslationBlock
     {

@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.Entities
+﻿namespace Domain.Entities.DataObjects
 {
     public interface ILanguagesComponent
     {

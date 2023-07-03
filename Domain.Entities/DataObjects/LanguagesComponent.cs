@@ -1,5 +1,4 @@
-﻿
-using Domain.Entities.Exceptions;
+﻿using Domain.Entities.Exceptions;
 using System.Security.Cryptography;
 
 namespace Domain.Entities.DataObjects

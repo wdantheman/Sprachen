@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
-using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
-using Domain.Entities.PersistenceServices;
+using Domain.Entities.PersistenceServices.DocumentPersistence;
 
-namespace Domain.UseCases
+namespace Domain.UseCases.DocumentUseCases
 {
     public class DocumentCRUDUseCase
     {
@@ -26,16 +25,16 @@ namespace Domain.UseCases
             int id = IdentifierService.CreateObjectId();
             return new Document(id, name, new List<SectionComponent>());
         }
-        public Document CreateDocumentWithSectionsAndName(string name, List<SectionComponent> sections) 
+        public Document CreateDocumentWithSectionsAndName(string name, List<SectionComponent> sections)
         {
             int id = IdentifierService.CreateObjectId();
             return new Document(id, name, sections);
         }
-        public void CreateDocumentInDB(Document doc) 
+        public void CreateDocumentInDB(Document doc)
         {
             PersistenceService.CreateDocument(doc);
         }
-        public Document ReadDocumentById(int id) 
+        public Document ReadDocumentById(int id)
         {
             return PersistenceService.ReadDocument(id);
         }
@@ -43,21 +42,13 @@ namespace Domain.UseCases
         {
             return DocumentFinderService.GetDocumentByName(name);
         }
-        public void DeleteDocument(int id)
+        public void DeleteDocumentInDB(int id)
         {
             PersistenceService.DeleteDocument(id);
         }
-        public void UpdateDocument(int id, Document documentUpdate)
+        public void UpdateDocumentInDB(int id, Document documentUpdate)
         {
             PersistenceService.UpdateDocument(id, documentUpdate);
-        }
-        public void UpdateDescription(int docId, string newDescription) 
-        {
-            PersistenceService.UpdateDocumentDescrition(docId, newDescription);
-        }
-        public void UpdateDocumentLanguagesComponent(LanguagesComponent languagesComponent) 
-        {
-            PersistenceService.UpdateDocumentLanguagesComponent(languagesComponent);
-        }
+        }        
     }
 }

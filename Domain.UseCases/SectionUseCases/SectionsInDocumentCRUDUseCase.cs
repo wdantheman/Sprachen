@@ -2,9 +2,10 @@
 using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices;
+using Domain.Entities.PersistenceServices.SectionPersistenceServices;
 using Domain.UseCases.Exceptions;
 
-namespace Domain.UseCases
+namespace Domain.UseCases.SectionUseCases
 {
     public class SectionsInDocumentCRUDUseCase
     {
@@ -41,7 +42,7 @@ namespace Domain.UseCases
         {
             SectionPersistenceService.UpdateSectionInDocument(documentId, sectionId, newSection);
         }
-        public void DelateSectionInDocument(int documentId, int sectionId) 
+        public void DelateSectionInDocument(int documentId, int sectionId)
         {
             SectionPersistenceService.DeleteSectionInDocument(documentId, sectionId);
         }

@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.DataObjects.DocumentComposite;
 
 
-namespace Domain.Entities.PersistenceServices
+namespace Domain.Entities.PersistenceServices.SectionPersistenceServices
 {
     public interface ISectionInDocumentCRUDPersistenceService
     {

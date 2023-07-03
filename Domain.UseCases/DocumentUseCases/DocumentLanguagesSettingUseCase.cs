@@ -1,8 +1,8 @@
 ﻿using Domain.Entities;
-using Domain.Entities.PersistenceServices;
+using Domain.Entities.PersistenceServices.DocumentPersistence;
 using System;
 
-namespace Domain.UseCases
+namespace Domain.UseCases.DocumentUseCases
 {
     public class DocumentLanguagesSettingUseCase
     {
@@ -19,15 +19,15 @@ namespace Domain.UseCases
         {
             DocumentLanguagesService.SetDefaultTargetLanguagesInDocument(documentId, targetLanguages);
         }
-        public Language GetDocumentDefaultLanguage(int documentId) 
+        public Language GetDocumentDefaultLanguage(int documentId)
         {
             return DocumentLanguagesService.GetDocumentSourceLanguage(documentId);
         }
-        public List<Language> GetDocumentDefaultTargetLanguages(int documentId) 
+        public List<Language> GetDocumentDefaultTargetLanguages(int documentId)
         {
             return DocumentLanguagesService.GetDocumentTargetLanguage(documentId);
         }
-        public void AddTargetLanguageToDefaultsInDocument(int documentId, Language language) 
+        public void AddTargetLanguageToDefaultsInDocument(int documentId, Language language)
         {
             DocumentLanguagesService.AddTargetLanguagetoDocument(documentId, language);
         }

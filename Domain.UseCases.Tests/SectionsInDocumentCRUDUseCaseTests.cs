@@ -4,6 +4,8 @@ using Domain.Entities.PersistenceServices;
 using Domain.Entities;
 using Domain.UseCases.Exceptions;
 using Moq;
+using Domain.Entities.PersistenceServices.SectionPersistenceServices;
+using Domain.UseCases.SectionUseCases;
 
 namespace Domain.UseCases.Tests
 {

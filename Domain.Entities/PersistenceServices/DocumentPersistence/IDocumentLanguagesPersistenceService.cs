@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.Entities.PersistenceServices
+﻿namespace Domain.Entities.PersistenceServices.DocumentPersistence
 {
     public interface IDocumentLanguagesPersistenceService
     {

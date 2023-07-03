@@ -1,5 +1,7 @@
 ﻿using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects;
+using Domain.UseCases.DocumentUseCases;
+
 namespace Domain.UseCases.Tests
 {
     public class DocumentCRUDUseCaseTests
@@ -122,7 +124,7 @@ namespace Domain.UseCases.Tests
             var documentId = 1;
 
             // Act
-            useCase.DeleteDocument(documentId);
+            useCase.DeleteDocumentInDB(documentId);
 
             // Assert
             Assert.True(persistenceService.DeleteDocumentCalled);
@@ -140,7 +142,7 @@ namespace Domain.UseCases.Tests
             var documentUpdate = new Document(1, "Updated Document", new List<SectionComponent>());
 
             // Act
-            useCase.UpdateDocument(documentId, documentUpdate);
+            useCase.UpdateDocumentInDB(documentId, documentUpdate);
 
             // Assert
             Assert.True(persistenceService.UpdateDocumentCalled);
@@ -148,40 +150,6 @@ namespace Domain.UseCases.Tests
             Assert.Equal(documentUpdate, persistenceService.UpdatedDocument);
         }
 
-        [Fact]
-        public void UpdateDescription_Calls_PersistenceService_UpdateDocumentDescrition()
-        {
-            // Arrange
-            var persistenceService = new MockDocumentCRUDPersistenceService();
-            var identifierService = new MockObjectIdentifierService();
-            var useCase = new DocumentCRUDUseCase(persistenceService, identifierService);
-            var documentId = 1;
-            var newDescription = "New description";
-
-            // Act
-            useCase.UpdateDescription(documentId, newDescription);
-
-            // Assert
-            Assert.True(persistenceService.UpdateDocumentDescritionCalled);
-            Assert.Equal(documentId, persistenceService.UpdateDocumentDescritionId);
-            Assert.Equal(newDescription, persistenceService.UpdatedDescription);
-        }
-
-        [Fact]
-        public void UpdateDocumentLanguagesComponent_Calls_PersistenceService_UpdateDocumentLanguagesComponent()
-        {
-            // Arrange
-            var persistenceService = new MockDocumentCRUDPersistenceService();
-            var identifierService = new MockObjectIdentifierService();
-            var useCase = new DocumentCRUDUseCase(persistenceService, identifierService);
-            var languagesComponent = new LanguagesComponent(3);
-
-            // Act
-            useCase.UpdateDocumentLanguagesComponent(languagesComponent);
-
-            // Assert
-            Assert.True(persistenceService.UpdateDocumentLanguagesComponentCalled);
-            Assert.Equal(languagesComponent, persistenceService.UpdatedLanguagesComponent);
-        }
+       
     }
 }

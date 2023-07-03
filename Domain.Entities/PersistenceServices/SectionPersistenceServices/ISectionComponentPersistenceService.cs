@@ -1,11 +1,6 @@
 ﻿using Domain.Entities.DataObjects.DocumentComposite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Entities.PersistenceServices
+namespace Domain.Entities.PersistenceServices.SectionPersistenceServices
 {
     internal interface ISectionComponentPersistenceService
     {
@@ -13,6 +8,5 @@ namespace Domain.Entities.PersistenceServices
         public SectionComponent ReadSectionComponentInSection(int documentId, int sectionComponent);
         public void UpdateSectionComponentInSection(int documentId, int sectionId, int SectionComponent, SectionComponent newComponent);
         public void RemoveSectionComponentInSection(int documentId, int sectionId, int sectionComponentId);
-
     }
 }
