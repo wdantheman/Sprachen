@@ -3,7 +3,7 @@ using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices.DocumentPersistence;
 
-namespace Domain.UseCases.Tests
+namespace Domain.UseCases.Tests.DocumentUseCasesTests
 {
     internal class MockDocumentCRUDPersistenceService : IDocumentCRUDPersistenceService
     {
@@ -11,7 +11,7 @@ namespace Domain.UseCases.Tests
         public Document CreatedDocument { get; private set; }
 
         public bool ReadDocumentCalled { get; private set; }
-        public int ReadDocumentId { get; private set; } 
+        public int ReadDocumentId { get; private set; }
         public Document ReadDocumentResult { get; set; }
 
         public bool DeleteDocumentCalled { get; private set; }

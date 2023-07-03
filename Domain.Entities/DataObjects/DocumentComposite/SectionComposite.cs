@@ -6,12 +6,12 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     public class SectionComposite : SectionComponent
     {
         public List<SectionComponent> Subsections { get; private set; }
-        public Dictionary<string, EntryTranslationBlock> TranslationComponents { get; private set; }
+        public Dictionary<Entry, EntryTranslationBlock> TranslationComponents { get; private set; }
         public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent) : 
             base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
-            TranslationComponents = new Dictionary<string, EntryTranslationBlock>();
+            TranslationComponents = new Dictionary<Entry, EntryTranslationBlock>();
         }
         public void SetSubsections(List<SectionComponent> subsections) 
         {
@@ -22,7 +22,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             Subsections.Clear();
             Subsections = subsections;
         }
-        public void SetTranslationComponents(Dictionary<string, EntryTranslationBlock> translationComponents) 
+        public void SetTranslationComponents(Dictionary<Entry, EntryTranslationBlock> translationComponents) 
         {
             translationComponents.Clear();
             TranslationComponents = translationComponents;

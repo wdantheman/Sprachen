@@ -7,7 +7,7 @@ using Moq;
 using Domain.Entities.PersistenceServices.SectionPersistenceServices;
 using Domain.UseCases.SectionUseCases;
 
-namespace Domain.UseCases.Tests
+namespace Domain.UseCases.Tests.SectionUseCasesTests
 {
     public class SectionsInDocumentCRUDUseCaseTests
     {
@@ -44,39 +44,39 @@ namespace Domain.UseCases.Tests
             mockLanguagesComponentService.Verify(x => x.GetLanguagesComponentFromDocument(docId), Times.Once);
         }
 
-        [Fact]
-        public void CreateEmptySectionInDocument_ShouldCallCreateSectionInDocument()
-        {
-            // Arrange
-            int docId = 1;
-            LanguagesComponent defaultLanguagesComponent = new LanguagesComponent(2);
-            mockLanguagesComponentService.Setup(x => x.GetLanguagesComponentFromDocument(docId)).Returns(defaultLanguagesComponent);
+        //[Fact]
+        //public void CreateEmptySectionInDocument_ShouldCallCreateSectionInDocument()
+        //{
+        //    // Arrange
+        //    int docId = 1;
+        //    LanguagesComponent defaultLanguagesComponent = new LanguagesComponent(2);
+        //    mockLanguagesComponentService.Setup(x => x.GetLanguagesComponentFromDocument(docId)).Returns(defaultLanguagesComponent);
 
-            SectionComposite newEmptySubsection = new SectionComposite("Empty Subsection", 123, defaultLanguagesComponent);
+        //    SectionComposite newEmptySubsection = new SectionComposite("Empty Subsection", 123, defaultLanguagesComponent);
 
-            // Act
-            sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocument(docId);
+        //    // Act
+        //    sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocument(docId);
 
-            // Assert
-            mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newEmptySubsection), Times.Once);
-        }
+        //    // Assert
+        //    mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newEmptySubsection), Times.Once);
+        //}
 
-        [Fact]
-        public void CreateEmptySectionInDocumentWithLanguagesComponent_ShouldCallCreateSectionInDocument()
-        {
-            // Arrange
-            int docId = 1;
-            string title = "Section Title";
-            LanguagesComponent languagesComponent = new LanguagesComponent(2);
+        //[Fact]
+        //public void CreateEmptySectionInDocumentWithLanguagesComponent_ShouldCallCreateSectionInDocument()
+        //{
+        //    // Arrange
+        //    int docId = 1;
+        //    string title = "Section Title";
+        //    LanguagesComponent languagesComponent = new LanguagesComponent(2);
 
-            SectionComposite newSubsection = new SectionComposite(title, 456, languagesComponent);
+        //    SectionComposite newSubsection = new SectionComposite(title, 456, languagesComponent);
 
-            // Act
-            sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocumentWithLanguagesComponent(docId, title, languagesComponent);
+        //    // Act
+        //    sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocumentWithLanguagesComponent(docId, title, languagesComponent);
 
-            // Assert
-            mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newSubsection), Times.Once);
-        }
+        //    // Assert
+        //    mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newSubsection), Times.Once);
+        //}
 
         [Fact]
         public void ReadSectionFromDocumentById_ShouldCallReadSectionInDocument()

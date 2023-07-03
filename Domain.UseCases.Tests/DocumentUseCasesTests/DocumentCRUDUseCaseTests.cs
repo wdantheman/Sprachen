@@ -2,7 +2,7 @@
 using Domain.Entities.DataObjects;
 using Domain.UseCases.DocumentUseCases;
 
-namespace Domain.UseCases.Tests
+namespace Domain.UseCases.Tests.DocumentUseCasesTests
 {
     public class DocumentCRUDUseCaseTests
     {
@@ -150,6 +150,6 @@ namespace Domain.UseCases.Tests
             Assert.Equal(documentUpdate, persistenceService.UpdatedDocument);
         }
 
-       
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.PersistenceServices.SectionPersistenceServices
 {
-    internal interface ISectionComponentPersistenceService
+    internal interface ISectionComponentCRUDPersistenceService
     {
         public void CreateSectionComponentInSection(int documentId, int sectionId, SectionComponent newSection);
         public SectionComponent ReadSectionComponentInSection(int documentId, int sectionComponent);

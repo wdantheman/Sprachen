@@ -3,7 +3,7 @@ using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices.DocumentPersistence;
 using Domain.UseCases.DocumentUseCases;
 using Moq;
-namespace Domain.UseCases.Tests
+namespace Domain.UseCases.Tests.DocumentUseCasesTests
 {
     public class DocumentConfigUseCaseTests
     {

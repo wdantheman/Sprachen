@@ -26,10 +26,10 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         {
             // Arrange
             var sectionComposite = new SectionComposite("Composite Section", 1, new LanguagesComponent(2));
-            var translationComponents = new Dictionary<string, EntryTranslationBlock>
+            var translationComponents = new Dictionary<Entry, EntryTranslationBlock>
         {
-            { "en", new EntryTranslationBlock(sectionComposite.LanguagesComponent) },
-            { "fr", new EntryTranslationBlock(sectionComposite.LanguagesComponent) }
+            { new Entry(12, "can't"), new EntryTranslationBlock(sectionComposite.LanguagesComponent) },
+            { new Entry(11, "anrufe"), new EntryTranslationBlock(sectionComposite.LanguagesComponent) }
         };
 
             // Act
