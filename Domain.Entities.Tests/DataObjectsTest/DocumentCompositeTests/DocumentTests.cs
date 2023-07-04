@@ -10,7 +10,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void UpdateDescription_Should_Set_New_Description()
         {
             // Arrange
-            var document = new Document(1, "Document 1", new List<SectionComponent>());
+            var document = new Document(1, "Document 1", new List<SectionComponent>(), new LanguagesComponent(1));
             string newDescription = "Updated description";
 
             // Act
@@ -24,7 +24,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void SetSections_Should_Set_New_Sections()
         {
             // Arrange
-            var document = new Document(1, "Document 1", new List<SectionComponent>());
+            var document = new Document(1, "Document 1", new List<SectionComponent>(), new LanguagesComponent(1));
             var newSections = new List<SectionComponent> { new SectionComposite("title1", 1, document.GetLanguageComponent()), new SectionComposite("title2", 2, document.GetLanguageComponent())};
 
             // Act
@@ -38,7 +38,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void GetLanguageComponent_Should_Return_LanguagesComponent_Instance()
         {
             // Arrange
-            var document = new Document(1, "Document 1", new List<SectionComponent>());
+            var document = new Document(1, "Document 1", new List<SectionComponent>(), new LanguagesComponent(1));
             var languagesComponent = new LanguagesComponent(2);
             document.SetLanguageComponent(languagesComponent);
 
@@ -53,7 +53,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void SetLanguageComponent_Should_Set_New_LanguagesComponent_Instance()
         {
             // Arrange
-            var document = new Document(1, "Document 1", new List<SectionComponent>());
+            var document = new Document(1, "Document 1", new List<SectionComponent>(), new LanguagesComponent(1));
             var languagesComponent = new LanguagesComponent(2);
 
             // Act
@@ -67,7 +67,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
         public void GetSections_Should_Throw_EmptyException_When_No_Sections_Set()
         {
             // Arrange // Act// Assert
-            Assert.Throws<DocumentException>(() => new Document(1, "Document 1", null));
+            Assert.Throws<DocumentException>(() => new Document(1, "Document 1", null, new LanguagesComponent(1)));
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             // Arrange
             LanguagesComponent languagesComponent = new LanguagesComponent(2);
             var sections = new List<SectionComponent> { new SectionComposite("title1", 1, languagesComponent), new SectionComposite("title2", 2, languagesComponent) };
-            var document = new Document(1, "Document 1", sections);
+            var document = new Document(1, "Document 1", sections, new LanguagesComponent(1));
 
             // Act
             var result = document.GetSections();

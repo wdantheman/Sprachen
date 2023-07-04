@@ -8,9 +8,9 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public string Name { get; internal set; }
         public string Description { get; internal set; }
         internal List<SectionComponent> Sections { get; private set; }
-        internal LanguagesComponent? LanguagesComponent;
+        internal LanguagesComponent LanguagesComponent;
         
-        public Document(int id, string name, List<SectionComponent> sections)
+        public Document(int id, string name, List<SectionComponent> sections, LanguagesComponent languagesComponent)
         {
             if (sections == null)
             {
@@ -20,6 +20,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
             SystemId= id;
             Description = string.Empty;
             Sections = sections;
+            LanguagesComponent = languagesComponent;
         }
         public void UpdateDescription(string newDescription)
         {
@@ -33,7 +34,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             return Sections;
         }
-        public LanguagesComponent? GetLanguageComponent() 
+        public LanguagesComponent GetLanguageComponent() 
         {
             return LanguagesComponent;
         }
@@ -41,6 +42,10 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public void SetLanguageComponent(LanguagesComponent languages) 
         {
             LanguagesComponent = languages;
+        }
+        public void SetName(string name) 
+        {
+            Name = name;
         }
     }
 }

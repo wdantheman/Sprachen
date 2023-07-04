@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.PersistenceServices.DocumentPersistence;
 
@@ -17,18 +18,18 @@ namespace Domain.UseCases.DocumentUseCases
         {
             int id = IdentifierService.CreateObjectId();
             string defaultName = "Empty Document";
-            Document newDoc = new(id, defaultName, new List<SectionComponent>());
+            Document newDoc = new(id, defaultName, new List<SectionComponent>(), new LanguagesComponent(IdentifierService.CreateSubObjectId(id)));
             return newDoc;
         }
         public Document CreateDocumentWithName(string name)
         {
             int id = IdentifierService.CreateObjectId();
-            return new Document(id, name, new List<SectionComponent>());
+            return new Document(id, name, new List<SectionComponent>(), new LanguagesComponent(IdentifierService.CreateSubObjectId(id)));
         }
         public Document CreateDocumentWithSectionsAndName(string name, List<SectionComponent> sections)
         {
             int id = IdentifierService.CreateObjectId();
-            return new Document(id, name, sections);
+            return new Document(id, name, sections, new LanguagesComponent(IdentifierService.CreateSubObjectId(id)));
         }
         public void CreateDocumentInDB(Document doc)
         {

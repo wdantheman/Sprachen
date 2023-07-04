@@ -77,7 +77,7 @@ namespace Domain.UseCases.Tests.DocumentUseCasesTests
 
         public int CreateSubObjectId(int objectId)
         {
-            throw new NotImplementedException();
+            return objectId + 4;
         }
     }
 
@@ -85,22 +85,23 @@ namespace Domain.UseCases.Tests.DocumentUseCasesTests
     {
         public bool GetDocumentByNameCalled { get; private set; }
         public string DocumentName { get; private set; }
-        public Document GetDocumentByNameResult { get; set; }
+        public Document GetDocumentByNameResult = new Document(5, "somenade", new List<SectionComponent>(), new LanguagesComponent(4));
+        public LanguagesComponent LanguagesComponent1 = new LanguagesComponent(2);
 
         public LanguagesComponent GetDefaultLanguageComponentForDocument(int id)
         {
-            throw new NotImplementedException();
+            return LanguagesComponent1;
         }
-
         public Document GetDocumentById(int id)
         {
-            throw new NotImplementedException();
+            return GetDocumentByNameResult;
         }
 
         public Document GetDocumentByName(string name)
         {
             GetDocumentByNameCalled = true;
             DocumentName = name;
+            GetDocumentByNameResult.SetName(name);
             return GetDocumentByNameResult;
         }
     }

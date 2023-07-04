@@ -14,7 +14,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         private readonly Mock<ILanguagesComponentSettingsService> mockLanguagesComponentService;
         private readonly Mock<IObjectIdentifierService> mockIdentityCreator;
         private readonly Mock<ISectionInDocumentCRUDPersistenceService> mockSectionPersistenceService;
-        private readonly SectionsInDocumentCRUDUseCase sectionsInDocumentCRUDUseCase;
+        private readonly PersistenceSectionsInDocumentCRUDUseCase sectionsInDocumentCRUDUseCase;
 
         public SectionsInDocumentCRUDUseCaseTests()
         {
@@ -22,7 +22,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             mockIdentityCreator = new Mock<IObjectIdentifierService>();
             mockSectionPersistenceService = new Mock<ISectionInDocumentCRUDPersistenceService>();
 
-            sectionsInDocumentCRUDUseCase = new SectionsInDocumentCRUDUseCase(
+            sectionsInDocumentCRUDUseCase = new PersistenceSectionsInDocumentCRUDUseCase(
                 mockLanguagesComponentService.Object,
                 mockIdentityCreator.Object,
                 mockSectionPersistenceService.Object
