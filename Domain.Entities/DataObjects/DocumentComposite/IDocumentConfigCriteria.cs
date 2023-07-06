@@ -10,5 +10,6 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     {
         public bool IsNameValid(string newName);
         public bool IsDescriptionValid(string description);
+        public bool IsDocumentDeleatable(int docId);
     }
 }
