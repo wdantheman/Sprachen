@@ -47,5 +47,9 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             Name = name;
         }
+        public void AddSection(SectionComponent section) 
+        {
+            Sections.Add(section);
+        }
     }
 }

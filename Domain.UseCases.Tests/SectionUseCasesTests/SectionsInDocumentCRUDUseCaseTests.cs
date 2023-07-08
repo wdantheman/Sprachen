@@ -11,131 +11,254 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
 {
     public class SectionsInDocumentCRUDUseCaseTests
     {
-        private readonly Mock<ILanguagesComponentSettingsService> mockLanguagesComponentService;
-        private readonly Mock<IObjectIdentifierService> mockIdentityCreator;
-        private readonly Mock<ISectionInDocumentCRUDPersistenceService> mockSectionPersistenceService;
-        private readonly PersistenceSectionsInDocumentCRUDUseCase sectionsInDocumentCRUDUseCase;
+        private readonly IObjectIdentifierService _objectIdentifierService;
+        private readonly Document _document;
+        private readonly ISectionConfigCriteria _criteria;
 
         public SectionsInDocumentCRUDUseCaseTests()
         {
-            mockLanguagesComponentService = new Mock<ILanguagesComponentSettingsService>();
-            mockIdentityCreator = new Mock<IObjectIdentifierService>();
-            mockSectionPersistenceService = new Mock<ISectionInDocumentCRUDPersistenceService>();
-
-            sectionsInDocumentCRUDUseCase = new PersistenceSectionsInDocumentCRUDUseCase(
-                mockLanguagesComponentService.Object,
-                mockIdentityCreator.Object,
-                mockSectionPersistenceService.Object
-            );
+            _objectIdentifierService = new ObjectIdentifierServiceMock();
+            _document = new Document(1, "TEst DOc", new List<SectionComponent>(), new LanguagesComponent(2));
+            _criteria = new SectionConfigCriteriaMock();
         }
 
         [Fact]
-        public void CreateEmptySectionInDocument_ShouldCallGetLanguagesComponentFromDocument()
+        public void SetDocument_WhenNewDocumentProvided_ShouldSetLocalDocument()
         {
             // Arrange
-            int docId = 1;
-            LanguagesComponent defaultLanguagesComponent = new LanguagesComponent(2);
-            mockLanguagesComponentService.Setup(x => x.GetLanguagesComponentFromDocument(docId)).Returns(defaultLanguagesComponent);
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var newDocument = new Document(4, "TEst DOc 2", new List<SectionComponent>(), new LanguagesComponent(2));
 
             // Act
-            sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocument(docId);
+            useCase.SetDocument(newDocument);
 
             // Assert
-            mockLanguagesComponentService.Verify(x => x.GetLanguagesComponentFromDocument(docId), Times.Once);
-        }
-
-        //[Fact]
-        //public void CreateEmptySectionInDocument_ShouldCallCreateSectionInDocument()
-        //{
-        //    // Arrange
-        //    int docId = 1;
-        //    LanguagesComponent defaultLanguagesComponent = new LanguagesComponent(2);
-        //    mockLanguagesComponentService.Setup(x => x.GetLanguagesComponentFromDocument(docId)).Returns(defaultLanguagesComponent);
-
-        //    SectionComposite newEmptySubsection = new SectionComposite("Empty Subsection", 123, defaultLanguagesComponent);
-
-        //    // Act
-        //    sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocument(docId);
-
-        //    // Assert
-        //    mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newEmptySubsection), Times.Once);
-        //}
-
-        //[Fact]
-        //public void CreateEmptySectionInDocumentWithLanguagesComponent_ShouldCallCreateSectionInDocument()
-        //{
-        //    // Arrange
-        //    int docId = 1;
-        //    string title = "Section Title";
-        //    LanguagesComponent languagesComponent = new LanguagesComponent(2);
-
-        //    SectionComposite newSubsection = new SectionComposite(title, 456, languagesComponent);
-
-        //    // Act
-        //    sectionsInDocumentCRUDUseCase.CreateEmptySectionInDocumentWithLanguagesComponent(docId, title, languagesComponent);
-
-        //    // Assert
-        //    mockSectionPersistenceService.Verify(x => x.CreateSectionInDocument(docId, newSubsection), Times.Once);
-        //}
-
-        [Fact]
-        public void ReadSectionFromDocumentById_ShouldCallReadSectionInDocument()
-        {
-            // Arrange
-            int documentId = 1;
-            int sectionId = 2;
-            LanguagesComponent languagesmock = new LanguagesComponent(3);
-            SectionComponent sectionComponent = new SectionComposite("title", sectionId, languagesmock);
-            mockSectionPersistenceService.Setup(x => x.ReadSectionInDocument(documentId, sectionId)).Returns(sectionComponent);
-
-            // Act
-            var result = sectionsInDocumentCRUDUseCase.ReadSectionFromDocumentById(documentId, sectionId);
-
-            // Assert
-            mockSectionPersistenceService.Verify(x => x.ReadSectionInDocument(documentId, sectionId), Times.Once);
-            Assert.Equal(sectionComponent, result);
+            Assert.Equal(newDocument, useCase.GetDocument());
         }
 
         [Fact]
-        public void ReadSectionFromDocumentById_ShouldThrowSectionsCRUDUseCaseException()
+        public void SetDocument_WhenNullDocumentProvided_ShouldThrowArgumentNullException()
         {
             // Arrange
-            int documentId = 1;
-            int sectionId = 2;
-            mockSectionPersistenceService.Setup(x => x.ReadSectionInDocument(documentId, sectionId)).Returns((SectionComponent)null);
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
 
             // Act & Assert
-            Assert.Throws<SectionsCRUDUseCaseException>(() => sectionsInDocumentCRUDUseCase.ReadSectionFromDocumentById(documentId, sectionId));
+            Assert.Throws<ArgumentNullException>(() => useCase.SetDocument(null));
         }
 
         [Fact]
-        public void UpdateSectioninDocument_ShouldCallUpdateSectionInDocument()
+        public void CreateEmptySectionInDocument_ShouldAddEmptySubsectionToSections()
         {
             // Arrange
-            int documentId = 1;
-            int sectionId = 2;
-            LanguagesComponent languagesmock = new LanguagesComponent(2);
-            SectionComponent newSection = new SectionComposite("title", sectionId, languagesmock);
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var initialSectionsCount = useCase.GetDocument().GetSections().Count;
 
             // Act
-            sectionsInDocumentCRUDUseCase.UpdateSectioninDocument(documentId, sectionId, newSection);
+            useCase.CreateEmptySectionInDocument();
+            var sections = useCase.GetDocument().GetSections();
 
             // Assert
-            mockSectionPersistenceService.Verify(x => x.UpdateSectionInDocument(documentId, sectionId, newSection), Times.Once);
+            Assert.Equal(initialSectionsCount + 1, sections.Count);
+            Assert.NotNull(sections.Find(s => s.Title == "Empty Subsection"));
         }
 
         [Fact]
-        public void DelateSectionInDocument_ShouldCallDeleteSectionInDocument()
+        public void CreateAddSectionToDocument_WhenSectionIsValid_ShouldAddSectionToDocument()
         {
             // Arrange
-            int documentId = 1;
-            int sectionId = 2;
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var section = new SectionComposite("Valid Section", 1, _document.GetLanguageComponent()); // Create a valid section
 
             // Act
-            sectionsInDocumentCRUDUseCase.DelateSectionInDocument(documentId, sectionId);
+            useCase.CreateAddSectionToDocument(section);
+            var sections = useCase.GetDocument().GetSections();
 
             // Assert
-            mockSectionPersistenceService.Verify(x => x.DeleteSectionInDocument(documentId, sectionId), Times.Once);
+            Assert.Contains(section, sections);
         }
+
+        [Fact]
+        public void CreateAddSectionToDocument_WhenSectionIsInvalid_ShouldThrowSectionsInDocumentCRUDUseCaseException()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var section = new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent()); // Create an invalid section
+
+            // Act & Assert
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.CreateAddSectionToDocument(section));
+        }
+
+        [Fact]
+        public void ReadSections_ShouldReturnListOfSections()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+
+            // Act
+            var result = useCase.ReadSections();
+
+            // Assert
+            Assert.Equal(sections, result);
+        }
+
+        [Fact]
+        public void ReadSectionwithId_WhenSectionIdExists_ShouldReturnSectionComponent()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+            var sectionId = 2;
+
+            // Act
+            var result = useCase.ReadSectionwithId(sectionId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(sectionId, result.DocSectionId);
+        }
+
+        [Fact]
+        public void ReadSectionwithId_WhenSectionIdDoesNotExist_ShouldThrowSectionsInDocumentCRUDUseCaseException()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+            var sectionId = 4; // Non-existent section ID
+
+            // Act & Assert
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.ReadSectionwithId(sectionId));
+        }
+
+        [Fact]
+        public void ReadSectionByTitle_WhenSectionTitleExists_ShouldReturnSectionComponent()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+            var title = "Section 2";
+
+            // Act
+            var result = useCase.ReadSectionByTitle(title);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(title, result.Title);
+        }
+
+        [Fact]
+        public void ReadSectionByTitle_WhenSectionTitleDoesNotExist_ShouldThrowSectionsInDocumentCRUDUseCaseException()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+            var title = "Section 4"; // Non-existent section title
+
+            // Act & Assert
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.ReadSectionByTitle(title));
+        }
+
+        [Fact]
+        public void UpdateSections_WhenSectionsAreValid_ShouldUpdateSectionsInDocument()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+
+            // Act
+            useCase.UpdateSections(sections);
+            var result = useCase.GetDocument().GetSections();
+
+            // Assert
+            Assert.Equal(sections, result);
+        }
+
+        [Fact]
+        public void UpdateSections_WhenSectionsAreInvalid_ShouldThrowSectionsInDocumentCRUDUseCaseException()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent()) // Invalid section
+            };
+
+            // Act & Assert
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.UpdateSections(sections));
+        }
+
+        [Fact]
+        public void DeleteSectionFromDocument_WhenSectionCanBeRemoved_ShouldRemoveSectionFromDocument()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+    {
+        new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+        new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+        new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+    };
+            useCase.GetDocument().SetSections(sections);
+            var sectionIdToRemove = 2;
+
+            // Act
+            useCase.DeleteSectionFromDocument(sectionIdToRemove);
+            var result = useCase.GetDocument().GetSections();
+
+            // Assert
+            Assert.DoesNotContain(result, s => s.DocSectionId == sectionIdToRemove);
+        }
+        [Fact]
+        public void DeleteSectionFromDocument_WhenSectionCannotBeRemoved_ShouldThrowSectionsInDocumentCRUDUseCaseException()
+        {
+            // Arrange
+            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sections = new List<SectionComponent>
+            {
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+            };
+            useCase.GetDocument().SetSections(sections);
+            var sectionIdToRemove = 1;
+            // Act and Assert
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.DeleteSectionFromDocument(sectionIdToRemove));
+        }
+
     }
 }
