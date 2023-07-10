@@ -12,6 +12,10 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         public bool IsSectionValid(SectionComponent section)
         {
             // Basic implementation: Check if the section has a non-empty title
+            if(section.Title == "Invalid Section") 
+            {
+                return false;
+            }
             return !string.IsNullOrEmpty(section.Title);
         }
 
@@ -24,6 +28,10 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         public bool CanSectionBeRemoved(SectionComponent section)
         {
             // Basic implementation: Allow all sections to be removed
+            if (section.Title == "Undeleatable") 
+            {
+                return false;
+            }
             return true;
         }
     }

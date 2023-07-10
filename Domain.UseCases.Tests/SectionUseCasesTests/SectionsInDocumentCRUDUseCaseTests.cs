@@ -70,7 +70,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var section = new SectionComposite("Valid Section", 1, _document.GetLanguageComponent()); // Create a valid section
 
             // Act
-            useCase.CreateAddSectionToDocument(section);
+            useCase.AddSectionToDocument(section);
             var sections = useCase.GetDocument().GetSections();
 
             // Assert
@@ -85,7 +85,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var section = new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent()); // Create an invalid section
 
             // Act & Assert
-            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.CreateAddSectionToDocument(section));
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.AddSectionToDocument(section));
         }
 
         [Fact]
@@ -112,18 +112,18 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         public void ReadSectionwithId_WhenSectionIdExists_ShouldReturnSectionComponent()
         {
             // Arrange
-            var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
+            var sut = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
                 new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
                 new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
                 new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
             };
-            useCase.GetDocument().SetSections(sections);
-            var sectionId = 2;
+            sut.GetDocument().SetSections(sections);
+            int sectionId = 2;
 
             // Act
-            var result = useCase.ReadSectionwithId(sectionId);
+            SectionComponent result = sut.ReadSectionwithId(sectionId);
 
             // Assert
             Assert.NotNull(result);
@@ -250,7 +250,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
+                new SectionComposite("Undeleatable", 1, _document.GetLanguageComponent()),
                 new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
                 new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
             };

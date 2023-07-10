@@ -34,7 +34,7 @@ namespace Domain.UseCases.SectionUseCases
             localSections.Add(newEmptySubscetion);
             LocalDocument.SetSections(localSections);
         }
-        public void CreateAddSectionToDocument(SectionComponent section) 
+        public void AddSectionToDocument(SectionComponent section) 
         {
             if (!Criteria.IsSectionValid(section))
             {
@@ -51,14 +51,13 @@ namespace Domain.UseCases.SectionUseCases
         }
         public SectionComponent ReadSectionwithId(int sectionId) 
         {
-            List<SectionComponent> localList = (List<SectionComponent>)LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId);
-            if (localList.Count == 0)
+            if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() == 0)
             {
                 throw new SectionsInDocumentCRUDUseCaseException("the section Id didn't returned results");
             }
-            else if (localList.Count > 1)
+            else if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() > 1)
             {
-                return localList[0];
+                return LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).First();
                 throw new SectionsInDocumentCRUDUseCaseException("the section Id had a replacted id, the first result was returned");
             }
             else 
@@ -68,14 +67,13 @@ namespace Domain.UseCases.SectionUseCases
         }
         public SectionComponent ReadSectionByTitle(string title)
         {
-            List<SectionComponent> localList = (List<SectionComponent>)LocalDocument.GetSections().Where(section => section.Title == title);
-            if (localList.Count == 0)
+            if (LocalDocument.GetSections().Where(section => section.Title == title).Count() == 0)
             {
                 throw new SectionsInDocumentCRUDUseCaseException("the section Title didn't returned results");
             }
-            else if (localList.Count > 1)
+            else if (LocalDocument.GetSections().Where(section => section.Title == title).Count() > 1)
             {
-                return localList[0];
+                return LocalDocument.GetSections().Where(section => section.Title == title).First();
                 throw new SectionsInDocumentCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else
