@@ -4,6 +4,7 @@ using Domain.Entities.PersistenceServices.DocumentPersistence;
 
 namespace Domain.UseCases.DocumentUseCases
 {
+    // rename this to DocumentConfigPresistenceUseCase
     public class DocumentConfigUseCase
     {
         internal IDocumentConfigPersistenceService PersistenceConfigurationService;
