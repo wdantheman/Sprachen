@@ -1,20 +1,18 @@
 ﻿using Domain.Entities;
 using Domain.Entities.DataObjects;
 using Domain.Entities.DataObjects.DocumentComposite;
-using Domain.Entities.PersistenceServices;
 using Domain.UseCases.Exceptions;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.SectionUseCases
 {
     public class SectionsInDocumentCRUDUseCase
     {
-        internal IObjectIdentifierService IdentityCreator;
+        internal IObjectIdentifierService IdCreator;
         internal Document LocalDocument;
         internal ISectionConfigCriteria Criteria;
         public SectionsInDocumentCRUDUseCase(IObjectIdentifierService objectIdentifierService, Document doc, ISectionConfigCriteria criteria)
         {
-            IdentityCreator = objectIdentifierService;
+            IdCreator = objectIdentifierService;
             LocalDocument = doc;
             Criteria = criteria;
         }
@@ -29,7 +27,7 @@ namespace Domain.UseCases.SectionUseCases
         public void CreateEmptySectionInDocument()
         {
             LanguagesComponent defaultLanguagesCompenet = LocalDocument.GetLanguageComponent();
-            SectionComposite newEmptySubscetion = new SectionComposite("Empty Subsection", IdentityCreator.CreateSubObjectId(LocalDocument.SystemId), defaultLanguagesCompenet);
+            SectionComposite newEmptySubscetion = new SectionComposite("Empty Subsection", IdCreator.CreateSubObjectId(LocalDocument.SystemId), defaultLanguagesCompenet, LocalDocument.SystemId);
             List<SectionComponent> localSections = LocalDocument.GetSections();
             localSections.Add(newEmptySubscetion);
             LocalDocument.SetSections(localSections);
@@ -49,7 +47,7 @@ namespace Domain.UseCases.SectionUseCases
         {
             return LocalDocument.GetSections();
         }
-        public SectionComponent ReadSectionwithId(int sectionId) 
+        public SectionComponent ReadSectionById(int sectionId) 
         {
             if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() == 0)
             {
@@ -58,7 +56,7 @@ namespace Domain.UseCases.SectionUseCases
             else if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() > 1)
             {
                 return LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).First();
-                throw new SectionsInDocumentCRUDUseCaseException("the section Id had a replacted id, the first result was returned");
+                throw new SectionsInDocumentCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else 
             {

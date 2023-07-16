@@ -21,12 +21,12 @@ namespace Domain.UseCases.SectionUseCases
         public void CreateEmptySectionInDocument(int DocId)
         {
             LanguagesComponent defaultLanguagesCompenet = LanguagesComponentService.GetLanguagesComponentFromDocument(DocId);
-            SectionComposite newEmptySubscetion = new SectionComposite("Empty Subsection", IdentityCreator.CreateObjectId(), defaultLanguagesCompenet);
+            SectionComposite newEmptySubscetion = new SectionComposite("Empty Subsection", IdentityCreator.CreateObjectId(), defaultLanguagesCompenet, DocId);
             SectionPersistenceService.CreateSectionInDocument(DocId, newEmptySubscetion);
         }
         public void CreateEmptySectionInDocumentWithLanguagesComponent(int DocId, string title, LanguagesComponent languagesComponent)
         {
-            SectionComposite newSubscetion = new SectionComposite(title, IdentityCreator.CreateSubObjectId(DocId), languagesComponent);
+            SectionComposite newSubscetion = new SectionComposite(title, IdentityCreator.CreateSubObjectId(DocId), languagesComponent, DocId);
             SectionPersistenceService.CreateSectionInDocument(DocId, newSubscetion);
         }
         public SectionComponent ReadSectionFromDocumentById(int documentId, int SectionId)

@@ -67,7 +67,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         {
             // Arrange
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
-            var section = new SectionComposite("Valid Section", 1, _document.GetLanguageComponent()); // Create a valid section
+            var section = new SectionComposite("Valid Section", 1, _document.GetLanguageComponent(), 1); // Create a valid section
 
             // Act
             useCase.AddSectionToDocument(section);
@@ -82,7 +82,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         {
             // Arrange
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
-            var section = new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent()); // Create an invalid section
+            var section = new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent(), 1); // Create an invalid section
 
             // Act & Assert
             Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.AddSectionToDocument(section));
@@ -95,9 +95,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             useCase.GetDocument().SetSections(sections);
 
@@ -115,15 +115,15 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var sut = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             sut.GetDocument().SetSections(sections);
             int sectionId = 2;
 
             // Act
-            SectionComponent result = sut.ReadSectionwithId(sectionId);
+            SectionComponent result = sut.ReadSectionById(sectionId);
 
             // Assert
             Assert.NotNull(result);
@@ -137,15 +137,15 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             useCase.GetDocument().SetSections(sections);
             var sectionId = 4; // Non-existent section ID
 
             // Act & Assert
-            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.ReadSectionwithId(sectionId));
+            Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => useCase.ReadSectionById(sectionId));
         }
 
         [Fact]
@@ -155,9 +155,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             useCase.GetDocument().SetSections(sections);
             var title = "Section 2";
@@ -177,9 +177,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             useCase.GetDocument().SetSections(sections);
             var title = "Section 4"; // Non-existent section title
@@ -195,9 +195,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
 
             // Act
@@ -215,7 +215,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent()) // Invalid section
+                new SectionComposite("Invalid Section", 1, _document.GetLanguageComponent(), 1) // Invalid section
             };
 
             // Act & Assert
@@ -229,9 +229,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
     {
-        new SectionComposite("Section 1", 1, _document.GetLanguageComponent()),
-        new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-        new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+        new SectionComposite("Section 1", 1, _document.GetLanguageComponent(), 1),
+        new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+        new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
     };
             useCase.GetDocument().SetSections(sections);
             var sectionIdToRemove = 2;
@@ -250,9 +250,9 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var useCase = new SectionsInDocumentCRUDUseCase(_objectIdentifierService, _document, _criteria);
             var sections = new List<SectionComponent>
             {
-                new SectionComposite("Undeleatable", 1, _document.GetLanguageComponent()),
-                new SectionComposite("Section 2", 2, _document.GetLanguageComponent()),
-                new SectionComposite("Section 3", 3, _document.GetLanguageComponent())
+                new SectionComposite("Undeleatable", 1, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 2", 2, _document.GetLanguageComponent(), 1),
+                new SectionComposite("Section 3", 3, _document.GetLanguageComponent(), 1)
             };
             useCase.GetDocument().SetSections(sections);
             var sectionIdToRemove = 1;

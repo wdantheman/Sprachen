@@ -7,11 +7,13 @@ namespace Domain.Entities.DataObjects.DocumentComposite
     {
         public List<SectionComponent> Subsections { get; private set; }
         public Dictionary<Entry, EntryTranslationBlock> TranslationComponents { get; private set; }
-        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent) : 
+        public int SourceDocument;
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, int sourceDoc) : 
             base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
             TranslationComponents = new Dictionary<Entry, EntryTranslationBlock>();
+            SourceDocument = sourceDoc;
         }
         public void SetSubsections(List<SectionComponent> subsections) 
         {
