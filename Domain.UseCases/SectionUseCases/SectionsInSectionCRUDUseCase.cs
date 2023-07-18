@@ -41,7 +41,7 @@ namespace Domain.UseCases.SectionUseCases
             }
             if (!Criteria.IsSectionValid(section))
             {
-                throw new SectionsInDocumentCRUDUseCaseException("the section to add is not Valid");
+                throw new SectionsCRUDUseCaseException("the section to add is not Valid");
             }
             else
             {
@@ -56,12 +56,12 @@ namespace Domain.UseCases.SectionUseCases
         {
             if (LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).Count() == 0)
             {
-                throw new SectionsInDocumentCRUDUseCaseException("the section Id didn't returned results");
+                throw new SectionsCRUDUseCaseException("the section Id didn't returned results");
             }
             else if (LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).Count() > 1)
             {
                 return LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).First();
-                throw new SectionsInDocumentCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
+                throw new SectionsCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else
             {
@@ -72,12 +72,12 @@ namespace Domain.UseCases.SectionUseCases
         {
             if (LocalSection.Subsections.Where(section => section.Title == title).Count() == 0)
             {
-                throw new SectionsInDocumentCRUDUseCaseException("the section Title didn't returned results");
+                throw new SectionsCRUDUseCaseException("the section Title didn't return any results");
             }
             else if (LocalSection.Subsections.Where(section => section.Title == title).Count() > 1)
             {
                 return LocalSection.Subsections.Where(section => section.Title == title).First();
-                throw new SectionsInDocumentCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
+                throw new SectionsCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else
             {
@@ -88,7 +88,7 @@ namespace Domain.UseCases.SectionUseCases
         {
             if (!Criteria.AreSectionsValid(newSections))
             {
-                throw new SectionsInDocumentCRUDUseCaseException("Sections couldn't be Updated as they weren't Valid");
+                throw new SectionsCRUDUseCaseException("Sections couldn't be Updated as they weren't Valid");
             }
             else
             {
@@ -97,16 +97,21 @@ namespace Domain.UseCases.SectionUseCases
         }
         public void DeleteSectionFromSection(int sectionId)
         {
-            List<SectionComponent> localList = LocalSection.Subsections;
-            SectionComponent LocalComponent = LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).First();
-            if (!Criteria.CanSectionBeRemoved(LocalComponent))
+
+            SectionComponent TempSubsectionsToDeleate = LocalSection.Subsections.SingleOrDefault(section => section.DocSectionId == sectionId);
+            List<SectionComponent> TempSubsections = LocalSection.Subsections;
+            if(TempSubsectionsToDeleate == null)
             {
-                throw new SectionsInDocumentCRUDUseCaseException("Section couldn't be Removed");
+                throw new SectionsCRUDUseCaseException("There is no section to remove");
+            }
+            else if (!Criteria.CanSectionBeRemoved(TempSubsectionsToDeleate)) 
+            {
+                throw new SectionsCRUDUseCaseException("Section couldn't be Removed");
             }
             else
             {
-                localList.Remove(LocalComponent);
-                LocalSection.SetSubsections(localList);
+                TempSubsections.Remove(TempSubsectionsToDeleate);
+                LocalSection.SetSubsections(TempSubsections);
             }
         }
     }

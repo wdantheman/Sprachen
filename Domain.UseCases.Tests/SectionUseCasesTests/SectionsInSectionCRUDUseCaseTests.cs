@@ -20,9 +20,8 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
 
         public SectionsInSectionCRUDUseCaseTests()
         {
-            // Initialize necessary dependencies and objects
-            _objectIdentifierService = new ObjectIdentifierServiceMock(); // Replace with your implementation or mock
-            _criteria = new SectionConfigCriteriaMock(); // Replace with your implementation or mock
+            _objectIdentifierService = new ObjectIdentifierServiceMock(); 
+            _criteria = new SectionConfigCriteriaMock(); 
             _localSection = new SectionComposite("Section test", 14, new LanguagesComponent(4), 143); // Create a test instance or use a mock object
 
             // Create an instance of SectionsInSectionCRUDUseCase with the dependencies
@@ -74,7 +73,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var invalidSection = new SectionComposite("Invalid Section", 54, new LanguagesComponent(5), 143);
 
             // Act & Assert
-            var exception = Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => _useCase.AddSubsectionToSection(invalidSection));
+            var exception = Assert.Throws<SectionsCRUDUseCaseException>(() => _useCase.AddSubsectionToSection(invalidSection));
             Assert.Equal("the section to add is not Valid", exception.Message);
         }
 
@@ -143,8 +142,8 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var sectionId = 1;
 
             // Act & Assert
-            var exception = Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => _useCase.ReadSectionById(sectionId));
-            Assert.Equal("the section Id didn't return any results", exception.Message);
+            var exception = Assert.Throws<SectionsCRUDUseCaseException>(() => _useCase.ReadSectionById(sectionId));
+            Assert.Equal("the section Id didn't returned results", exception.Message);
         }
 
         [Fact]
@@ -186,7 +185,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var title = "Non-existent Section";
 
             // Act & Assert
-            var exception = Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => _useCase.ReadSectionByTitle(title));
+            var exception = Assert.Throws<SectionsCRUDUseCaseException>(() => _useCase.ReadSectionByTitle(title));
             Assert.Equal("the section Title didn't return any results", exception.Message);
         }
 
@@ -233,7 +232,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var newSections = new List<SectionComponent> { subsection1, subsection2 };
 
             // Act & Assert
-            var exception = Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => _useCase.UpdateSections(newSections));
+            var exception = Assert.Throws<SectionsCRUDUseCaseException>(() => _useCase.UpdateSections(newSections));
             Assert.Equal("Sections couldn't be Updated as they weren't Valid", exception.Message);
         }
 
@@ -253,14 +252,14 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         }
 
         [Fact]
-        public void DeleteSectionFromSection_InvalidSectionId_ThrowsSectionsInDocumentCRUDUseCaseException()
+        public void DeleteSectionFromSection_InvalidSectionId_ThrowsSectionsInSectionsCRUDUseCaseException()
         {
             // Arrange
             var sectionId = 1;
 
             // Act & Assert
-            var exception = Assert.Throws<SectionsInDocumentCRUDUseCaseException>(() => _useCase.DeleteSectionFromSection(sectionId));
-            Assert.Equal("Section couldn't be Removed", exception.Message);
+            var exception = Assert.Throws<SectionsCRUDUseCaseException>(() => _useCase.DeleteSectionFromSection(sectionId));
+            Assert.Equal("There is no section to remove", exception.Message);
         }
     }
 }
