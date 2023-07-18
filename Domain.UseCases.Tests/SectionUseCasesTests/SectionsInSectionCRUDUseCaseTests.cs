@@ -2,11 +2,6 @@
 using Domain.Entities;
 using Domain.UseCases.Exceptions;
 using Domain.UseCases.SectionUseCases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities.DataObjects;
 
 namespace Domain.UseCases.Tests.SectionUseCasesTests

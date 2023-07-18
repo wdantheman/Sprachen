@@ -28,6 +28,6 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             translationComponents.Clear();
             TranslationComponents = translationComponents;
-        }        
+        }
     }
 }
