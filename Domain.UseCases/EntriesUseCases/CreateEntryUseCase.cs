@@ -18,6 +18,14 @@ namespace Domain.UseCases.EntriesUseCases
             IdentifierService = objectIdCreator;
             CreatorCriteria = criteria;
         }
+        public Entry CreateEmptyEntry() 
+        {
+            Entry newEmptyEntry = new Entry(IdentifierService.CreateSubObjectId(Section.DocSectionId), "  ");
+            EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
+            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;            
+            TempDic.Add(newEmptyEntry, newTranslationBlock);
+            Section.SetTranslationComponents(TempDic);
+        }
 
     }
 

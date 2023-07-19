@@ -27,7 +27,7 @@ namespace Domain.UseCases.EntriesUseCases
         }
 
 
-        public void CreateEmptyEntry() 
+        public void CreateEmptyEntryInSection() 
         {
             Entry newEmptyEntry = new Entry(IdentityCreator.CreateSubObjectId(Section.DocSectionId), "  ");
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
@@ -35,7 +35,7 @@ namespace Domain.UseCases.EntriesUseCases
             TempDic.Add(newEmptyEntry, newTranslationBlock);
             Section.SetTranslationComponents(TempDic);
         }
-        public void CreateNewEntry(Entry entry)
+        public void CreateNewEntryInSection(Entry entry)
         {
             
         }

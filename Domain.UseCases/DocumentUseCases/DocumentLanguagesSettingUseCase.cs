@@ -35,6 +35,5 @@ namespace Domain.UseCases.DocumentUseCases
         {
             DocumentLanguagesService.RemoveTargetLanguagetoDocument(documentId, language);
         }
-
     }
 }
