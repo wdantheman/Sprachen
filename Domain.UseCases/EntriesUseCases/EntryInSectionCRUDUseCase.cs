@@ -21,6 +21,12 @@ namespace Domain.UseCases.EntriesUseCases
             Section = section;
             EntryConfigCriteria = entryCriteria;
         }
+        public void ResetSection(SectionComposite section)
+        {
+            Section = section;
+        }
+
+
         public void CreateEmptyEntry() 
         {
             Entry newEmptyEntry = new Entry(IdentityCreator.CreateSubObjectId(Section.DocSectionId), "  ");
@@ -29,6 +35,35 @@ namespace Domain.UseCases.EntriesUseCases
             TempDic.Add(newEmptyEntry, newTranslationBlock);
             Section.SetTranslationComponents(TempDic);
         }
+        public void CreateNewEntry(Entry entry)
+        {
+            
+        }
+        public Entry GetEntrybyId()
+        {
+            
+        }
+        public Entry GetEntryByContent()
+        {
+
+        }
+        public void UpdateEntry(int entryId, Entry newEntry)
+        {
+
+        }
+        public void DeleateEntryById(int entryId)
+        {
+
+        }
+        public void DeleateEntryByContent(string content)
+        {
+
+        }
+
+
+
+
+
 
     }
 }
