@@ -89,8 +89,7 @@ namespace Domain.UseCases.SectionUseCases
             {
                 LocalDocument.SetSections(newSections);
             }
-        }
-        
+        }        
         public void DeleteSectionFromDocument(int sectionId) 
         {
             List<SectionComponent> localList = LocalDocument.GetSections();
@@ -105,6 +104,5 @@ namespace Domain.UseCases.SectionUseCases
                 LocalDocument.SetSections(localList);
             }
         }
-
     }
 }

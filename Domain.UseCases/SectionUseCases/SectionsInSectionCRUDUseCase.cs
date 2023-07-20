@@ -1,8 +1,5 @@
-﻿using Domain.Entities.PersistenceServices;
-using Domain.Entities;
-using Domain.Entities.PersistenceServices.SectionPersistenceServices;
+﻿using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
-using Domain.Entities.DataObjects;
 using Domain.UseCases.Exceptions;
 
 namespace Domain.UseCases.SectionUseCases

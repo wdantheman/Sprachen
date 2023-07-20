@@ -1,32 +1,32 @@
 using Domain.Entities;
-using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects.EntryComposite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.UseCases.Exceptions;
 
 namespace Domain.UseCases.EntriesUseCases
 {
     public class CreateEntryUseCase
     {
         internal IObjectIdentifierService IdentifierService;
-        internal IDocumentCreatorCriteria CreatorCriteria;
-        public CreateEntryUseCase(IObjectIdentifierService objectIdCreator, IDocumentCreatorCriteria criteria)
+        internal IEntryCreatorCriteria CreatorCriteria;
+        public CreateEntryUseCase(IObjectIdentifierService objectIdCreator, IEntryCreatorCriteria criteria)
         {
             IdentifierService = objectIdCreator;
             CreatorCriteria = criteria;
         }
-        public Entry CreateEmptyEntry() 
+        public Entry CreateEmptyEntry(int sourceDocumentId)
         {
-            Entry newEmptyEntry = new Entry(IdentifierService.CreateSubObjectId(Section.DocSectionId), "  ");
-            EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;            
-            TempDic.Add(newEmptyEntry, newTranslationBlock);
-            Section.SetTranslationComponents(TempDic);
+            return new Entry(IdentifierService.CreateSubObjectId(sourceDocumentId), "");
         }
-
+        public Entry CreateEntry(int sourceDocumentId, string content)
+        {
+            if (!CreatorCriteria.IsContentValid(content))
+            {
+                throw new CreateEntryUseCaseException("the Content input is not valid");
+            }
+            else 
+            {
+                return new Entry(IdentifierService.CreateSubObjectId(sourceDocumentId), content);
+            }            
+        }
     }
-
 }
