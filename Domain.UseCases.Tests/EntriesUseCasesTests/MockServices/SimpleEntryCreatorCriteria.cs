@@ -1,11 +1,6 @@
 ﻿using Domain.Entities.DataObjects.EntryComposite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.UseCases.Tests.EntriesUseCasesTests
+namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
 {
     public class SimpleEntryCreatorCriteria : IEntryCreatorCriteria
     {

@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.UseCases.EntriesUseCases;
 using Domain.UseCases.Exceptions;
 using Moq;
+using Domain.UseCases.Tests.EntriesUseCasesTests.MockServices;
 
 namespace Domain.UseCases.Tests.EntriesUseCasesTests
 {
