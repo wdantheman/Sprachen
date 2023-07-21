@@ -15,6 +15,9 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
         internal SimpleEntryConfigCriteria mockConfigurationCriteria = new SimpleEntryConfigCriteria();
         internal SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
 
+
+        //this doesn't work because you need to use [theory] as the [Fact] method resets previous inputted variables as before the decorator
+        
         [Fact]
         public void AddEmptyEntryInSection_ShouldAddEntryWithEmptyContent()
         {
