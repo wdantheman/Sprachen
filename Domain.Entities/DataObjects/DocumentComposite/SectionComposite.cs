@@ -26,7 +26,7 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         }
         public void SetTranslationComponents(Dictionary<Entry, EntryTranslationBlock> translationComponents) 
         {
-            translationComponents.Clear();
+            TranslationComponents.Clear();
             TranslationComponents = translationComponents;
         }
     }

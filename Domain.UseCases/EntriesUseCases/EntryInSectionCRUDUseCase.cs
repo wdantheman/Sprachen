@@ -9,15 +9,15 @@ namespace Domain.UseCases.EntriesUseCases
     public class EntryInSectionCRUDUseCase
     {
         internal IObjectIdentifierService IdentityCreator;
-        internal SectionComposite Section;
         internal IEntryConfigCriteria EntryConfigCriteria;
+        public SectionComposite Section { get; internal set; }
         internal IEntryCreatorCriteria EntryCreatorCriteria;
-        public EntryInSectionCRUDUseCase(IObjectIdentifierService idCreator, IEntryConfigCriteria entryCriteria, 
+        public EntryInSectionCRUDUseCase(IObjectIdentifierService idCreator, IEntryConfigCriteria entryConfigCriteria, 
             SectionComposite section, IEntryCreatorCriteria creatorCriteria)
         {
             IdentityCreator = idCreator;
+            EntryConfigCriteria = entryConfigCriteria;
             Section = section;
-            EntryConfigCriteria = entryCriteria;
             EntryCreatorCriteria = creatorCriteria;
         }
         public void ResetSection(SectionComposite section)
@@ -29,19 +29,42 @@ namespace Domain.UseCases.EntriesUseCases
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEmptyEntry = EntryCreator.CreateEmptyEntry(Section.SourceDocument);
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;            
-            TempDic.Add(newEmptyEntry, newTranslationBlock);
-            Section.SetTranslationComponents(TempDic);
+            if (Section.TranslationComponents == null)
+            {
+                Dictionary<Entry, EntryTranslationBlock> TempDic = new Dictionary<Entry, EntryTranslationBlock>
+                {
+                    { newEmptyEntry, newTranslationBlock }
+                };
+                Section.SetTranslationComponents(TempDic);
+            }
+            else
+            {
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                TempDic.Add(newEmptyEntry, newTranslationBlock);
+                Section.SetTranslationComponents(TempDic);
+            }
         }
         public void AddNewEntryInSection(string content)
         {
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEntry = EntryCreator.CreateEntry(Section.SourceDocument, content);
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;
-            TempDic.Add(newEntry, newTranslationBlock);
-            Section.SetTranslationComponents(TempDic);
+            if (Section.TranslationComponents == null)
+            {
+                Dictionary<Entry, EntryTranslationBlock> TempDic = new Dictionary<Entry, EntryTranslationBlock>
+                {
+                    { newEntry, newTranslationBlock }
+                };
+                Section.SetTranslationComponents(TempDic);
+            }
+            else
+            {
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                TempDic.Add(newEntry, newTranslationBlock);
+                Section.SetTranslationComponents(TempDic);
+            }
         }
+
         public void AddEntryInSection(Entry entry)
         {
             if (!EntryConfigCriteria.IsEntryValidInSection(entry, Section))

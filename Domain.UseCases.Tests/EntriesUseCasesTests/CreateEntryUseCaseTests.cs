@@ -26,7 +26,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
 
             // Assert
             Assert.Equal(22, result.Id);
-            Assert.Equal("", result.Content);
+            Assert.Equal(" ", result.Content);
         }
 
         [Fact]

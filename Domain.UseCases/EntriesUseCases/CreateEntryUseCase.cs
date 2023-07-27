@@ -15,7 +15,7 @@ namespace Domain.UseCases.EntriesUseCases
         }
         public Entry CreateEmptyEntry(int sourceDocumentId)
         {
-            return new Entry(IdentifierService.CreateSubObjectId(sourceDocumentId), "");
+            return new Entry(IdentifierService.CreateSubObjectId(sourceDocumentId), " ");
         }
         public Entry CreateEntry(int sourceDocumentId, string content)
         {

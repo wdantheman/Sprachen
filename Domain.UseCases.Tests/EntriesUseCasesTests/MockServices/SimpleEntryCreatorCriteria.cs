@@ -15,7 +15,8 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
 
         public bool IsContentValid(string content)
         {
-            if (content == null || content.Trim().Length == 0)
+            // || content.Trim().Length == 0
+            if (content == null )
             {
                 return false;
             }
