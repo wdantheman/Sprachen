@@ -16,7 +16,14 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
             int entryId = entry.Id;
             // You can replace the condition with your specific logic.
             var keys = section.TranslationComponents.Keys.Where(entry => entry.Id == entryId);
-            return !keys.Any() || entry.Content != "invalid content";
+            if (entry.Content == "invalid content")
+            {
+                return false;
+            }
+            else
+            {
+                return !keys.Any();
+            }
         }
 
         public bool CanEntryBeRemovedFromSection(Entry entry, SectionComposite section)

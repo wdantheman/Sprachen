@@ -6,6 +6,7 @@ using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects;
 using Domain.UseCases.Exceptions;
 using Domain.Entities;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.Tests.EntriesUseCasesTests
 {
@@ -67,19 +68,24 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             // Assert
             Assert.NotEmpty(mockSection.TranslationComponents);
             Assert.Equal(content, useCase.GetEntryByContent(content).Content);
-        }   
+        }
 
-        //[Fact]
-        //public void AddEntryInSection_InvalidEntry_ShouldThrowException()
-        //{
-        //    // Arrange
-        //    var useCase = new EntryInSectionCRUDUseCase(mockIdCreator, mockConfigurationCriteria, section, mockEntryCreatorCriteria);
-        //    var invalidEntry = new Entry(12, "invalid content");
+        [Fact]
+        public void AddEntryInSection_InvalidEntry_ShouldThrowException()
+        {
+            // Arrange
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
 
-        //    // Act & Assert
-        //    // Verify that an exception is thrown when adding an invalid entry
-        //    Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.AddEntryInSection(invalidEntry));
-        //}
+            EntryInSectionCRUDUseCase useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            Entry invalidEntry = new Entry(15, "invalid content");
+
+            // Act & Assert
+            // Verify that an exception is thrown when adding an invalid entry
+            Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.AddEntryInSection(invalidEntry));
+        }
         [Fact]
         public void AddEntryInSection_ValidEntry_AddsEntryAndTranslationBlock()
         {
