@@ -2,6 +2,7 @@
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects.EntryComposite;
 using Domain.UseCases.Exceptions;
+using System.Collections.Generic;
 using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.EntriesUseCases
@@ -74,7 +75,7 @@ namespace Domain.UseCases.EntriesUseCases
             else
             {
                 EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 TempDic.Add(entry, newTranslationBlock);
                 Section.SetTranslationComponents(TempDic);
             }
@@ -113,13 +114,13 @@ namespace Domain.UseCases.EntriesUseCases
         }
         public void UpdateEntryContentById(int entryId, string newEntryContent)
         {
-
-            this.AddNewEntryInSection(newEntryContent);
+            AddNewEntryInSection(newEntryContent);
+            DeleateEntryById(entryId);
         }
         public void DeleateEntryById(int entryId)
         {
             Entry? EntryToDeleate =  Section.TranslationComponents.Keys.SingleOrDefault(entry => entry.Id == entryId);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;
+            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             if (EntryToDeleate == null)
             {
                 throw new EntryInSectionCRUDUseCaseException("There is no Entry to remove");
@@ -136,19 +137,26 @@ namespace Domain.UseCases.EntriesUseCases
         }
         public void DeleateEntryByContent(string content)
         {
-            Entry? EntryToDeleate = Section.TranslationComponents.Keys.SingleOrDefault(entry => entry.Content == content);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents;
-            if (EntryToDeleate == null)
+
+            IEnumerable<Entry> EntriesToDeleate = Section.TranslationComponents.Keys.Where(entry => entry.Content == content).Select(entry => entry);
+            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            if (EntriesToDeleate == null || EntriesToDeleate.Count() == 0 )
             {
                 throw new EntryInSectionCRUDUseCaseException("There is no Entry to remove");
             }
-            else if (!EntryConfigCriteria.CanEntryBeRemovedFromSection(EntryToDeleate, Section))
-            {
-                throw new SectionsCRUDUseCaseException("Entry couldn't be Removed");
-            }
             else
             {
-                TempDic.Remove(EntryToDeleate);
+                foreach (Entry item in EntriesToDeleate)
+                {
+                    if (!EntryConfigCriteria.CanEntryBeRemovedFromSection(item, Section))
+                    {
+                        throw new SectionsCRUDUseCaseException("Entry couldn't be Removed");
+                    }
+                    else 
+                    {
+                        TempDic.Remove(item);
+                    }
+                }
                 Section.SetTranslationComponents(TempDic);
             }
         }

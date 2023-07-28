@@ -6,7 +6,6 @@ using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects;
 using Domain.UseCases.Exceptions;
 using Domain.Entities;
-using System.Collections.Generic;
 
 namespace Domain.UseCases.Tests.EntriesUseCasesTests
 {
@@ -41,7 +40,6 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             EntryInSectionCRUDUseCase useCase = new EntryInSectionCRUDUseCase(mockIdCreator, mockEntryConfigCriteria, mockSection, mockCreatorCriteria);
 
             // Act
-
             useCase.AddEmptyEntryInSection();
 
             //// Assert
@@ -90,18 +88,10 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
             SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
             IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
-
-            EntryInSectionCRUDUseCase useCase = new EntryInSectionCRUDUseCase(mockIdCreator, mockEntryConfigCriteria, mockSection, mockCreatorCriteria);
-
-
-            // Inject a fake EntryConfigCriteria that returns true for all entries
-            var fakeEntryConfigCriteria = new Mock<IEntryConfigCriteria>();
-            fakeEntryConfigCriteria.Setup(ec => ec.IsEntryValidInSection(It.IsAny<Entry>(), It.IsAny<SectionComposite>())).Returns(true);
-
-            var useCase = new EntryInSectionCRUDUseCase(idCreator, fakeEntryConfigCriteria.Object, section, creatorCriteria);
-
+            EntryInSectionCRUDUseCase useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            
             // Act
-            var entry = new Entry(); // Create a test instance of Entry
+            var entry = new Entry(12, "some content"); // Create a test instance of Entry
             useCase.AddEntryInSection(entry);
 
             // Assert
@@ -124,7 +114,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             var useCase = new EntryInSectionCRUDUseCase(idCreator, fakeEntryConfigCriteria.Object, section, creatorCriteria);
 
             // Act & Assert
-            var entry = new Entry(); // Create a test instance of Entry
+            var entry = new Entry(12, "some content"); // Create a test instance of Entry
             Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.AddEntryInSection(entry));
         }
 
@@ -138,8 +128,8 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
 
             // Inject some test entries into the Section for testing
-            var entry1 = new Entry { Id = 1 };
-            var entry2 = new Entry { Id = 2 };
+            var entry1 = new Entry(1, "some content");
+            var entry2 = new Entry(2, "some content 2");
             section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
             section.TranslationComponents.Add(entry2, new EntryTranslationBlock(section.LanguagesComponent));
 
@@ -171,13 +161,13 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
         public void GetEntryByContent_ExistingEntryContent_ReturnsEntry()
         {
             // Arrange
-            var idCreator = new Mock<IObjectIdentifierService>().Object;
-            var entryConfigCriteria = new Mock<IEntryConfigCriteria>().Object;
-            var section = new SectionComposite(); // Create a test instance of SectionComposite
-            var creatorCriteria = new Mock<IEntryCreatorCriteria>().Object;
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
 
             // Inject some test entries into the Section for testing
-            var entry1 = new Entry { Id = 1, Content = "Test Content" };
+            var entry1 = new Entry(12, "Test Content");
             section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
@@ -195,7 +185,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             // Arrange
             var idCreator = new Mock<IObjectIdentifierService>().Object;
             var entryConfigCriteria = new Mock<IEntryConfigCriteria>().Object;
-            var section = new SectionComposite(); // Create a test instance of SectionComposite
+            var section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
             var creatorCriteria = new Mock<IEntryCreatorCriteria>().Object;
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
@@ -208,69 +198,95 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
         public void UpdateEntryContentById_ValidEntryId_UpdatesEntryContent()
         {
             // Arrange
-            var idCreator = new Mock<IObjectIdentifierService>().Object;
-            var entryConfigCriteria = new Mock<IEntryConfigCriteria>().Object;
-            var section = new SectionComposite(); // Create a test instance of SectionComposite
-            var creatorCriteria = new Mock<IEntryCreatorCriteria>().Object;
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
-
+            useCase.AddEntryInSection(new Entry(1, "Test Content"));
+            string newContent = "New content";
             // Act
-            useCase.UpdateEntryContentById(1, "New Content");
-
-            // Assert
-            var updatedEntry = section.TranslationComponents.Keys.FirstOrDefault(entry => entry.Id == 1);
+            useCase.UpdateEntryContentById(1, newContent);
+            //// Assert
+            Entry updatedEntry = useCase.GetEntryByContent(newContent);
             Assert.NotNull(updatedEntry);
-            Assert.Equal("New Content", updatedEntry.Content);
+            Assert.Equal(newContent, updatedEntry.Content);
         }
 
         [Fact]
         public void DeleateEntryById_ValidEntryId_RemovesEntry()
         {
             // Arrange
-            var idCreator = new Mock<IObjectIdentifierService>().Object;
-            var entryConfigCriteria = new Mock<IEntryConfigCriteria>().Object;
-            var section = new SectionComposite(); // Create a test instance of SectionComposite
-            var creatorCriteria = new Mock<IEntryCreatorCriteria>().Object;
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
 
-            // Inject some test entries into the Section for testing
-            var entry1 = new Entry { Id = 1, Content = "Test Content" };
-            section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
-
+            var entry1 = new Entry(12, "some content");
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            useCase.AddEntryInSection(entry1);
 
             // Act
-            useCase.DeleateEntryById(1);
+            useCase.DeleateEntryById(12);
 
             // Assert
             Assert.Empty(section.TranslationComponents);
         }
+        [Fact]
+        public void DeleateManyEntriesById_ValidEntryId_RemovesEntry()
+        {
+            // Arrange
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
+
+            // Inject some test entries into the Section for testing
+            var entry1 = new Entry(12, "some content");
+            var entry2 = new Entry(13, "some content 2");
+            var entry3 = new Entry(14, "some content 3");
+            var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            useCase.AddEntryInSection(entry1);
+            useCase.AddEntryInSection(entry2);
+            useCase.AddEntryInSection(entry3);
+            // Act
+            useCase.DeleateEntryById(12);
+            useCase.DeleateEntryById(13);
+
+            //// Assert
+            Assert.Single(section.TranslationComponents);
+            Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.GetEntrybyId(12));
+            Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.GetEntrybyId(13));
+            Assert.NotNull(useCase.GetEntrybyId(14));
+        }
+
 
         [Fact]
         public void DeleateEntryByContent_ValidEntryContent_RemovesEntry()
         {
             // Arrange
-            var idCreator = new Mock<IObjectIdentifierService>().Object;
-            var entryConfigCriteria = new Mock<IEntryConfigCriteria>().Object;
-            var section = new SectionComposite(); // Create a test instance of SectionComposite
-            var creatorCriteria = new Mock<IEntryCreatorCriteria>().Object;
-
-            // Inject some test entries into the Section for testing
-            var entry1 = new Entry { Id = 1, Content = "Test Content" };
-            section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
-
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
+            string testContent = "Test content to deleate";
+            Entry entry1 = new Entry(12, "some content");
+            Entry entry2 = new Entry(13, testContent);
+            Entry entry3 = new Entry(14, "some content 3");
+            Entry entry4 = new Entry(15, testContent);
+            
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            useCase.AddEntryInSection(entry1);
+            useCase.AddEntryInSection(entry2);
+            useCase.AddEntryInSection(entry3);
+            useCase.AddEntryInSection(entry4);
 
             // Act
-            useCase.DeleateEntryByContent("Test Content");
+            useCase.DeleateEntryByContent(testContent);
 
             // Assert
-            Assert.Empty(section.TranslationComponents);
+            Assert.Equal(2, section.TranslationComponents.Count);
         }
-
-
-
-
-
     }
 }
