@@ -2,6 +2,7 @@
 using Domain.Entities.DataObjects.EntryComposite;
 using Domain.Entities.DataObjects;
 using Domain.Entities.Exceptions;
+using System.Reflection;
 
 namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
 {
@@ -36,7 +37,7 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             sectionComposite.SetTranslationComponents(translationComponents);
 
             // Assert
-            Assert.Equal(translationComponents, sectionComposite.TranslationComponents);
+            Assert.Equal(translationComponents, sectionComposite.GetTranslationComponent());
         }
 
         [Fact]
@@ -49,5 +50,45 @@ namespace Domain.Entities.Tests.DataObjectsTest.DocumentCompositeTests
             // Act // Assert
             Assert.Throws<SectionCompositeException>(() => sectionComposite.SetSubsections(null));
         }
+        [Fact]
+        public void Cannot_Modify_TranslationComponents()
+        {
+            // Arrange
+            var sectionComposite = new SectionComposite("Sample Title", 1, new LanguagesComponent(2), 123);
+            var entry = new Entry(13, "entry test");
+            var translationBlock = new EntryTranslationBlock(sectionComposite.LanguagesComponent); // You should create an instance of EntryTranslationBlock to add to the dictionary.
+            var translationComponents = new Dictionary<Entry, EntryTranslationBlock>
+            {
+                { entry, translationBlock }
+            };
+
+            // Act
+            sectionComposite.SetTranslationComponents(translationComponents);
+            var retrievedTranslationComponents = sectionComposite.GetTranslationComponent();
+
+            // Assert
+            Assert.NotSame(translationComponents, retrievedTranslationComponents);
+            //translationComponents.Clear();
+            Assert.NotEmpty(retrievedTranslationComponents);
+
+            // Attempt to modify TranslationComponents using reflection
+            var type = sectionComposite.GetType();
+            var translationComponentsField = type.GetField("TranslationComponents", BindingFlags.NonPublic | BindingFlags.Instance);
+            translationComponentsField.SetValue(sectionComposite, translationComponents);
+            Assert.NotNull(translationComponentsField);
+
+            //var modifiedTranslationComponents = new Dictionary<Entry, EntryTranslationBlock>
+            //{
+            //    // Create a new dictionary with different values
+            //    { new Entry(15, "entry test5"), new EntryTranslationBlock(sectionComposite.LanguagesComponent) }
+            //};
+            //translationComponentsField.SetValue(sectionComposite, modifiedTranslationComponents);
+
+            //// Assert that the property remains unchanged
+            //retrievedTranslationComponents = sectionComposite.GetTranslationComponent();
+            //Assert.NotSame(modifiedTranslationComponents, retrievedTranslationComponents);
+            //Assert.Empty(retrievedTranslationComponents);
+        }
+
     }
 }

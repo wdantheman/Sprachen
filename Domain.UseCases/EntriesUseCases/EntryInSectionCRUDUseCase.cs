@@ -30,7 +30,7 @@ namespace Domain.UseCases.EntriesUseCases
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEmptyEntry = EntryCreator.CreateEmptyEntry(Section.SourceDocument);
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-            if (Section.TranslationComponents == null)
+            if (Section.GetTranslationComponent() == null)
             {
                 Dictionary<Entry, EntryTranslationBlock> TempDic = new Dictionary<Entry, EntryTranslationBlock>
                 {
@@ -40,7 +40,7 @@ namespace Domain.UseCases.EntriesUseCases
             }
             else
             {
-                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 TempDic.Add(newEmptyEntry, newTranslationBlock);
                 Section.SetTranslationComponents(TempDic);
             }
@@ -50,7 +50,7 @@ namespace Domain.UseCases.EntriesUseCases
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEntry = EntryCreator.CreateEntry(Section.SourceDocument, content);
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-            if (Section.TranslationComponents == null)
+            if (Section.GetTranslationComponent() == null)
             {
                 Dictionary<Entry, EntryTranslationBlock> TempDic = new Dictionary<Entry, EntryTranslationBlock>
                 {
@@ -60,7 +60,7 @@ namespace Domain.UseCases.EntriesUseCases
             }
             else
             {
-                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 TempDic.Add(newEntry, newTranslationBlock);
                 Section.SetTranslationComponents(TempDic);
             }
@@ -75,41 +75,41 @@ namespace Domain.UseCases.EntriesUseCases
             else
             {
                 EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
-                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 TempDic.Add(entry, newTranslationBlock);
                 Section.SetTranslationComponents(TempDic);
             }
         }
         public Entry GetEntrybyId(int id)
         {
-            if (Section.TranslationComponents.Keys.Where(entry => entry.Id == id).Count() == 0)
+            if (Section.GetTranslationComponent().Keys.Where(entry => entry.Id == id).Count() == 0)
             {
                 throw new EntryInSectionCRUDUseCaseException("the Entry Id didn't returned results");
             }
-            else if (Section.TranslationComponents.Keys.Where(entry => entry.Id == id).Count() > 1)
+            else if (Section.GetTranslationComponent().Keys.Where(entry => entry.Id == id).Count() > 1)
             {
-                return Section.TranslationComponents.Keys.Where(entry => entry.Id == id).First();
+                return Section.GetTranslationComponent().Keys.Where(entry => entry.Id == id).First();
                 throw new EntryInSectionCRUDUseCaseException("the Entry Id had a duplicated id, the first result was returned");
             }
             else
             {
-                return Section.TranslationComponents.Keys.Where(entry => entry.Id == id).First();
+                return Section.GetTranslationComponent().Keys.Where(entry => entry.Id == id).First();
             }
         }
         public Entry GetEntryByContent(string content)
         {
-            if (Section.TranslationComponents.Keys.Where(entry => entry.Content == content).Count() == 0)
+            if (Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).Count() == 0)
             {
                 throw new EntryInSectionCRUDUseCaseException("the Entry Id didn't returned results");
             }
-            else if (Section.TranslationComponents.Keys.Where(entry => entry.Content == content).Count() > 1)
+            else if (Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).Count() > 1)
             {
-                return Section.TranslationComponents.Keys.Where(entry => entry.Content == content).First();
+                return Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).First();
                 throw new EntryInSectionCRUDUseCaseException("the Entry Id had a duplicated id, the first result was returned");
             }
             else
             {
-                return Section.TranslationComponents.Keys.Where(entry => entry.Content == content).First();
+                return Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).First();
             }
         }
         public void UpdateEntryContentById(int entryId, string newEntryContent)
@@ -119,8 +119,8 @@ namespace Domain.UseCases.EntriesUseCases
         }
         public void DeleateEntryById(int entryId)
         {
-            Entry? EntryToDeleate =  Section.TranslationComponents.Keys.SingleOrDefault(entry => entry.Id == entryId);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            Entry? EntryToDeleate =  Section.GetTranslationComponent().Keys.SingleOrDefault(entry => entry.Id == entryId);
+            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             if (EntryToDeleate == null)
             {
                 throw new EntryInSectionCRUDUseCaseException("There is no Entry to remove");
@@ -138,8 +138,8 @@ namespace Domain.UseCases.EntriesUseCases
         public void DeleateEntryByContent(string content)
         {
 
-            IEnumerable<Entry> EntriesToDeleate = Section.TranslationComponents.Keys.Where(entry => entry.Content == content).Select(entry => entry);
-            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.TranslationComponents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            IEnumerable<Entry> EntriesToDeleate = Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).Select(entry => entry);
+            Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             if (EntriesToDeleate == null || EntriesToDeleate.Count() == 0 )
             {
                 throw new EntryInSectionCRUDUseCaseException("There is no Entry to remove");

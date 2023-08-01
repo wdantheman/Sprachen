@@ -45,8 +45,8 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
 
             //// Assert
             //// Check that a new entry with empty content is added to the section
-            Assert.NotEmpty(mockSection.TranslationComponents);
-            Assert.NotEmpty(mockSection.TranslationComponents.Keys);
+            Assert.NotEmpty(mockSection.GetTranslationComponent());
+            Assert.NotEmpty(mockSection.GetTranslationComponent().Keys);
             // Add more specific assertions if needed
         }
 
@@ -66,7 +66,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             useCase.AddNewEntryInSection(content);
 
             // Assert
-            Assert.NotEmpty(mockSection.TranslationComponents);
+            Assert.NotEmpty(mockSection.GetTranslationComponent());
             Assert.Equal(content, useCase.GetEntryByContent(content).Content);
         }
 
@@ -101,7 +101,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             useCase.AddEntryInSection(entry);
 
             // Assert
-            Assert.True(section.TranslationComponents.ContainsKey(entry));
+            Assert.True(section.GetTranslationComponent().ContainsKey(entry));
         }
 
         [Fact]
@@ -136,8 +136,8 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             // Inject some test entries into the Section for testing
             var entry1 = new Entry(1, "some content");
             var entry2 = new Entry(2, "some content 2");
-            section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
-            section.TranslationComponents.Add(entry2, new EntryTranslationBlock(section.LanguagesComponent));
+            section.GetTranslationComponent().Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
+            section.GetTranslationComponent().Add(entry2, new EntryTranslationBlock(section.LanguagesComponent));
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
 
@@ -174,7 +174,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
 
             // Inject some test entries into the Section for testing
             var entry1 = new Entry(12, "Test Content");
-            section.TranslationComponents.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
+            section.GetTranslationComponent().Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
 
@@ -237,7 +237,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             useCase.DeleateEntryById(12);
 
             // Assert
-            Assert.Empty(section.TranslationComponents);
+            Assert.Empty(section.GetTranslationComponent());
         }
         [Fact]
         public void DeleateManyEntriesById_ValidEntryId_RemovesEntry()
@@ -261,7 +261,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             useCase.DeleateEntryById(13);
 
             //// Assert
-            Assert.Single(section.TranslationComponents);
+            Assert.Single(section.GetTranslationComponent());
             Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.GetEntrybyId(12));
             Assert.Throws<EntryInSectionCRUDUseCaseException>(() => useCase.GetEntrybyId(13));
             Assert.NotNull(useCase.GetEntrybyId(14));
@@ -292,7 +292,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             useCase.DeleateEntryByContent(testContent);
 
             // Assert
-            Assert.Equal(2, section.TranslationComponents.Count);
+            Assert.Equal(2, section.GetTranslationComponent().Count);
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Domain.Entities.DataObjects.EntryComposite;
 using Domain.Entities.Exceptions;
+using System.Collections.Generic;
 
 namespace Domain.Entities.DataObjects.DocumentComposite
 {
     public class SectionComposite : SectionComponent
     {
         public List<SectionComponent> Subsections { get; private set; }
-        public Dictionary<Entry, EntryTranslationBlock> TranslationComponents { get; private set; }
+        internal Dictionary<Entry, EntryTranslationBlock> TranslationComponents { get; set; }
         public int SourceDocument;
         public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, int sourceDoc) : 
             base(title, id, lenguagesComponent)
@@ -28,6 +29,11 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         {
             TranslationComponents.Clear();
             TranslationComponents = translationComponents;
+        }
+        public Dictionary<Entry, EntryTranslationBlock> GetTranslationComponent() 
+        {
+            Dictionary <Entry, EntryTranslationBlock> temp = new Dictionary<Entry, EntryTranslationBlock>(TranslationComponents);
+            return temp;
         }
     }
 }

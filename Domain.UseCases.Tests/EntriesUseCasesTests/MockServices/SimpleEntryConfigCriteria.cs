@@ -15,7 +15,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
         {
             int entryId = entry.Id;
             // You can replace the condition with your specific logic.
-            var keys = section.TranslationComponents.Keys.Where(entry => entry.Id == entryId);
+            var keys = section.GetTranslationComponent().Keys.Where(entry => entry.Id == entryId);
             if (entry.Content == "invalid content")
             {
                 return false;
