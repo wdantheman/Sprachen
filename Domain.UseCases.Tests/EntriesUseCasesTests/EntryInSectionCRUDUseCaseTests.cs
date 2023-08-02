@@ -136,8 +136,10 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             // Inject some test entries into the Section for testing
             var entry1 = new Entry(1, "some content");
             var entry2 = new Entry(2, "some content 2");
-            section.GetTranslationComponent().Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
-            section.GetTranslationComponent().Add(entry2, new EntryTranslationBlock(section.LanguagesComponent));
+            var temp = section.GetTranslationComponent();
+            temp.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
+            temp.Add(entry2, new EntryTranslationBlock(section.LanguagesComponent));
+            section.SetTranslationComponents(temp);
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
 
@@ -174,7 +176,9 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
 
             // Inject some test entries into the Section for testing
             var entry1 = new Entry(12, "Test Content");
-            section.GetTranslationComponent().Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
+            var temp = section.GetTranslationComponent();
+            temp.Add(entry1, new EntryTranslationBlock(section.LanguagesComponent));
+            section.SetTranslationComponents(temp);
 
             var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
 
