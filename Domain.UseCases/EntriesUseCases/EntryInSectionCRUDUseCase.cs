@@ -2,7 +2,6 @@
 using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects.EntryComposite;
 using Domain.UseCases.Exceptions;
-using System.Collections.Generic;
 using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.EntriesUseCases
