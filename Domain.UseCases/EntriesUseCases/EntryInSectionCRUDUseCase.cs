@@ -6,13 +6,13 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.EntriesUseCases
 {
-    public class EntryInSectionCRUDUseCase
+    public class EntryInSectionCRUDUseCase : IEntryInSectionCRUDUseCase
     {
         internal IObjectIdentifierService IdentityCreator;
         internal IEntryConfigCriteria EntryConfigCriteria;
         public SectionComposite Section { get; internal set; }
         internal IEntryCreatorCriteria EntryCreatorCriteria;
-        public EntryInSectionCRUDUseCase(IObjectIdentifierService idCreator, IEntryConfigCriteria entryConfigCriteria, 
+        public EntryInSectionCRUDUseCase(IObjectIdentifierService idCreator, IEntryConfigCriteria entryConfigCriteria,
             SectionComposite section, IEntryCreatorCriteria creatorCriteria)
         {
             IdentityCreator = idCreator;
@@ -24,7 +24,7 @@ namespace Domain.UseCases.EntriesUseCases
         {
             Section = section;
         }
-        public void AddEmptyEntryInSection() 
+        public void AddEmptyEntryInSection()
         {
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEmptyEntry = EntryCreator.CreateEmptyEntry(Section.SourceDocument);
@@ -118,7 +118,7 @@ namespace Domain.UseCases.EntriesUseCases
         }
         public void DeleateEntryById(int entryId)
         {
-            Entry? EntryToDeleate =  Section.GetTranslationComponent().Keys.SingleOrDefault(entry => entry.Id == entryId);
+            Entry? EntryToDeleate = Section.GetTranslationComponent().Keys.SingleOrDefault(entry => entry.Id == entryId);
             Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             if (EntryToDeleate == null)
             {
@@ -139,7 +139,7 @@ namespace Domain.UseCases.EntriesUseCases
 
             IEnumerable<Entry> EntriesToDeleate = Section.GetTranslationComponent().Keys.Where(entry => entry.Content == content).Select(entry => entry);
             Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            if (EntriesToDeleate == null || EntriesToDeleate.Count() == 0 )
+            if (EntriesToDeleate == null || EntriesToDeleate.Count() == 0)
             {
                 throw new EntryInSectionCRUDUseCaseException("There is no Entry to remove");
             }
@@ -151,7 +151,7 @@ namespace Domain.UseCases.EntriesUseCases
                     {
                         throw new SectionsCRUDUseCaseException("Entry couldn't be Removed");
                     }
-                    else 
+                    else
                     {
                         TempDic.Remove(item);
                     }

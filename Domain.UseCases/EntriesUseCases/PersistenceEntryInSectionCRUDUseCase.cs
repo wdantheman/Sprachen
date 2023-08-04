@@ -15,13 +15,14 @@ namespace Domain.UseCases.EntriesUseCases
     {
         internal IObjectIdentifierService IdentityCreator;
         internal ISectionEntryInSectionCRUDPersistenceService EntryPersistenceService;
-         
-        public PersistenceEntryInSectionCRUDUseCase(IObjectIdentifierService idcreator, ISectionEntryInSectionCRUDPersistenceService persistenceService)
+        internal IEntryInSectionCRUDUseCase EntryInSectionCRUDUseCase;
+
+        public PersistenceEntryInSectionCRUDUseCase(IObjectIdentifierService idcreator, ISectionEntryInSectionCRUDPersistenceService persistenceService, IEntryInSectionCRUDUseCase entryInSectionCRUDUseCase)
         {
             IdentityCreator = idcreator;
             EntryPersistenceService = persistenceService;
+            EntryInSectionCRUDUseCase = entryInSectionCRUDUseCase;
         }
-        //okay, I need to use the fucking CRUDObject, but, how? are going to inyect all the requirements for that objecto to, or are we hardcoding it? 
         public void CreateEmptyEntryInSection(int DocId, int sectionId)
         {
 
