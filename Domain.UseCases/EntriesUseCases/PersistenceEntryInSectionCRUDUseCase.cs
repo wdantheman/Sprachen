@@ -1,30 +1,18 @@
 ﻿using Domain.Entities;
 using Domain.Entities.DataObjects.DocumentComposite;
-using Domain.Entities.DataObjects;
 using Domain.Entities.PersistenceServices.EntryPersistenceServices;
-using Domain.Entities.PersistenceServices.SectionPersistenceServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities.DataObjects.EntryComposite;
-using System.Reflection.Metadata;
 using Domain.UseCases.Exceptions;
-using static System.Collections.Specialized.BitVector32;
-using System.Security.Cryptography;
 
 namespace Domain.UseCases.EntriesUseCases
 {
     public class PersistenceEntryInSectionCRUDUseCase
     {
-        internal IObjectIdentifierService IdentityCreator;
         internal ISectionEntryInSectionCRUDPersistenceService EntryPersistenceService;
         internal IEntryInSectionCRUDUseCase EntryInSectionCRUDUseCase;
 
-        public PersistenceEntryInSectionCRUDUseCase(IObjectIdentifierService idcreator, ISectionEntryInSectionCRUDPersistenceService persistenceService, IEntryInSectionCRUDUseCase entryInSectionCRUDUseCase)
+        public PersistenceEntryInSectionCRUDUseCase(ISectionEntryInSectionCRUDPersistenceService persistenceService, IEntryInSectionCRUDUseCase entryInSectionCRUDUseCase)
         {
-            IdentityCreator = idcreator;
             EntryPersistenceService = persistenceService;
             EntryInSectionCRUDUseCase = entryInSectionCRUDUseCase;
         }
@@ -83,7 +71,51 @@ namespace Domain.UseCases.EntriesUseCases
                 throw new PersistenceEntryInSectionCRUDUseCaseException("Entry couldn't be saved in persistence");
             }
         }
-
+        public void DeleateEntryByContent(int docId, int sectionId, string content) 
+        {
+            SectionComposite section = EntryPersistenceService.GetSectionComposite(docId, sectionId);
+            EntryInSectionCRUDUseCase.ResetSection(section);
+            try
+            {
+                Entry tempentry = EntryInSectionCRUDUseCase.GetEntryByContent(content);
+                EntryInSectionCRUDUseCase.DeleateEntryByContent(content);
+                EntryPersistenceService.DeleteEntryinSection(docId, sectionId, tempentry.Id);
+            }
+            catch (EntryInSectionCRUDUseCaseException)
+            {
+                throw new PersistenceEntryInSectionCRUDUseCaseException("Entry couldn't be saved in persistence");
+            }
+        }
+        public void DeleateEntryById(int docId, int sectionId, int entryId) 
+        {
+            SectionComposite section = EntryPersistenceService.GetSectionComposite(docId, sectionId);
+            EntryInSectionCRUDUseCase.ResetSection(section);
+            try
+            {
+                Entry tempentry = EntryInSectionCRUDUseCase.GetEntrybyId(entryId);
+                EntryInSectionCRUDUseCase.DeleateEntryById(entryId);
+                EntryPersistenceService.DeleteEntryinSection(docId, sectionId, tempentry.Id);
+            }
+            catch (EntryInSectionCRUDUseCaseException)
+            {
+                throw new PersistenceEntryInSectionCRUDUseCaseException("Entry couldn't be saved in persistence");
+            }
+        }
+        public void UpdateEntryContentById(int docId, int sectionId, int oldEntry, string newContent) 
+        {
+            SectionComposite section = EntryPersistenceService.GetSectionComposite(docId, sectionId);
+            EntryInSectionCRUDUseCase.ResetSection(section);
+            try
+            {
+                EntryInSectionCRUDUseCase.UpdateEntryContentById(oldEntry, newContent);
+                Entry tempentry = EntryInSectionCRUDUseCase.GetEntryByContent(newContent);
+                EntryPersistenceService.UpdateEntryinSection(docId, sectionId, oldEntry, tempentry);
+            }
+            catch (EntryInSectionCRUDUseCaseException)
+            {
+                throw new PersistenceEntryInSectionCRUDUseCaseException("Entry couldn't be saved in persistence");
+            }
+        }
 
     }
 }
