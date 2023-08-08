@@ -6,7 +6,7 @@ using Domain.Entities.DataObjects.DocumentComposite;
 using Domain.Entities.DataObjects;
 using Domain.UseCases.Exceptions;
 using Domain.Entities;
-using static System.Collections.Specialized.BitVector32;
+
 
 namespace Domain.UseCases.Tests.EntriesUseCasesTests
 {
