@@ -49,18 +49,18 @@ namespace Domain.UseCases.SectionUseCases
         }
         public SectionComponent ReadSectionById(int sectionId) 
         {
-            if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() == 0)
+            if (LocalDocument.GetSections().Where(section => section.SectionIdDoc == sectionId).Count() == 0)
             {
                 throw new SectionsInDocumentCRUDUseCaseException("the section Id didn't returned results");
             }
-            else if (LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).Count() > 1)
+            else if (LocalDocument.GetSections().Where(section => section.SectionIdDoc == sectionId).Count() > 1)
             {
-                return LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).First();
+                return LocalDocument.GetSections().Where(section => section.SectionIdDoc == sectionId).First();
                 throw new SectionsInDocumentCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else 
             {
-                return LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).First();
+                return LocalDocument.GetSections().Where(section => section.SectionIdDoc == sectionId).First();
             }
         }
         public SectionComponent ReadSectionByTitle(string title)
@@ -93,7 +93,7 @@ namespace Domain.UseCases.SectionUseCases
         public void DeleteSectionFromDocument(int sectionId) 
         {
             List<SectionComponent> localList = LocalDocument.GetSections();
-            SectionComponent LocalComponent = LocalDocument.GetSections().Where(section => section.DocSectionId == sectionId).First();
+            SectionComponent LocalComponent = LocalDocument.GetSections().Where(section => section.SectionIdDoc == sectionId).First();
             if (!Criteria.CanSectionBeRemoved(LocalComponent))
             {
                 throw new SectionsInDocumentCRUDUseCaseException("Section couldn't be Removed");

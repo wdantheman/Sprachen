@@ -27,7 +27,7 @@ namespace Domain.UseCases.SectionUseCases
         public void CreateEmptySubsectionToSection()
         {
             SectionComposite tempSection = new SectionComposite("Empty Section", IdentityCreator.CreateSubObjectId(LocalSection.SourceDocument),
-                LocalSection.LanguagesComponent, LocalSection.DocSectionId);
+                LocalSection.LanguagesComponent, LocalSection.SectionIdDoc);
             LocalSection.Subsections.Add(tempSection);
         }
         public void AddSubsectionToSection(SectionComposite section) 
@@ -51,18 +51,18 @@ namespace Domain.UseCases.SectionUseCases
         }
         public SectionComponent ReadSectionById(int sectionId)
         {
-            if (LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).Count() == 0)
+            if (LocalSection.Subsections.Where(section => section.SectionIdDoc == sectionId).Count() == 0)
             {
                 throw new SectionsCRUDUseCaseException("the section Id didn't returned results");
             }
-            else if (LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).Count() > 1)
+            else if (LocalSection.Subsections.Where(section => section.SectionIdDoc == sectionId).Count() > 1)
             {
-                return LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).First();
+                return LocalSection.Subsections.Where(section => section.SectionIdDoc == sectionId).First();
                 throw new SectionsCRUDUseCaseException("the section Id had a duplicated id, the first result was returned");
             }
             else
             {
-                return LocalSection.Subsections.Where(section => section.DocSectionId == sectionId).First();
+                return LocalSection.Subsections.Where(section => section.SectionIdDoc == sectionId).First();
             }
         }
         public SectionComponent ReadSectionByTitle(string title)
@@ -95,7 +95,7 @@ namespace Domain.UseCases.SectionUseCases
         public void DeleteSectionFromSection(int sectionId)
         {
 
-            SectionComponent TempSubsectionsToDeleate = LocalSection.Subsections.SingleOrDefault(section => section.DocSectionId == sectionId);
+            SectionComponent TempSubsectionsToDeleate = LocalSection.Subsections.SingleOrDefault(section => section.SectionIdDoc == sectionId);
             List<SectionComponent> TempSubsections = LocalSection.Subsections;
             if(TempSubsectionsToDeleate == null)
             {

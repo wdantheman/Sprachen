@@ -17,7 +17,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         {
             if (!documentSections.ContainsKey(documentId))
                 documentSections[documentId] = new Dictionary<int, SectionComponent>();
-            int sectionId = section.DocSectionId;
+            int sectionId = section.SectionIdDoc;
             documentSections[documentId][sectionId] = section;
         }
 

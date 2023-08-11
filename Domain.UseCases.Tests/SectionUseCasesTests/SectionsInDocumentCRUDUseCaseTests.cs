@@ -127,7 +127,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(sectionId, result.DocSectionId);
+            Assert.Equal(sectionId, result.SectionIdDoc);
         }
 
         [Fact]
@@ -241,7 +241,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
             var result = useCase.GetDocument().GetSections();
 
             // Assert
-            Assert.DoesNotContain(result, s => s.DocSectionId == sectionIdToRemove);
+            Assert.DoesNotContain(result, s => s.SectionIdDoc == sectionIdToRemove);
         }
         [Fact]
         public void DeleteSectionFromDocument_WhenSectionCannotBeRemoved_ShouldThrowSectionsInDocumentCRUDUseCaseException()

@@ -12,7 +12,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         public bool IsSectionValid(SectionComponent section)
         {
             // Basic implementation: Check if the section has a non-empty title
-            if(section.Title == "Invalid Section" || this.IsSectionIdDuplicated(section.DocSectionId, (SectionComposite)section)) 
+            if(section.Title == "Invalid Section" || this.IsSectionIdDuplicated(section.SectionIdDoc, (SectionComposite)section)) 
             {
                 return false;
             }
@@ -36,7 +36,7 @@ namespace Domain.UseCases.Tests.SectionUseCasesTests
         }
         public bool IsSectionIdDuplicated(int id, SectionComposite section)
         {
-            if (section.Subsections.Where(section => section.DocSectionId == id).Count() > 1)
+            if (section.Subsections.Where(section => section.SectionIdDoc == id).Count() > 1)
             {
                 return true;
             }
