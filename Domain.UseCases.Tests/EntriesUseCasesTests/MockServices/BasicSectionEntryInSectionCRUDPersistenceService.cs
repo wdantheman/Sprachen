@@ -9,7 +9,10 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
 {
     public class BasicSectionEntryInSectionCRUDPersistenceService : ISectionEntryInSectionCRUDPersistenceService
     {
-        public Dictionary<int, Document> DocumentSections = new Dictionary<int, Document>();
+        public Dictionary<int, Document> Documents = new Dictionary<int, Document>();
+        public Dictionary<(int, int), SectionComposite> Sections = new Dictionary<(int, int), SectionComposite>();
+        public Dictionary<(int, int), Entry> Entries = new Dictionary<(int, int), Entry>();
+
         public BasicSectionEntryInSectionCRUDPersistenceService(int docNumber, int SectionsPerDoc)
         {
             AddDocuments(docNumber);
@@ -20,18 +23,19 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
             for (int i = 0; i < docNumber; i++)
             {
                 Document temp = new Document(i, "testdoc " + i.ToString(), new List<SectionComponent>(), new LanguagesComponent(3));
-                DocumentSections.Add(i, temp);
+                Documents.Add(i, temp);
             }
         }
-        internal void AddNSectionstoDocuments(int lenght) 
+        internal void AddNSectionstoDocuments(int listLenght) 
         {
-            foreach (Document item in DocumentSections.Values)
+            foreach (Document item in Documents.Values)
             {
-                for (int i = 0; i < lenght; i++)
+                for (int i = 0; i < listLenght; i++)
                 {
                     SectionComposite temp = new SectionComposite("section test" + i.ToString(), i+10 ,item.GetLanguageComponent(), item.SystemId);
-                    AddEntriesToSection(12, temp);
+                    AddEntriesToSection(10, temp);
                     item.AddSection(temp);
+                    Sections.Add((item.SystemId, temp.SectionIdDoc), temp);
                 }
             }
         }
@@ -45,9 +49,9 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
         }
         public SectionComposite GetSectionComposite(int documentId, int sectionId)
         {
-            if (DocumentSections.ContainsKey(documentId))
+            if (Documents.ContainsKey(documentId))
             {
-                return (SectionComposite)DocumentSections[documentId].GetSections().Where(item => item.SectionIdDoc == sectionId);
+                return (SectionComposite)Documents[documentId].GetSections().Where(item => item.SectionIdDoc == sectionId);
             }
             else
             {
@@ -57,12 +61,12 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
 
         public Entry ReadEntryinSection(int documentId, int entryId)
         {
-            if (DocumentSections.ContainsKey(documentId))
+            if (Documents.ContainsKey(documentId))
             {
                 EntryInSectionCRUDUseCase usecase = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), new SectionComposite("das", 12, new LanguagesComponent(23), 12), new SimpleEntryCreatorCriteria(0, 100));
-                for (int i = 0; i < DocumentSections[documentId].GetSections().Count; i++)
+                for (int i = 0; i < Documents[documentId].GetSections().Count; i++)
                 {
-                    SectionComposite tempSection = (SectionComposite)DocumentSections[documentId].GetSections()[i];
+                    SectionComposite tempSection = (SectionComposite)Documents[documentId].GetSections()[i];
                     usecase.ResetSection(tempSection);
                     if (usecase.GetEntrybyId(entryId) != null)
                     {
@@ -85,28 +89,28 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
         {
 
 
-            List<SectionComponent> sections = DocumentSections[documentId].GetSections();
+            List<SectionComponent> sections = Documents[documentId].GetSections();
             EntryInSectionCRUDUseCase usecase = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), (SectionComposite)sections[sectionId], new SimpleEntryCreatorCriteria(0, 100));
             usecase.AddEntryInSection(newEntry);
-            DocumentSections[documentId].SetSections(sections);
+            Documents[documentId].SetSections(sections);
 
 
         }
 
         public void UpdateEntryinSection(int documentId, int sectionId, int oldEntryId, Entry newEntry)
         {
-            List<SectionComponent> sections = DocumentSections[documentId].GetSections();
+            List<SectionComponent> sections = Documents[documentId].GetSections();
             EntryInSectionCRUDUseCase usecase = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), (SectionComposite)sections[sectionId], new SimpleEntryCreatorCriteria(0, 100));
             usecase.UpdateEntryContentById(oldEntryId, newEntry.Content);
-            DocumentSections[documentId].SetSections(sections);
+            Documents[documentId].SetSections(sections);
         }
 
         public void DeleteEntryinSection(int documentId, int sectionId, int entryId)
         {
-            List<SectionComponent> sections = DocumentSections[documentId].GetSections();
+            List<SectionComponent> sections = Documents[documentId].GetSections();
             EntryInSectionCRUDUseCase usecase = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), (SectionComposite)sections[sectionId], new SimpleEntryCreatorCriteria(0, 100));
             usecase.DeleateEntryById(entryId);
-            DocumentSections[documentId].SetSections(sections);
+            Documents[documentId].SetSections(sections);
         }
     }
 
