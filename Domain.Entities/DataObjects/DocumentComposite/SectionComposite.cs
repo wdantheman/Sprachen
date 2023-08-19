@@ -9,12 +9,21 @@ namespace Domain.Entities.DataObjects.DocumentComposite
         public List<SectionComponent> Subsections { get; private set; }
         internal Dictionary<Entry, EntryTranslationBlock> TranslationComponents { get; set; }
         public int SourceDocument;
+        public int? ParentObjectId { get; set; }
         public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, int sourceDoc) : 
             base(title, id, lenguagesComponent)
         {
             Subsections = new List<SectionComponent>();
             TranslationComponents = new Dictionary<Entry, EntryTranslationBlock>();
             SourceDocument = sourceDoc;
+        }
+        public SectionComposite(string title, int id, ILanguagesComponent lenguagesComponent, int sourceDoc, int parentSectionId) :
+            base(title, id, lenguagesComponent)
+        {
+            Subsections = new List<SectionComponent>();
+            TranslationComponents = new Dictionary<Entry, EntryTranslationBlock>();
+            SourceDocument = sourceDoc;
+            ParentObjectId= parentSectionId;
         }
         public void SetSubsections(List<SectionComponent> subsections) 
         {

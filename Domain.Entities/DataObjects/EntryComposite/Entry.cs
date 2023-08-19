@@ -7,6 +7,7 @@ namespace Domain.Entities.DataObjects.EntryComposite
         public int Id { get; set; }
         public string Content { get; set; }
         public List<SpeechContext> SpeechContext { get; set; }
+        public int? ParentObjectId { get; set; }
 
         public Entry(int id, string content)
         {
@@ -19,6 +20,13 @@ namespace Domain.Entities.DataObjects.EntryComposite
             Id= id;
             Content = content;
             SpeechContext = speechContext;
+        }
+        public Entry(int id, string content, int parentId)
+        {
+            Id = id;
+            Content = content;
+            SpeechContext = new List<SpeechContext>();
+            ParentObjectId= parentId;
         }
     }
 }

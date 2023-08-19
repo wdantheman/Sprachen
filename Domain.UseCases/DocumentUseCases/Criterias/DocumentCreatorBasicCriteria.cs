@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.DataObjects.DocumentComposite;
 
-namespace Domain.UseCases.DocumentUseCases
+namespace Domain.UseCases.DocumentUseCases.Criterias
 {
     public class DocumentCreatorBasicCriteria : IDocumentCreatorCriteria
     {
@@ -10,7 +10,7 @@ namespace Domain.UseCases.DocumentUseCases
             {
                 return false;
             }
-            else if (doc.Name.Length>10000)
+            else if (doc.Name.Length > 10000)
             {
                 return false;
             }
@@ -19,7 +19,7 @@ namespace Domain.UseCases.DocumentUseCases
 
         public bool IsDocumentNameValid(string name)
         {
-            if (string.IsNullOrEmpty(name) || name.Length>10000)
+            if (string.IsNullOrEmpty(name) || name.Length > 10000)
             {
                 return false;
             }

@@ -16,12 +16,11 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
             int sectionsPerDoc =10;
             // Act
             BasicSectionEntryInSectionCRUDPersistenceService sut = new BasicSectionEntryInSectionCRUDPersistenceService(docNUmber, sectionsPerDoc);
-
-
             // Assert
             Assert.Equal(docNUmber, sut.Documents.Count());
             Assert.Equal(sectionsPerDoc * docNUmber, sut.Sections.Count());
-
+            Assert.Equal(sut.GetSectionComposite(1, 2).Title, sut.GetSections()[(1,2)].Title);
         }
+
     }
 }

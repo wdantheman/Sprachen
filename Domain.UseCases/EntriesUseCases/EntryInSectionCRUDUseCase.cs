@@ -27,6 +27,7 @@ namespace Domain.UseCases.EntriesUseCases
         {
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEmptyEntry = EntryCreator.CreateEmptyEntry(Section.SourceDocument);
+            newEmptyEntry.ParentObjectId = Section.SectionIdDoc;
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
             if (Section.GetTranslationComponent() == null)
             {
@@ -47,6 +48,7 @@ namespace Domain.UseCases.EntriesUseCases
         {
             CreateEntryUseCase EntryCreator = new CreateEntryUseCase(IdentityCreator, EntryCreatorCriteria);
             Entry newEntry = EntryCreator.CreateEntry(Section.SourceDocument, content);
+            newEntry.ParentObjectId = Section.SectionIdDoc;
             EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
             if (Section.GetTranslationComponent() == null)
             {
@@ -72,6 +74,7 @@ namespace Domain.UseCases.EntriesUseCases
             }
             else
             {
+                entry.ParentObjectId = Section.SectionIdDoc;
                 EntryTranslationBlock newTranslationBlock = new EntryTranslationBlock(Section.LanguagesComponent);
                 Dictionary<Entry, EntryTranslationBlock> TempDic = Section.GetTranslationComponent().ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 TempDic.Add(entry, newTranslationBlock);
@@ -114,6 +117,10 @@ namespace Domain.UseCases.EntriesUseCases
         {
             AddNewEntryInSection(newEntryContent);
             DeleateEntryById(entryId);
+        }
+        public void UpdateEntryContainingSubsection(int entryId, int newParentSubSection) 
+        {
+            GetEntrybyId(entryId).ParentObjectId = newParentSubSection;
         }
         public void DeleateEntryById(int entryId)
         {

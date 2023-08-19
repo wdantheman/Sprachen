@@ -298,5 +298,32 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
             // Assert
             Assert.Equal(2, section.GetTranslationComponent().Count);
         }
+
+        [Fact]
+        public void UpdateEntryContainingSubsection_Correctly_Changed_ParentId() 
+        {
+            //Arrenge
+            IObjectIdentifierService idCreator = new BasicObjectIdentifierService();
+            IEntryConfigCriteria entryConfigCriteria = new SimpleEntryConfigCriteria();
+            SectionComposite section = new SectionComposite("MockSection", 12, new LanguagesComponent(4), 1);
+            SectionComposite section2 = new SectionComposite("MockSection", 423, new LanguagesComponent(7), 1);
+            IEntryCreatorCriteria creatorCriteria = new SimpleEntryCreatorCriteria(0, 100);
+            string testContent = "Test content to deleate";
+            Entry entry1 = new Entry(12, "some content");
+            Entry entry2 = new Entry(13, testContent);
+            Entry entry3 = new Entry(14, "some content 3");
+            Entry entry4 = new Entry(15, testContent);
+
+            var useCase = new EntryInSectionCRUDUseCase(idCreator, entryConfigCriteria, section, creatorCriteria);
+            useCase.AddEntryInSection(entry1);
+            useCase.AddEntryInSection(entry2);
+            useCase.AddEntryInSection(entry3);
+            useCase.AddEntryInSection(entry4);
+
+            //Act
+            useCase.UpdateEntryContainingSubsection(15, 423);
+            //Assert
+            Assert.Equal(section2.SectionIdDoc, useCase.GetEntrybyId(15).ParentObjectId);
+        }
     }
 }

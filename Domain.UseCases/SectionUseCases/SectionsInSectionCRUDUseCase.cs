@@ -27,7 +27,7 @@ namespace Domain.UseCases.SectionUseCases
         public void CreateEmptySubsectionToSection()
         {
             SectionComposite tempSection = new SectionComposite("Empty Section", IdentityCreator.CreateSubObjectId(LocalSection.SourceDocument),
-                LocalSection.LanguagesComponent, LocalSection.SectionIdDoc);
+                LocalSection.LanguagesComponent, LocalSection.SectionIdDoc, LocalSection.SectionIdDoc);
             LocalSection.Subsections.Add(tempSection);
         }
         public void AddSubsectionToSection(SectionComposite section) 
@@ -42,6 +42,7 @@ namespace Domain.UseCases.SectionUseCases
             }
             else
             {
+                section.ParentObjectId = LocalSection.SectionIdDoc;
                 LocalSection.Subsections.Add(section);
             }
         }
