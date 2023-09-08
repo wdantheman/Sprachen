@@ -16,7 +16,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests
         //{
         //    // Arrange
         //    var startSection = new SectionComposite("test Section main", 6, new LanguagesComponent(3), 12);
-        //    var persistenceServiceMock = new BasicSectionEntryInSectionCRUDPersistenceService(10, 10);
+        //    var persistenceServiceMock     = new BasicSectionEntryInSectionCRUDPersistenceService(10, 10);
         //    var crudUseCaseMock = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), startSection, new SimpleEntryCreatorCriteria(0, 100));
 
         //    var useCase = new PersistenceEntryInSectionCRUDUseCase(persistenceServiceMock, crudUseCaseMock);
