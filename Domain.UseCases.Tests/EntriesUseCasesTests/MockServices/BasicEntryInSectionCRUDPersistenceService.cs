@@ -8,16 +8,16 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
 {
-    public class BasicSectionEntryInSectionCRUDPersistenceService : ISectionEntryInSectionCRUDPersistenceService
+    public class BasicEntryInSectionCRUDPersistenceService : ISectionEntryInSectionCRUDPersistenceService
     {
         public Dictionary<int, Document> Documents = new Dictionary<int, Document>();
         public Dictionary<(int, int), SectionComposite> Sections = new Dictionary<(int, int), SectionComposite>();
         public Dictionary<(int, int), Entry> Entries = new Dictionary<(int, int), Entry>(); 
 
-        public BasicSectionEntryInSectionCRUDPersistenceService(int docNumber, int SectionsPerDoc)
+        public BasicEntryInSectionCRUDPersistenceService(int docNumber, int SectionsPerDoc, int entriesPerSection)
         {
             AddDocuments(docNumber);
-            AddNSectionstoDocuments(SectionsPerDoc);
+            AddNSectionstoDocuments(SectionsPerDoc, entriesPerSection);
         }
         internal void AddDocuments(int docNumber) 
         {
@@ -27,14 +27,14 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
                 Documents.Add(i, temp);
             }
         }
-        internal void AddNSectionstoDocuments(int listLenght) 
+        internal void AddNSectionstoDocuments(int listLenght, int entriesPerSection) 
         {
             foreach (Document tempDoc in Documents.Values)
             {
                 for (int i = 0; i < listLenght; i++)
                 {
                     SectionComposite tempSection = new SectionComposite("section test" + i.ToString(), i+10 ,tempDoc.GetLanguageComponent(), tempDoc.SystemId);
-                    AddNEntriesToSection(10, tempSection);
+                    AddNEntriesToSection(entriesPerSection, tempSection);
                     tempDoc.AddSection(tempSection);
                     Sections.Add((tempDoc.SystemId, tempSection.SectionIdDoc), tempSection);
                 }
@@ -42,11 +42,26 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
         }
         internal void AddNEntriesToSection(int numberOfEntries, SectionComposite section)
         {
-            EntryInSectionCRUDUseCase usecase = new EntryInSectionCRUDUseCase(new BasicObjectIdentifierService(), new SimpleEntryConfigCriteria(), section,  new SimpleEntryCreatorCriteria(0, 100));
+            
+            CreateEntryUseCase usecase = new CreateEntryUseCase(new BasicObjectIdentifierService(), new SimpleEntryCreatorCriteria(0, 100));
+            int entryIndex = Entries.Count; // Get the current count of entries
+
             for (int i = 0; i < numberOfEntries; i++)
             {
-                usecase.AddNewEntryInSection("test Entry " + i.ToString());
+                Entry tempEntry = usecase.CreateEntry(section.SourceDocument, "test Entry " + (i + entryIndex).ToString());
+
+                // Generate a unique key for the entry based on the section and entry index
+                var entryKey = (section.SourceDocument, entryIndex + i);
+
+                // Check if the entryKey already exists in the dictionary
+                while (Entries.ContainsKey(entryKey))
+                {
+                    entryKey = (section.SourceDocument, ++entryIndex + i); // Generate a new key if it already exists
+                }
+
+                Entries.Add(entryKey, tempEntry);
             }
+            
         }
         public Dictionary<(int, int), SectionComposite> GetSections() 
         {
@@ -110,7 +125,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
             }
             else
             {
-                throw new Exception("no entry in section to update");
+                throw new Exception("no entry in section to Deleate");
             }
         }
     }

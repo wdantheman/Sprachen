@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Domain.UseCases\Domain.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntriesUseCasesTests\MockServices\DBMock\" />
+  </ItemGroup>
+
 </Project>
