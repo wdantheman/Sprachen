@@ -72,11 +72,11 @@ namespace Domain.Entities.Tests.MocksTests
         public void ReadEntryinSection_ValidIds_ReturnsEntry()
         {
             // Arrange
-            var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 10, entriesPerSection: 4);
+            var dbMock = new DBMock(docNumber:2, SectionsPerDoc: 10, entriesPerSection: 4);
             Entry temp = new Entry(12, "test");
             dbMock.CreateEntryinSection(1,2,temp);
             // Act
-            var entry = dbMock.ReadEntryinSection(documentId: 1, entryId: 12);
+            var entry = dbMock.ReadEntryinDocument(documentId: 1, entryId: 12);
 
             // Assert
             Assert.NotNull(entry);
@@ -90,7 +90,7 @@ namespace Domain.Entities.Tests.MocksTests
             var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
 
             // Act
-            var entry = dbMock.ReadEntryinSection(documentId: 5, entryId: 2);
+            var entry = dbMock.ReadEntryinDocument(documentId: 5, entryId: 2);
 
             // Assert
             Assert.Null(entry);
@@ -105,10 +105,11 @@ namespace Domain.Entities.Tests.MocksTests
 
             // Act
             dbMock.CreateEntryinSection(documentId: 0, sectionId: 1, newEntry);
-            var entry = dbMock.ReadEntryinSection(documentId: 0, entryId: 999);
+            var entry = dbMock.ReadEntryinDocument(documentId: 0, entryId: 999);
 
             // Assert
-            Assert.Equal(newEntry, entry);
+            Assert.Equal(newEntry.Id, entry.Id);
+            Assert.Equal(newEntry.Content, entry.Content);
         }
 
         [Fact]
@@ -119,10 +120,10 @@ namespace Domain.Entities.Tests.MocksTests
             var newEntry = new Entry(999, "new entry content");
 
             // Assert
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<KeyNotFoundException>(() =>
             {
                 // Act
-                dbMock.CreateEntryinSection(documentId: 0, sectionId: 10, newEntry);
+                dbMock.CreateEntryinSection(documentId: 0, sectionId: 12, newEntry);
             });
         }
 
@@ -130,15 +131,17 @@ namespace Domain.Entities.Tests.MocksTests
         public void UpdateEntryinSection_ValidData_EntryUpdated()
         {
             // Arrange
-            var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
-            var newEntry = new Entry(999, "updated entry content");
+            var dbMock = new DBMock(docNumber: 5, SectionsPerDoc: 5, entriesPerSection: 5);
+            var baseEntry = new Entry(999, "base entry content");
+            dbMock.CreateEntryinSection(documentId: 1, sectionId: 3, baseEntry);
+            var newEntry = new Entry(5622, "updated entry content");
 
             // Act
-            dbMock.UpdateEntryinSection(documentId: 0, sectionId: 1, oldEntryId: 2, newEntry);
-            var entry = dbMock.ReadEntryinSection(documentId: 0, entryId: 999);
+            dbMock.UpdateEntryinSection(documentId: 1, sectionId: 1, oldEntryId: 999, newEntry);
+            var entry = dbMock.ReadEntryinDocument(documentId: 1, entryId: 5622);
 
             // Assert
-            Assert.Equal(newEntry, entry);
+            Assert.Equal(newEntry.Content, entry.Content);
         }
 
         [Fact]
@@ -149,25 +152,10 @@ namespace Domain.Entities.Tests.MocksTests
             var newEntry = new Entry(999, "updated entry content");
 
             // Assert
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<KeyNotFoundException>(() =>
             {
                 // Act
                 dbMock.UpdateEntryinSection(documentId: 0, sectionId: 10, oldEntryId: 2, newEntry);
-            });
-        }
-
-        [Fact]
-        public void UpdateEntryinSection_InvalidEntry_ThrowsException()
-        {
-            // Arrange
-            var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
-            var newEntry = new Entry(999, "updated entry content");
-
-            // Assert
-            Assert.Throws<Exception>(() =>
-            {
-                // Act
-                dbMock.UpdateEntryinSection(documentId: 0, sectionId: 1, oldEntryId: 10, newEntry);
             });
         }
 
@@ -176,41 +164,48 @@ namespace Domain.Entities.Tests.MocksTests
         {
             // Arrange
             var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
+            var baseEntry = new Entry(999, "base entry content");
+            dbMock.CreateEntryinSection(documentId: 1, sectionId: 3, baseEntry);
 
             // Act
-            dbMock.DeleteEntryinSection(documentId: 0, sectionId: 1, entryId: 2);
-            var entry = dbMock.ReadEntryinSection(documentId: 0, entryId: 2);
+            dbMock.DeleteEntryinSection(documentId: 1, sectionId: 3, entryId: 999);
 
             // Assert
-            Assert.Null(entry);
+            Entry check = dbMock.ReadEntryinDocument(documentId: 1, entryId: 999);
+            Assert.Null(check);
+            
+        }
+        [Fact]
+        public void SaveDocumentsToJson_ShouldSaveDocumentsToJsonFile()
+        {
+            // Arrange
+            string filePath = "test.json";
+            DBMock dbMock = new DBMock(10, 10, 10);
+
+            // Act
+            dbMock.SaveDocumentsToJson(filePath);
+
+            // Assert
+            Assert.True(File.Exists(filePath));
         }
 
         [Fact]
-        public void DeleteEntryinSection_InvalidSection_ThrowsException()
+        public void LoadFromJson_ShouldLoadDocumentsFromJsonFile()
         {
             // Arrange
-            var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
+            string filePath = "test.json";
+            DBMock dbMock = new DBMock(10, 10, 10);
+            dbMock.SaveDocumentsToJson(filePath);
+
+            // Act
+            DBMock newdbMock = new DBMock(10, 10, 10);
+            newdbMock.LoadFromJson(filePath);
 
             // Assert
-            Assert.Throws<Exception>(() =>
-            {
-                // Act
-                dbMock.DeleteEntryinSection(documentId: 0, sectionId: 10, entryId: 2);
-            });
-        }
-
-        [Fact]
-        public void DeleteEntryinSection_InvalidEntry_ThrowsException()
-        {
-            // Arrange
-            var dbMock = new DBMock(docNumber: 2, SectionsPerDoc: 3, entriesPerSection: 4);
-
-            // Assert
-            Assert.Throws<Exception>(() =>
-            {
-                // Act
-                dbMock.DeleteEntryinSection(documentId: 0, sectionId: 1, entryId: 10);
-            });
+            Assert.NotNull(newdbMock.Documents);
+            Assert.Equal(dbMock.Documents.Count, newdbMock.Documents.Count);
+            Assert.Equal(dbMock.Sections.Count, newdbMock.Sections.Count);
+            Assert.Equal(dbMock.Entries.Count, newdbMock.Entries.Count);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace Domain.UseCases.Tests.EntriesUseCasesTests.MockServices
             }
         }
 
-        public Entry ReadEntryinSection(int documentId, int entryId)
+        public Entry ReadEntryinDocument(int documentId, int entryId)
         {
             if (Documents.ContainsKey(documentId) && Entries.ContainsKey((documentId, entryId)))
             {

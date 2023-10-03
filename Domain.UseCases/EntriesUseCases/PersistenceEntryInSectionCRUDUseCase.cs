@@ -51,7 +51,7 @@ namespace Domain.UseCases.EntriesUseCases
         {
             try
             {
-                return EntryPersistenceService.ReadEntryinSection(docId, entryId); 
+                return EntryPersistenceService.ReadEntryinDocument(docId, entryId); 
             }
             catch (Exception)
             {

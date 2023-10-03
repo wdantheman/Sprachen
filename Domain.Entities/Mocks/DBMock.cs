@@ -2,11 +2,10 @@
 using Domain.Entities.DataObjects.EntryComposite;
 using Domain.Entities.DataObjects;
 using Domain.Entities.PersistenceServices.EntryPersistenceServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
+
+using System.Xml;
 
 namespace Domain.Entities.Mocks
 {
@@ -85,8 +84,9 @@ namespace Domain.Entities.Mocks
             }
         }
 
-        public Entry ReadEntryinSection(int documentId, int entryId)
+        public Entry ReadEntryinDocument(int documentId, int entryId)
         {
+            //this should have an extra id for the section we want to read from ... 
             if (Documents.ContainsKey(documentId) && Entries.ContainsKey((documentId, entryId)))
             {
                 return Entries[(documentId, entryId)];
@@ -115,7 +115,7 @@ namespace Domain.Entities.Mocks
             if (Sections[(documentId, sectionId)] != null && Entries[(documentId, oldEntryId)] != null)
             {
                 DeleteEntryinSection(documentId, sectionId, oldEntryId);
-                Entries.Add((documentId, newEntry.Id), newEntry);
+                CreateEntryinSection(documentId, sectionId, newEntry);
             }
             else
             {
@@ -134,7 +134,29 @@ namespace Domain.Entities.Mocks
                 throw new Exception("no entry in section to Deleate");
             }
         }
-    }
+        public void SaveDocumentsToJson(string filePath)
+        {
+            string json = JsonConvert.SerializeObject(Documents, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(filePath, json);
+        }
 
+        public void LoadFromJson(string filePath)
+        {
+            // Read the JSON file
+            string json = File.ReadAllText(filePath);
+
+            // Deserialize the JSON into a list of Document objects
+            List<Document> documentList = JsonConvert.DeserializeObject<List<Document>>(json);
+
+            // Clear the existing Documents dictionary
+            Documents.Clear();
+
+            // Add the deserialized documents to the Documents dictionary
+            foreach (Document document in documentList)
+            {
+                Documents.Add(document.SystemId, document);
+            }
+        }
+    }
 }
 
